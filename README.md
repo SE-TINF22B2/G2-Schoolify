@@ -1,12 +1,12 @@
-This is [Schoolify], a all in one organizer for the school 
+This is **Schoolify**, a all in one organizer for the school 
 
 ## Getting Started
 
-To start the [backend]: 
+To start the **backend**: 
 - navigate to folder serverside
 - run npm run dev
 
-To start the [backend]: 
+To start the **backend**: 
 - navigate to folder clientside
 - run npm run dev
 
