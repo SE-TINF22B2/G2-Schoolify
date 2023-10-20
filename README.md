@@ -6,7 +6,7 @@ To start the **backend**:
 - navigate to folder serverside
 - run `npm run dev`
 
-To start the **backend**: 
+To start the **frontend**: 
 - navigate to folder clientside
 - run `npm run dev`
 
