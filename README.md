@@ -9,5 +9,5 @@ In unserer [Wiki](https://github.com/SE-TINF22B2/G2-Schoolify/wiki/) ist die Dok
 
 Noch spezifischere Funktionsbeschreibungen sind in den [User Stories](https://github.com/SE-TINF22B2/G2-Schoolify/discussions/categories/user-stories) zu finden.
 
-Um auf dem neusten Stand zu bleiben liefer wir wöchtentlich [Statusberichte](https://github.com/SE-TINF22B2/G2-Schoolify/discussions/categories/status-berichte) in den Discussions.
+Um auf dem neusten Stand zu bleiben, liefern wir wöchtentlich [Statusberichte](https://github.com/SE-TINF22B2/G2-Schoolify/discussions/categories/status-berichte) in den Discussions.
 
