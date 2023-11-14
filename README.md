@@ -3,16 +3,12 @@
 </p>
 <p align="center">This is <b>Schoolify</b>, an all in one organizer for schools</p>
 
-# Getting Started
+# Projekt Idee 
+Schoolify ist ein Web-basierter Schulplaner, der das Problem der mangelnden Organisation im schulischen Alltag löst. Viele Schüler und Lehrer haben Schwierigkeiten, den Überblick über Stundenpläne, Noten, Hausaufgaben und Prüfungstermine zu behalten. Dies führt oft zu Stress, Fehlern und ineffizienter Nutzung von Ressourcen.
 
-## Frontend
-To start the **frontend**: 
-- navigate to folder clientside
-- run `npm run dev`
+In unserer [Wiki](https://github.com/SE-TINF22B2/G2-Schoolify/wiki/) ist die Dokumentation zu finden. Darin sind alle wichtigen Informationen über unser Projekt und die enthaltenen Funktionen zu finden. 
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Noch spezifischere Funktionsbeschreibungen sind in den [User Stories](https://github.com/SE-TINF22B2/G2-Schoolify/discussions/categories/user-stories) zu finden.
 
-## Backend
-To start the **backend**: 
-- navigate to folder serverside
-- run `npm run dev`
+Um auf dem neusten Stand zu bleiben liefer wir wöchtentlich [Statusberichte](https://github.com/SE-TINF22B2/G2-Schoolify/discussions/categories/status-berichte) in den Discussions.
+
