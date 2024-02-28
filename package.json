@@ -3,8 +3,8 @@
     "concurrently": "^8.2.2"
   },
   "scripts": {
-    "server": "npm run dev --prefix server",
-    "client": "npm start --prefix client",
+    "server": "npm run start:dev --prefix serverside/",
+    "client": "npm run dev --prefix clientside/",
     "dev": "concurrently \"npm run server\" \"npm run client\""
   }
 }
