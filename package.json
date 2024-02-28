@@ -5,6 +5,9 @@
   "scripts": {
     "server": "npm run start:dev --prefix serverside/",
     "client": "npm run dev --prefix clientside/",
-    "dev": "concurrently \"npm run server\" \"npm run client\""
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "serveri": "npm i --prefix serverside/",
+    "clienti": "npm i --prefix clientside/",
+    "devi": "concurrently \"npm run serveri\" \"npm run clienti\""
   }
 }
