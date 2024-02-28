@@ -1,10 +1,36 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { AuthModule } from './auth/auth.module';
+import { UserModule } from './user/user.module';
+import { MealModule } from './meal/meal.module';
+import { EventController } from './event/event.controller';
+import { EventModule } from './event/event.module';
+import { TestModule } from './test/test.module';
+import { TeacherModule } from './teacher/teacher.module';
+import { StudentModule } from './student/student.module';
+import { ClassService } from './class/class.service';
+import { ClassModule } from './class/class.module';
+import { GradeService } from './grade/grade.service';
+import { GradeModule } from './grade/grade.module';
+import { LessonService } from './lesson/lesson.service';
+import { LessonModule } from './lesson/lesson.module';
 
 @Module({
-  imports: [],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [
+    AuthModule,
+    UserModule,
+    MealModule,
+    EventModule,
+    UserModule,
+    TestModule,
+    TeacherModule,
+    StudentModule,
+    ClassModule,
+    GradeModule,
+    LessonModule,
+  ],
+  controllers: [AppController, EventController],
+  providers: [AppService, ClassService, GradeService, LessonService],
 })
 export class AppModule {}
