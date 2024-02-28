@@ -1,14 +1,13 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import * as dotenv from 'dotenv';
-import indexData from '../prisma/data/indexData.js';
 
 async function primsaEnvDefinition() {
   if (process.env.NODE_ENV === 'production') {
     dotenv.config({ path: '.env.production' });
   } else {
     dotenv.config({ path: '.env.development' });
-    indexData();
+    //here
   }
   if (!process.env.DATABASE_URL) {
     throw new Error('No DATABASE_URL specified in environment variables.');
