@@ -28,7 +28,7 @@ model Student {
   name              String
   lastname          String
   classID           Int
-  class             Class        @relation(fields: [classID], references: [classID])
+  class             Class           @relation(fields: [classID], references: [classID])
   grades            Grade[]
 }
 
@@ -38,7 +38,7 @@ model Teacher {
   user_Login_DataID Int             @unique
   name              String
   lastname          String
-  roles             Role[]
+  classes           Role[]
   events            Event[]
   grades            Grade[]
 }
@@ -64,7 +64,7 @@ model Class {
   roomNumber Int
   year       String
   letter     String
-  roles      Role[]
+  teachers   Role[]
   students   Student[]
   lessons    Lesson[]
   events     Event[]
@@ -77,11 +77,11 @@ model Lesson {
 }
 
 model Absent {
-  absentID        Int             @id @default(autoincrement())
-  dateFrom        String
-  dateTo          String
-  user_Login_Data User_Login_Data @relation(fields: [user_Login_DataID], references: [user_Login_DataID])
-  user_Login_DataID         Int             @unique
+  absentID          Int             @id @default(autoincrement())
+  dateFrom          String
+  dateTo            String
+  user_Login_Data   User_Login_Data @relation(fields: [user_Login_DataID], references: [user_Login_DataID])
+  user_Login_DataID Int             @unique
 }
 
 model Subject {

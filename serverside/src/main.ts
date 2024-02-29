@@ -7,7 +7,6 @@ async function primsaEnvDefinition() {
     dotenv.config({ path: '.env.production' });
   } else {
     dotenv.config({ path: '.env.development' });
-    //here
   }
   if (!process.env.DATABASE_URL) {
     throw new Error('No DATABASE_URL specified in environment variables.');

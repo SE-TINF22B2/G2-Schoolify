@@ -17,6 +17,7 @@ export class UserService {
       'studentmail3@test.de',
       'studentmail4@test.de',
     ];
+    const existingRoles = await prisma.role.findMany();
 
     const teacherEmails = ['teachermail1@test.de', 'teachermail2@test.de'];
     const adminEmail = 'adminmail1@test.de';
@@ -45,6 +46,10 @@ export class UserService {
         user_Login_DataID: adminLoginData.user_Login_DataID,
       },
     });
+    // Import Classes
+    await this.classService.create(prisma);
+    const classA = this.classService.getClasses().classA;
+    const classB = this.classService.getClasses().classB;
 
     // Create teachers
     for (let i = 0; i < teacherEmails.length; i++) {
@@ -71,11 +76,39 @@ export class UserService {
           user_Login_DataID: teacherLoginData.user_Login_DataID,
         },
       });
-    }
+      // Check if role for classA exists
+      const classARoleExists = existingRoles.find(
+        (role) =>
+          role.teacherID === this.teacherMocks[i].teacherID &&
+          role.classID === classA.classID,
+      );
 
-    await this.classService.create(prisma);
-    const classA = this.classService.getClasses().classA;
-    const classB = this.classService.getClasses().classB;
+      // If it doesn't exist, create
+      if (!classARoleExists) {
+        await prisma.role.create({
+          data: {
+            teacherID: this.teacherMocks[i].teacherID,
+            classID: classA.classID,
+          },
+        });
+      }
+
+      // Repeat the same process for classB
+      const classBRoleExists = existingRoles.find(
+        (role) =>
+          role.teacherID === this.teacherMocks[i].teacherID &&
+          role.classID === classB.classID,
+      );
+
+      if (!classBRoleExists) {
+        await prisma.role.create({
+          data: {
+            teacherID: this.teacherMocks[i].teacherID,
+            classID: classB.classID,
+          },
+        });
+      }
+    }
 
     // Create students
     for (let i = 0; i < studentEmails.length; i++) {
