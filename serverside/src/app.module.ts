@@ -1,24 +1,49 @@
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { AuthModule } from './auth/auth.module';
+import { UserModule } from './user/user.module';
+import { MealModule } from './meal/meal.module';
+import { EventController } from './event/event.controller';
+import { EventModule } from './event/event.module';
+import { TestModule } from './test/test.module';
+import { TeacherModule } from './teacher/teacher.module';
+import { StudentModule } from './student/student.module';
+import { ClassService } from './class/class.service';
+import { ClassModule } from './class/class.module';
+import { GradeService } from './grade/grade.service';
+import { GradeModule } from './grade/grade.module';
+import { LessonService } from './lesson/lesson.service';
+import { LessonModule } from './lesson/lesson.module';
 import { Module, OnApplicationBootstrap } from '@nestjs/common';
-import { ClassService } from '../prisma/data/testdata/mockClass.service';
-import { UserService } from '../prisma/data/testdata/mockUser.service';
+import { ClassServiceMock } from '../prisma/data/testdata/mockClass.service';
+import { UserServiceMock } from '../prisma/data/testdata/mockUser.service';
 import { PrismaClient } from '@prisma/client';
 import { MockService } from '../prisma/data/mockData.controller';
 
 @Module({
-  imports: [],
-  controllers: [AppController],
-  providers: [
+  imports: [
+    AuthModule,
+    UserModule,
+    MealModule,
+    EventModule,
+    UserModule,
+    TestModule,
+    TeacherModule,
+    StudentModule,
+    ClassModule,
+    GradeModule,
+    LessonModule,
     AppService,
-    ClassService,
-    UserService,
+    ClassServiceMock,
+    UserServiceMock,
     MockService,
     {
       provide: 'PRISMA',
       useValue: new PrismaClient(),
     },
   ],
+  controllers: [AppController, EventController],
+  providers: [AppService, ClassService, GradeService, LessonService],
 })
 export class AppModule implements OnApplicationBootstrap {
   constructor(private readonly mockService: MockService) {}
