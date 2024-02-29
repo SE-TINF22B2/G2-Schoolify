@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
+import { Class } from '@prisma/client';
 
 @Injectable()
 export class ClassService {
-  classA;
-  classB;
+  classA: Class;
+  classB: Class;
 
   async create(prisma) {
     this.classA = await prisma.class.upsert({
