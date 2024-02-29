@@ -1,13 +1,15 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { userRole, Admin, Teacher, Student } from '@prisma/client';
-import { ClassService } from './mockClass.service';
+import { ClassServiceMock } from './mockClass.service';
 
 @Injectable()
-export class UserService {
+export class UserServiceMock {
   adminMock: Admin;
   teacherMocks: Teacher[] = [];
   studentMocks: Student[] = [];
-  constructor(@Inject(ClassService) private classService: ClassService) {}
+  constructor(
+    @Inject(ClassServiceMock) private classService: ClassServiceMock,
+  ) {}
   async create(prisma) {
     const mockpassword = '1234';
 

@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Class } from '@prisma/client';
 
 @Injectable()
-export class ClassService {
+export class ClassServiceMock {
   classA: Class;
   classB: Class;
 

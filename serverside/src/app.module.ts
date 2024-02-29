@@ -33,7 +33,13 @@ import { MockService } from '../prisma/data/mockData.controller';
     ClassModule,
     GradeModule,
     LessonModule,
+  ],
+  controllers: [AppController, EventController],
+  providers: [
     AppService,
+    ClassService,
+    GradeService,
+    LessonService,
     ClassServiceMock,
     UserServiceMock,
     MockService,
@@ -42,8 +48,6 @@ import { MockService } from '../prisma/data/mockData.controller';
       useValue: new PrismaClient(),
     },
   ],
-  controllers: [AppController, EventController],
-  providers: [AppService, ClassService, GradeService, LessonService],
 })
 export class AppModule implements OnApplicationBootstrap {
   constructor(private readonly mockService: MockService) {}
