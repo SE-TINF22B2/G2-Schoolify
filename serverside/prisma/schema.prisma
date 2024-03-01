@@ -6,11 +6,129 @@ generator client {
 }
 
 datasource db {
-  provider = "mongodb"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
-model ClassRoom {
-  id     String @id @default(auto()) @map("_id") @db.ObjectId
-  roomid String @unique
+model User_Login_Data {
+  user_Login_DataID Int      @id @default(autoincrement())
+  email             String   @unique
+  password          String
+  role              userRole
+  student           Student? @relation("User2Student")
+  teacher           Teacher? @relation("User2Teacher")
+  admin             Admin?   @relation("User2Admin")
+  absent            Absent[]
+}
+
+model Student {
+  studentID         Int             @id @default(autoincrement())
+  user_Login_Data   User_Login_Data @relation("User2Student", fields: [user_Login_DataID], references: [user_Login_DataID])
+  user_Login_DataID Int             @unique
+  name              String
+  lastname          String
+  classID           Int
+  class             Class           @relation(fields: [classID], references: [classID])
+  grades            Grade[]
+}
+
+model Teacher {
+  teacherID         Int             @id @default(autoincrement())
+  user_Login_Data   User_Login_Data @relation("User2Teacher", fields: [user_Login_DataID], references: [user_Login_DataID])
+  user_Login_DataID Int             @unique
+  name              String
+  lastname          String
+  classes           Role[]
+  events            Event[]
+  grades            Grade[]
+}
+
+model Admin {
+  adminID           Int             @id @default(autoincrement())
+  user_Login_Data   User_Login_Data @relation("User2Admin", fields: [user_Login_DataID], references: [user_Login_DataID])
+  user_Login_DataID Int             @unique
+  name              String
+  lastname          String
+}
+
+model Role {
+  roleID    Int     @id @default(autoincrement())
+  teacherID Int
+  classID   Int
+  teacher   Teacher @relation(fields: [teacherID], references: [teacherID])
+  class     Class   @relation(fields: [classID], references: [classID])
+}
+
+model Class {
+  classID    Int       @id @default(autoincrement())
+  roomNumber Int
+  year       String
+  letter     String
+  teachers   Role[]
+  students   Student[]
+  lessons    Lesson[]
+  events     Event[]
+}
+
+model Lesson {
+  lessonID Int   @id @default(autoincrement())
+  classID  Int
+  class    Class @relation(fields: [classID], references: [classID])
+}
+
+model Absent {
+  absentID          Int             @id @default(autoincrement())
+  dateFrom          String
+  dateTo            String
+  user_Login_Data   User_Login_Data @relation(fields: [user_Login_DataID], references: [user_Login_DataID])
+  user_Login_DataID Int             @unique
+}
+
+model Subject {
+  subjectID Int     @id @default(autoincrement())
+  name      String
+  testID    Int     @unique
+  test      Test    @relation("Subject2Test", fields: [testID], references: [testID])
+  grades    Grade[]
+}
+
+model Test {
+  testID  Int      @id @default(autoincrement())
+  subject Subject? @relation("Subject2Test")
+  event   Event?   @relation("Event2Test")
+  topic   String
+  grades  Grade[]
+}
+
+model Event {
+  eventID     Int     @id @default(autoincrement())
+  topic       String
+  testID      Int     @unique
+  test        Test?   @relation("Event2Test", fields: [testID], references: [testID])
+  teacherID   Int
+  teacher     Teacher @relation(fields: [teacherID], references: [teacherID])
+  classID     Int
+  class       Class   @relation(fields: [classID], references: [classID])
+  description String
+  dateFrom    String
+  dateTo      String
+}
+
+model Grade {
+  gradeID          Int      @id @default(autoincrement())
+  grade            Float
+  Test             Test?    @relation(fields: [testTestID], references: [testID])
+  testTestID       Int?
+  Student          Student? @relation(fields: [studentStudentID], references: [studentID])
+  studentStudentID Int?
+  Teacher          Teacher? @relation(fields: [teacherTeacherID], references: [teacherID])
+  teacherTeacherID Int?
+  Subject          Subject? @relation(fields: [subjectSubjectID], references: [subjectID])
+  subjectSubjectID Int?
+}
+
+enum userRole {
+  Admin
+  Teacher
+  Student
 }

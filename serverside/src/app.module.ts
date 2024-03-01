@@ -1,4 +1,3 @@
-import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
@@ -15,6 +14,11 @@ import { GradeService } from './grade/grade.service';
 import { GradeModule } from './grade/grade.module';
 import { LessonService } from './lesson/lesson.service';
 import { LessonModule } from './lesson/lesson.module';
+import { Module, OnApplicationBootstrap } from '@nestjs/common';
+import { ClassServiceMock } from '../prisma/data/testdata/mockClass.service';
+import { UserServiceMock } from '../prisma/data/testdata/mockUser.service';
+import { PrismaClient } from '@prisma/client';
+import { MockService } from '../prisma/data/mockData.controller';
 
 @Module({
   imports: [
@@ -31,6 +35,26 @@ import { LessonModule } from './lesson/lesson.module';
     LessonModule,
   ],
   controllers: [AppController, EventController],
-  providers: [AppService, ClassService, GradeService, LessonService],
+  providers: [
+    AppService,
+    ClassService,
+    GradeService,
+    LessonService,
+    ClassServiceMock,
+    UserServiceMock,
+    MockService,
+    {
+      provide: 'PRISMA',
+      useValue: new PrismaClient(),
+    },
+  ],
 })
-export class AppModule {}
+export class AppModule implements OnApplicationBootstrap {
+  constructor(private readonly mockService: MockService) {}
+  async onApplicationBootstrap() {
+    if (process.env.NODE_ENV !== 'production') {
+      await this.mockService.createMockData();
+      console.log('Mock data created.');
+    }
+  }
+}
