@@ -1,20 +1,28 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
+import { Prisma, PrismaClient } from '@prisma/client';
 import { CreateStudentDto } from 'dto/createStudentDto';
-// import { Student } from '@prisma/client';
+
 @Injectable()
 export class UsersService {
-  validateInput(newStudent: any): any {
-    // const name = newStudent.name;
-    // const lastname = newStudent.lastname;
-    // const classID = newStudent.classID;
-    // const class = newStudent.class;
-    return newStudent;
-  }
-  createUser(newStudent: CreateStudentDto): any {
-    // first validate input to be correct
-    // const newStudent = this.validateInput(body);
+  async createUser(
+    newStudent: CreateStudentDto,
+    prisma,
+  ): Promise<CreateStudentDto> {
+    // first check if class exists
+    const classCount = await prisma.class.count({
+      where: {
+        classID: newStudent.classID,
+      },
+    });
+    if (classCount == 0) {
+      throw new HttpException(
+        'class with ' + newStudent.classID + ' does not exist',
+        HttpStatus.NOT_FOUND,
+      );
+    }
+    // create login data
 
-
+    // create student
 
     return newStudent;
   }
