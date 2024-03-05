@@ -71,9 +71,15 @@ model Class {
 }
 
 model Lesson {
-  lessonID Int   @id @default(autoincrement())
-  classID  Int
-  class    Class @relation(fields: [classID], references: [classID])
+  lessonID  Int     @id @default(autoincrement())
+  classID   Int
+  startTime DateTime
+  duration  Int
+  class     Class   @relation(fields: [classID], references: [classID])
+  testID    Int?     @unique
+  test      Test?    @relation("Lesson2Test", fields: [testID], references: [testID])
+  subjectID Int
+  subject   Subject @relation(fields: [subjectID], references: [subjectID])
 }
 
 model Absent {
@@ -85,33 +91,32 @@ model Absent {
 }
 
 model Subject {
-  subjectID Int     @id @default(autoincrement())
+  subjectID Int      @id @default(autoincrement())
   name      String
-  testID    Int     @unique
-  test      Test    @relation("Subject2Test", fields: [testID], references: [testID])
+  lessons   Lesson[]
   grades    Grade[]
 }
 
 model Test {
-  testID  Int      @id @default(autoincrement())
-  subject Subject? @relation("Subject2Test")
-  event   Event?   @relation("Event2Test")
-  topic   String
-  grades  Grade[]
+  testID Int     @id @default(autoincrement())
+  lesson Lesson? @relation("Lesson2Test")
+  event  Event?  @relation("Event2Test")
+  topic  String
+  grades Grade[]
 }
 
 model Event {
   eventID     Int     @id @default(autoincrement())
   topic       String
-  testID      Int     @unique
+  testID      Int?     @unique
   test        Test?   @relation("Event2Test", fields: [testID], references: [testID])
   teacherID   Int
   teacher     Teacher @relation(fields: [teacherID], references: [teacherID])
   classID     Int
   class       Class   @relation(fields: [classID], references: [classID])
   description String
-  dateFrom    String
-  dateTo      String
+  dateFrom    DateTime?
+  dateTo      DateTime?
 }
 
 model Grade {
