@@ -2,6 +2,8 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import * as dotenv from 'dotenv';
 
+const PORT = 3000;
+
 async function primsaEnvDefinition() {
   if (process.env.NODE_ENV === 'production') {
     dotenv.config({ path: '.env.production' });
@@ -15,7 +17,9 @@ async function primsaEnvDefinition() {
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  await app.listen(3000);
+  await app.listen(PORT);
+  console.log(`Application is running on port ${PORT}`);
 }
+
 primsaEnvDefinition();
 bootstrap();
