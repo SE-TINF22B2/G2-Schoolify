@@ -1,5 +1,3 @@
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { MealModule } from './meal/meal.module';
@@ -34,9 +32,8 @@ import { MockService } from '../prisma/data/mockData.controller';
     GradeModule,
     LessonModule,
   ],
-  controllers: [AppController, EventController],
+  controllers: [EventController],
   providers: [
-    AppService,
     ClassService,
     GradeService,
     LessonService,
