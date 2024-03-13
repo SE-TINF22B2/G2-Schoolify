@@ -19,9 +19,21 @@ export class TeacherService {
     return this.prisma.teacher.findMany();
   }
 
-  async createTeacher(data: Teacher): Promise<Teacher | null> {
+  async createTeacher(data: CreateTeacherDto): Promise<Teacher | null> {
     return this.prisma.teacher.create({
-      data,
+      data: data,
     });
+  }
+
+  async patchTeacher(id: number, data: string): Promise<Teacher | null> {
+    try {
+      return this.patchTeacher(id, data);
+    } catch (error) {
+      return error;
+    }
+  }
+
+  async deleteTeacher(id: number): Promise<string> {
+    return `Deleted teacher with ID ${id}`;
   }
 }
