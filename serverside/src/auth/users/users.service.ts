@@ -17,7 +17,7 @@ export class UsersService {
       prisma,
     );
     const user_Login_Data_ID = createdLoginData.user_Login_DataID;
-    
+
     // create student
     const createdStudent: Student = await prisma.student.create({
       data: {
@@ -44,6 +44,7 @@ export class UsersService {
         },
       });
     } catch (err) {
+      //if student with the email already exists, throw exception
       throw new HttpException(
         'user with email ' + newData.email + ' already exists!',
         HttpStatus.CONFLICT,
@@ -56,6 +57,7 @@ export class UsersService {
         classID: classID,
       },
     });
+    // if no class exists with the ID, throw exception
     if (classCount == 0) {
       throw new HttpException(
         'class with ID: ' + classID + ' does not exist',

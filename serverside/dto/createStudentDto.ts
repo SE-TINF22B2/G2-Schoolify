@@ -6,11 +6,10 @@ import {
   IsNumber,
   ValidateNested,
 } from '@nestjs/class-validator';
-import { userRole } from '@prisma/client';
 import { Type } from 'class-transformer';
 import { IsNotEmptyObject } from 'class-validator';
 
-export abstract class User_Login_DataDto {
+export class User_Login_DataDto {
   @IsNotEmpty()
   @IsEmail()
   readonly email: string;
@@ -22,7 +21,7 @@ export abstract class User_Login_DataDto {
   // @IsNotEmpty()
   // readonly role: userRole;
 }
-export abstract class CreateStudentDto {
+export class CreateStudentDto {
   @IsNotEmpty()
   @IsObject()
   @IsNotEmptyObject()
