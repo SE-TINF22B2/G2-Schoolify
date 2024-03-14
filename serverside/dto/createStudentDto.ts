@@ -5,9 +5,9 @@ import {
   IsObject,
   IsNumber,
   ValidateNested,
+  IsNotEmptyObject,
 } from '@nestjs/class-validator';
 import { Type } from 'class-transformer';
-import { IsNotEmptyObject } from 'class-validator';
 
 export class User_Login_DataDto {
   @IsNotEmpty()
