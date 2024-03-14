@@ -17,9 +17,6 @@ export class User_Login_DataDto {
   @IsNotEmpty()
   @IsString()
   readonly password: string;
-
-  // @IsNotEmpty()
-  // readonly role: userRole;
 }
 export class CreateStudentDto {
   @IsNotEmpty()
