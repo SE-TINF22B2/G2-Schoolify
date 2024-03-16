@@ -34,20 +34,4 @@ export class UsersController {
       return await this.userService.createUser(newStudent, this.prisma);
     }
   }
-  //help function for tests later
-  async deleteStudent(id: number) {
-    return await this.prisma.student.delete({
-      where: {
-        studentID: id,
-      },
-    });
-  }
-  //help function for tests later
-  async deleteLoginData(id: number) {
-    return await this.prisma.user_Login_Data.delete({
-      where: {
-        user_Login_DataID: id,
-      },
-    });
-  }
 }
