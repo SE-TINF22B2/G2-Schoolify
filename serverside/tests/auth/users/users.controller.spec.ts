@@ -23,9 +23,6 @@ describe('UsersController', () => {
     classID: 1,
   };
 
-describe('UsersController', () => {
-  let controller: UsersController;
-
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [UsersController],
@@ -42,10 +39,7 @@ describe('UsersController', () => {
 
     app = module.createNestApplication();
     await app.init();
-    }).compile();
-
-    controller = module.get<UsersController>(UsersController);
-  });
+  }).compile();
 
   it('should be defined', () => {
     expect(controller).toBeDefined();
