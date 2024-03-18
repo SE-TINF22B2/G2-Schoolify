@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { ClassController } from './../../src/class/class.controller';
+import { ClassController } from '../../src/class/class.controller';
 
 describe('ClassController', () => {
   let controller: ClassController;
