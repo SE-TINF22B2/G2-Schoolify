@@ -31,6 +31,7 @@ export class ClassService {
       );
     }
     const studentIDs = await this.getUsersByEmail(studentEmails, prisma);
+    
     // check if students are not assigned to a class already
     await this.checkStudents(studentIDs, newClass.roomNumber, prisma);
 
