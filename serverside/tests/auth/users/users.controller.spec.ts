@@ -39,7 +39,7 @@ describe('UsersController', () => {
 
     app = module.createNestApplication();
     await app.init();
-  }).compile();
+  });
 
   it('should be defined', () => {
     expect(controller).toBeDefined();
