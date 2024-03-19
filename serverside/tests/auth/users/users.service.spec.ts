@@ -71,10 +71,10 @@ describe('UsersService', () => {
       // mock student creation
       const mockCreatedStudent: Student = {
         studentID: 1,
-        user_Login_DataID: 1234,
+        user_Login_DataUser_Login_DataID: 1234,
         name: 'mock',
         lastname: 'mock',
-        classID: 1,
+        classClassID: 1,
       };
 
       const createStudentMock = prisma.student.create as jest.Mock;
@@ -94,10 +94,11 @@ describe('UsersService', () => {
       );
       expect(createStudentMock).toHaveBeenCalledWith({
         data: {
-          user_Login_DataID: mockCreatedStudent.user_Login_DataID,
+          user_Login_DataUser_Login_DataID:
+            mockCreatedStudent.user_Login_DataUser_Login_DataID,
           name: mockStudent.name,
           lastname: mockStudent.lastname,
-          classID: mockStudent.classID,
+          classClassID: mockStudent.classID,
         },
       });
     });

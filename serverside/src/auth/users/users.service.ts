@@ -21,10 +21,10 @@ export class UsersService {
     // create student
     const createdStudent: Student = await prisma.student.create({
       data: {
-        user_Login_DataID: user_Login_Data_ID,
+        user_Login_DataUser_Login_DataID: user_Login_Data_ID,
         name: newStudent.name,
         lastname: newStudent.lastname,
-        classID: newStudent.classID,
+        classClassID: newStudent.classID,
       },
     });
 
