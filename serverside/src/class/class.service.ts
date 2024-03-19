@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { Class, PrismaClient } from '@prisma/client';
-import { Create_Class_Dto, EmailDto } from 'dto/createClassDto';
+import { Create_Class_Dto } from 'dto/createClassDto';
 
 @Injectable()
 export class ClassService {
@@ -31,7 +31,7 @@ export class ClassService {
       );
     }
     const studentIDs = await this.getUsersByEmail(studentEmails, prisma);
-    
+
     // check if students are not assigned to a class already
     await this.checkStudents(studentIDs, newClass.roomNumber, prisma);
 
@@ -63,6 +63,20 @@ export class ClassService {
 
     return createdClass;
   }
+
+  async getClassByID(id: number, prisma: PrismaClient): Promise<Class> {
+    return await prisma.class.findUnique({
+      where: { classID: id },
+    });
+  }
+  async getClassByYear(year: string, prisma: PrismaClient): Promise<Class[]> {
+    return await prisma.class.findMany({
+      where: {
+        year: year,
+      },
+    });
+  }
+
   private async addStudentsToClass(
     students: number[],
     classID: number,
