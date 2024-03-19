@@ -15,48 +15,48 @@ model User_Login_Data {
   email             String   @unique
   password          String
   role              userRole
-  student           Student? @relation("User2Student")
-  teacher           Teacher? @relation("User2Teacher")
-  admin             Admin?   @relation("User2Admin")
+  Student           Student? @relation("User2Student")
+  Teacher           Teacher? @relation("User2Teacher")
+  Admin             Admin?   @relation("User2Admin")
   absent            Absent[]
 }
 
 model Student {
-  studentID         Int             @id @default(autoincrement())
-  user_Login_Data   User_Login_Data @relation("User2Student", fields: [user_Login_DataID], references: [user_Login_DataID])
-  user_Login_DataID Int             @unique
-  name              String
-  lastname          String
-  classID           Int
-  class             Class           @relation(fields: [classID], references: [classID])
-  grades            Grade[]
+  studentID                        Int             @id @default(autoincrement())
+  User_Login_Data                  User_Login_Data @relation("User2Student", fields: [user_Login_DataUser_Login_DataID], references: [user_Login_DataID])
+  user_Login_DataUser_Login_DataID Int             @unique
+  name                             String
+  lastname                         String
+  classClassID                     Int
+  Class                            Class           @relation(fields: [classClassID], references: [classID])
+  grades                           Grade[]
 }
 
 model Teacher {
-  teacherID         Int             @id @default(autoincrement())
-  user_Login_Data   User_Login_Data @relation("User2Teacher", fields: [user_Login_DataID], references: [user_Login_DataID])
-  user_Login_DataID Int             @unique
-  name              String
-  lastname          String
-  classes           Role[]
-  events            Event[]
-  grades            Grade[]
+  teacherID                        Int             @id @default(autoincrement())
+  User_Login_Data                  User_Login_Data @relation("User2Teacher", fields: [user_Login_DataUser_Login_DataID], references: [user_Login_DataID])
+  user_Login_DataUser_Login_DataID Int             @unique
+  name                             String
+  lastname                         String
+  classes                          Role[]
+  events                           Event[]
+  grades                           Grade[]
 }
 
 model Admin {
-  adminID           Int             @id @default(autoincrement())
-  user_Login_Data   User_Login_Data @relation("User2Admin", fields: [user_Login_DataID], references: [user_Login_DataID])
-  user_Login_DataID Int             @unique
-  name              String
-  lastname          String
+  adminID                          Int             @id @default(autoincrement())
+  User_Login_Data                  User_Login_Data @relation("User2Admin", fields: [user_Login_DataUser_Login_DataID], references: [user_Login_DataID])
+  user_Login_DataUser_Login_DataID Int             @unique
+  name                             String
+  lastname                         String
 }
 
 model Role {
-  roleID    Int     @id @default(autoincrement())
-  teacherID Int
-  classID   Int
-  teacher   Teacher @relation(fields: [teacherID], references: [teacherID])
-  class     Class   @relation(fields: [classID], references: [classID])
+  roleID           Int      @id @default(autoincrement())
+  Teacher          Teacher? @relation(fields: [teacherTeacherID], references: [teacherID])
+  teacherTeacherID Int?
+  Class            Class?   @relation(fields: [classClassID], references: [classID])
+  classClassID     Int?
 }
 
 model Class {
@@ -80,23 +80,23 @@ model ClassbockEntry {
 }
 
 model Lesson {
-  lessonID  Int      @id @default(autoincrement())
-  classID   Int
-  startTime DateTime
-  duration  Int
-  class     Class    @relation(fields: [classID], references: [classID])
-  testID    Int?     @unique
-  test      Test?    @relation("Lesson2Test", fields: [testID], references: [testID])
-  subjectID Int
-  subject   Subject  @relation(fields: [subjectID], references: [subjectID])
+  lessonID         Int      @id @default(autoincrement())
+  startTime        DateTime
+  duration         Int
+  Test             Test?    @relation("Lesson2Test", fields: [testTestID], references: [testID])
+  testTestID       Int?     @unique
+  Class            Class?   @relation(fields: [classClassID], references: [classID])
+  classClassID     Int?
+  Subject          Subject? @relation(fields: [subjectSubjectID], references: [subjectID])
+  subjectSubjectID Int?
 }
 
 model Absent {
-  absentID          Int             @id @default(autoincrement())
-  dateFrom          String
-  dateTo            String
-  user_Login_Data   User_Login_Data @relation(fields: [user_Login_DataID], references: [user_Login_DataID])
-  user_Login_DataID Int             @unique
+  absentID                         Int              @id @default(autoincrement())
+  dateFrom                         String
+  dateTo                           String
+  User_Login_Data                  User_Login_Data? @relation(fields: [user_Login_DataUser_Login_DataID], references: [user_Login_DataID])
+  user_Login_DataUser_Login_DataID Int?
 }
 
 model Subject {
@@ -108,24 +108,24 @@ model Subject {
 
 model Test {
   testID Int     @id @default(autoincrement())
-  lesson Lesson? @relation("Lesson2Test")
-  event  Event?  @relation("Event2Test")
+  Event  Event?  @relation("Event2Test")
+  Lesson Lesson? @relation("Lesson2Test")
   topic  String
   grades Grade[]
 }
 
 model Event {
-  eventID     Int       @id @default(autoincrement())
-  topic       String
-  testID      Int?      @unique
-  test        Test?     @relation("Event2Test", fields: [testID], references: [testID])
-  teacherID   Int
-  teacher     Teacher   @relation(fields: [teacherID], references: [teacherID])
-  classID     Int
-  class       Class     @relation(fields: [classID], references: [classID])
-  description String
-  dateFrom    DateTime?
-  dateTo      DateTime?
+  eventID          Int       @id @default(autoincrement())
+  topic            String
+  testTestID       Int?      @unique
+  Test             Test?     @relation("Event2Test", fields: [testTestID], references: [testID])
+  description      String
+  dateFrom         DateTime?
+  dateTo           DateTime?
+  Teacher          Teacher   @relation(fields: [teacherTeacherID], references: [teacherID])
+  teacherTeacherID Int
+  Class            Class     @relation(fields: [classClassID], references: [classID])
+  classClassID     Int
 }
 
 model Grade {
