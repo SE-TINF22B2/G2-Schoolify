@@ -60,26 +60,35 @@ model Role {
 }
 
 model Class {
-  classID    Int       @id @default(autoincrement())
-  roomNumber Int
-  year       String
-  letter     String
-  teachers   Role[]
-  students   Student[]
-  lessons    Lesson[]
-  events     Event[]
+  classID          Int              @id @default(autoincrement())
+  roomNumber       Int
+  year             String
+  letter           String
+  teachers         Role[]
+  students         Student[]
+  lessons          Lesson[]
+  events           Event[]
+  classbockEntries ClassbockEntry[]
+}
+
+model ClassbockEntry {
+  classbockEntry Int      @id @default(autoincrement())
+  date           DateTime
+  note           String
+  Class          Class?   @relation(fields: [classClassID], references: [classID])
+  classClassID   Int?
 }
 
 model Lesson {
-  lessonID  Int     @id @default(autoincrement())
+  lessonID  Int      @id @default(autoincrement())
   classID   Int
   startTime DateTime
   duration  Int
-  class     Class   @relation(fields: [classID], references: [classID])
+  class     Class    @relation(fields: [classID], references: [classID])
   testID    Int?     @unique
   test      Test?    @relation("Lesson2Test", fields: [testID], references: [testID])
   subjectID Int
-  subject   Subject @relation(fields: [subjectID], references: [subjectID])
+  subject   Subject  @relation(fields: [subjectID], references: [subjectID])
 }
 
 model Absent {
@@ -106,14 +115,14 @@ model Test {
 }
 
 model Event {
-  eventID     Int     @id @default(autoincrement())
+  eventID     Int       @id @default(autoincrement())
   topic       String
-  testID      Int?     @unique
-  test        Test?   @relation("Event2Test", fields: [testID], references: [testID])
+  testID      Int?      @unique
+  test        Test?     @relation("Event2Test", fields: [testID], references: [testID])
   teacherID   Int
-  teacher     Teacher @relation(fields: [teacherID], references: [teacherID])
+  teacher     Teacher   @relation(fields: [teacherID], references: [teacherID])
   classID     Int
-  class       Class   @relation(fields: [classID], references: [classID])
+  class       Class     @relation(fields: [classID], references: [classID])
   description String
   dateFrom    DateTime?
   dateTo      DateTime?
@@ -130,6 +139,24 @@ model Grade {
   teacherTeacherID Int?
   Subject          Subject? @relation(fields: [subjectSubjectID], references: [subjectID])
   subjectSubjectID Int?
+}
+
+model FoodWeek {
+  foodWeekID Int      @id @default(autoincrement())
+  start      DateTime
+  foods      Food[]
+}
+
+model Food {
+  foodID             Int       @id @default(autoincrement())
+  name               String
+  description        String
+  ingredients        String
+  calories           String
+  allergies          String
+  extra              String
+  FoodWeek           FoodWeek? @relation(fields: [foodWeekFoodWeekID], references: [foodWeekID])
+  foodWeekFoodWeekID Int?
 }
 
 enum userRole {
