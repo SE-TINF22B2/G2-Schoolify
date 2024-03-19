@@ -1,8 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
-
+import { ValidationPipe } from '@nestjs/common/pipes';
 import * as dotenv from 'dotenv';
 
 const PORT = 3000;
@@ -30,6 +29,8 @@ async function bootstrap() {
 
   await app.listen(PORT);
   console.log(`Application is running on: ${PORT}`);
+  app.useGlobalPipes(new ValidationPipe());
+  await app.listen(3000);
 }
 primsaEnvDefinition();
 bootstrap();
