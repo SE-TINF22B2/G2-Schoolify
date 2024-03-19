@@ -58,7 +58,7 @@ export class ClassController {
     @Param('year') year: string,
   ): Promise<Class[]> {
     // check role
-    if (role !== 'Admin' || 'Teacher') {
+    if (role !== 'Admin' && role !== 'Teacher') {
       throw new HttpException(
         role + ' is not allowed to get a class by Year',
         HttpStatus.FORBIDDEN,
