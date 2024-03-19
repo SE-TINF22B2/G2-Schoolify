@@ -27,8 +27,8 @@ model Student {
   user_Login_DataUser_Login_DataID Int             @unique
   name                             String
   lastname                         String
-  classClassID                     Int
-  Class                            Class           @relation(fields: [classClassID], references: [classID])
+  classClassID                     Int?
+  Class                            Class?           @relation(fields: [classClassID], references: [classID])
   grades                           Grade[]
 }
 
