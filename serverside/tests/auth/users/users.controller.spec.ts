@@ -51,10 +51,10 @@ describe('UsersController', () => {
     //mock return value
     const mockReturnStudent = {
       studentID: 1,
-      user_Login_DataID: 1,
+      user_Login_DataUser_Login_DataID: 1,
       name: 'mock',
       lastname: 'mock',
-      classID: 1,
+      classClassID: 1,
     };
     const createUserSpy = jest
       .spyOn(controller['userService'], 'createUser')

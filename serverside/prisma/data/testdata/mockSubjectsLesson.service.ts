@@ -39,16 +39,16 @@ export class SubjectLessonServiceMock {
         this.lessonsA[i] = await prisma.lesson.upsert({
           where: { lessonID: i + 1 + j * 4 },
           update: {
-            class: { connect: { classID: mockClass.classID } },
+            Class: { connect: { classID: mockClass.classID } },
             startTime: dateStartTime,
             duration: duration,
-            subject: { connect: { subjectID: this.subjects[j].subjectID } },
+            Subject: { connect: { subjectID: this.subjects[j].subjectID } },
           },
           create: {
             startTime: dateStartTime,
             duration: duration,
-            class: { connect: { classID: mockClass.classID } },
-            subject: { connect: { subjectID: this.subjects[j].subjectID } },
+            Class: { connect: { classID: mockClass.classID } },
+            Subject: { connect: { subjectID: this.subjects[j].subjectID } },
           },
         });
       }
@@ -70,14 +70,14 @@ export class SubjectLessonServiceMock {
           update: {
             startTime: dateStartTime,
             duration: duration,
-            class: { connect: { classID: mockClass1.classID } },
-            subject: { connect: { subjectID: this.subjects[j].subjectID } },
+            Class: { connect: { classID: mockClass1.classID } },
+            Subject: { connect: { subjectID: this.subjects[j].subjectID } },
           },
           create: {
             startTime: dateStartTime,
             duration: duration,
-            class: { connect: { classID: mockClass1.classID } },
-            subject: { connect: { subjectID: this.subjects[j].subjectID } },
+            Class: { connect: { classID: mockClass1.classID } },
+            Subject: { connect: { subjectID: this.subjects[j].subjectID } },
           },
         });
       }

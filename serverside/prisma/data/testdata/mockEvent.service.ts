@@ -8,6 +8,7 @@ export class EventServiceMock {
   eventMock: Event;
   eventMockwithTest: Event;
   test: Test;
+  lessontest: Test;
   constructor(
     @Inject(UserServiceMock) private userService: UserServiceMock,
     @Inject(ClassServiceMock) private classService: ClassServiceMock,
@@ -27,12 +28,12 @@ export class EventServiceMock {
       where: { eventID: 1 },
       update: {
         topic: `MockEvent`,
-        teacher: {
+        Teacher: {
           connect: {
             teacherID: mockTeacher1.teacherID,
           },
         },
-        class: {
+        Class: {
           connect: {
             classID: mockClass.classID,
           },
@@ -43,12 +44,12 @@ export class EventServiceMock {
       },
       create: {
         topic: `MockEvent`,
-        teacher: {
+        Teacher: {
           connect: {
             teacherID: mockTeacher1.teacherID,
           },
         },
-        class: {
+        Class: {
           connect: {
             classID: mockClass.classID,
           },
@@ -71,17 +72,17 @@ export class EventServiceMock {
       where: { eventID: 2 },
       update: {
         topic: `MockEventwithTest`,
-        test: {
+        Test: {
           connect: {
             testID: this.test.testID,
           },
         },
-        teacher: {
+        Teacher: {
           connect: {
             teacherID: mockTeacher2.teacherID,
           },
         },
-        class: {
+        Class: {
           connect: {
             classID: mockClass.classID,
           },
@@ -92,24 +93,43 @@ export class EventServiceMock {
       },
       create: {
         topic: `MockEventwithTest`,
-        test: {
+        Test: {
           connect: {
             testID: this.test.testID,
           },
         },
-        teacher: {
+        Teacher: {
           connect: {
             teacherID: mockTeacher2.teacherID,
           },
         },
-        class: {
+        Class: {
           connect: {
-            classID: mockClass.classID,
+            classID: 1,
           },
         },
         description: 'MockDescription',
         dateFrom: date8am,
         dateTo: date10am,
+      },
+    });
+    this.lessontest = await prisma.test.upsert({
+      where: { testID: 2 },
+      update: {
+        topic: 'Binomische Formeln Song singen',
+        Lesson: {
+          connect: {
+            lessonID: 1,
+          },
+        },
+      },
+      create: {
+        topic: 'Binomische Formeln Song singen',
+        Lesson: {
+          connect: {
+            lessonID: 1,
+          },
+        },
       },
     });
   }
@@ -118,6 +138,7 @@ export class EventServiceMock {
       eventMock: this.eventMock,
       eventMockwithTest: this.eventMockwithTest,
       test: this.test,
+      lessontest: this.lessontest,
     };
   }
 }
