@@ -13,7 +13,11 @@ import {
 } from '@nestjs/common';
 import { ClassService } from './class.service';
 import { Class, Prisma, PrismaClient } from '@prisma/client';
-import { Create_Class_Dto, UpdateStudentsDto, UpdateTeacherDto } from '../../dto/createClassDto';
+import {
+  Create_Class_Dto,
+  UpdateStudentsDto,
+  UpdateTeacherDto,
+} from '../../dto/createClassDto';
 
 @Controller('class')
 export class ClassController {
@@ -77,7 +81,7 @@ export class ClassController {
   ): Promise<Class> {
     if (role !== 'Admin') {
       throw new HttpException(
-        role + ' is not allowed to assign new students in the class',
+        role + ' is not allowed to assign new students to the class',
         HttpStatus.FORBIDDEN,
       );
     } else {
@@ -97,7 +101,7 @@ export class ClassController {
   ): Promise<Class> {
     if (role !== 'Admin') {
       throw new HttpException(
-        role + ' is not allowed to assign new students in the class',
+        role + ' is not allowed to assign new teacher to the class',
         HttpStatus.FORBIDDEN,
       );
     } else {

@@ -8,7 +8,7 @@ import { PrismaClient } from '@prisma/client';
     ClassService,
     {
       provide: 'PRISMA',
-      useValue: new PrismaClient()
+      useValue: new PrismaClient(),
     },
   ],
   controllers: [ClassController],

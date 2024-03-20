@@ -3,7 +3,11 @@ import { ClassController } from '../../src/class/class.controller';
 import { ClassService } from '../../src/class/class.service';
 import { Class, PrismaClient } from '@prisma/client';
 import { HttpException } from '@nestjs/common';
-import { Create_Class_Dto } from '../../dto/createClassDto';
+import {
+  Create_Class_Dto,
+  UpdateStudentsDto,
+  UpdateTeacherDto,
+} from '../../dto/createClassDto';
 
 describe('ClassController', () => {
   let controller: ClassController;
@@ -122,6 +126,50 @@ describe('ClassController', () => {
       );
 
       expect(createClassSpy).toBeCalledTimes(1);
+    });
+  });
+  describe('tests for assign student', () => {
+    it('should throw an error because role is not admin', async () => {
+      try {
+        await controller.assignStudents('Student', 1, {} as UpdateStudentsDto);
+      } catch (error) {
+        expect(error).toBeInstanceOf(HttpException);
+        expect(error.message).toBe(
+          'Student is not allowed to assign new students to the class',
+        );
+      }
+    });
+    it('should call class service when role is admin', async () => {
+      const assignStudentSpy = jest
+        .spyOn(service, 'assignStudents')
+        .mockImplementation(() => Promise.resolve(undefined));
+
+      expect(
+        await controller.assignStudents('Admin', 1, {} as UpdateStudentsDto),
+      ).toBe(undefined);
+      expect(assignStudentSpy).toBeCalledTimes(1);
+    });
+  });
+  describe('tests for assign teacher', () => {
+    it('should throw an error because role is not admin', async () => {
+      try {
+        await controller.assignTeacher('Student', 1, {} as UpdateTeacherDto);
+      } catch (error) {
+        expect(error).toBeInstanceOf(HttpException);
+        expect(error.message).toBe(
+          'Student is not allowed to assign new teacher to the class',
+        );
+      }
+    });
+    it('should call class service when role is admin', async () => {
+      const assignTeacherSpy = jest
+        .spyOn(service, 'assignTeacher')
+        .mockImplementation(() => Promise.resolve(undefined));
+
+      expect(
+        await controller.assignTeacher('Admin', 1, {} as UpdateTeacherDto),
+      ).toBe(undefined);
+      expect(assignTeacherSpy).toBeCalledTimes(1);
     });
   });
 });
