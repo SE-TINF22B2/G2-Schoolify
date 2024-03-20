@@ -4,7 +4,7 @@ import { Create_Class_Dto } from 'dto/createClassDto';
 
 @Injectable()
 export class ClassService {
-  // to-do: check if at least one student and one teacher was given
+  
   async createClass(newClass: Create_Class_Dto, prisma: PrismaClient) {
     // check if teachers exists
     const teacherEmails = newClass.teachers.map((emailsDto) => emailsDto.email);
