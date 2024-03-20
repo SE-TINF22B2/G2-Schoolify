@@ -1,4 +1,4 @@
-/** @type {import('tailwindcss').Config} */
+import {Config} from ('tailwindcss');
 module.exports = {
   darkMode: ["class"],
   content: [
