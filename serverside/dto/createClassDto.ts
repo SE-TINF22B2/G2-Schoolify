@@ -23,13 +23,11 @@ export class Create_Class_Dto {
   @IsString()
   readonly letter: string;
 
-  @ArrayNotEmpty()
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => EmailDto)
   readonly teachers: EmailDto[];
 
-  @ArrayNotEmpty()
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => EmailDto)
