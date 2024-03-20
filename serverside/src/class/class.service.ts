@@ -50,20 +50,8 @@ export class ClassService {
     // add classID to teacher
     const teacherIDs = await this.getRoleID(teacherLoginIDs, prisma);
 
-    await prisma.$transaction(
-      teacherIDs.map((teacherId) =>
-        prisma.role.create({
-          data: {
-            Teacher: {
-              connect: { teacherID: teacherId },
-            },
-            Class: {
-              connect: { classID: createdClass.classID },
-            },
-          },
-        }),
-      ),
-    );
+    // add teacher to class
+    await this.addTeacherToClass(teacherIDs, createdClass.classID, prisma);
 
     return createdClass;
   }
@@ -124,6 +112,7 @@ export class ClassService {
       },
     });
   }
+
   private async checkClass(
     classID: number,
     prisma: PrismaClient,
@@ -151,6 +140,26 @@ export class ClassService {
         classClassID: classID,
       },
     });
+  }
+  private async addTeacherToClass(
+    teacherIDs: number[],
+    classID: number,
+    prisma: PrismaClient,
+  ) {
+    await prisma.$transaction(
+      teacherIDs.map((teacherId) =>
+        prisma.role.create({
+          data: {
+            Teacher: {
+              connect: { teacherID: teacherId },
+            },
+            Class: {
+              connect: { classID: classID },
+            },
+          },
+        }),
+      ),
+    );
   }
 
   private async checkTeacher(

@@ -41,6 +41,13 @@ export class UpdateStudentsDto {
   @Type(() => EmailDto)
   readonly students: EmailDto[];
 }
+export class UpdateTeacherDto {
+  @IsArray()
+  @ArrayNotEmpty()
+  @ValidateNested({ each: true })
+  @Type(() => EmailDto)
+  readonly teachers: EmailDto[];
+}
 
 export class EmailDto {
   @IsEmail()
