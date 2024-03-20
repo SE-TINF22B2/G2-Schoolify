@@ -13,7 +13,7 @@ import {
 } from '@nestjs/common';
 import { ClassService } from './class.service';
 import { Class, Prisma, PrismaClient } from '@prisma/client';
-import { Create_Class_Dto, UpdateStudentsDto } from '../../dto/createClassDto';
+import { Create_Class_Dto, UpdateStudentsDto, UpdateTeacherDto } from '../../dto/createClassDto';
 
 @Controller('class')
 export class ClassController {
@@ -83,6 +83,26 @@ export class ClassController {
     } else {
       return await this.classService.assignStudents(
         newStudents,
+        classID,
+        this.prisma,
+      );
+    }
+  }
+
+  @Put('assignTeacher/:classID')
+  async assignTeacher(
+    @Headers('role') role,
+    @Param('classID', new ParseIntPipe()) classID: number,
+    @Body() newTeacher: UpdateTeacherDto,
+  ): Promise<Class> {
+    if (role !== 'Admin') {
+      throw new HttpException(
+        role + ' is not allowed to assign new students in the class',
+        HttpStatus.FORBIDDEN,
+      );
+    } else {
+      return await this.classService.assignTeacher(
+        newTeacher,
         classID,
         this.prisma,
       );

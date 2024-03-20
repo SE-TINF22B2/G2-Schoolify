@@ -1,6 +1,10 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { Class, PrismaClient } from '@prisma/client';
-import { Create_Class_Dto, UpdateStudentsDto } from 'dto/createClassDto';
+import {
+  Create_Class_Dto,
+  UpdateStudentsDto,
+  UpdateTeacherDto,
+} from 'dto/createClassDto';
 
 @Injectable()
 export class ClassService {
@@ -109,6 +113,52 @@ export class ClassService {
       },
       include: {
         students: true,
+        teachers: true,
+      },
+    });
+  }
+  async assignTeacher(
+    newTeachers: UpdateTeacherDto,
+    classID: number,
+    prisma: PrismaClient,
+  ): Promise<Class> {
+    // check if class exists
+    if (!(await this.checkClass(classID, prisma))) {
+      throw new HttpException(
+        'class with ID ' + classID + ' not found',
+        HttpStatus.NOT_FOUND,
+      );
+    }
+    // check if teachers exists
+    const teacherEmails = newTeachers.teachers.map(
+      (emailsDto) => emailsDto.email,
+    );
+    if (!(await this.checkMails(teacherEmails, prisma))) {
+      throw new HttpException(
+        'One or more teacher were not found',
+        HttpStatus.NOT_FOUND,
+      );
+    }
+    const teacherLoginIDs = await this.getUsersByEmail(teacherEmails, prisma);
+    // check if teacher IDs are teachers
+    if (!(await this.checkTeacher(teacherLoginIDs, prisma))) {
+      throw new HttpException(
+        'One ore more teacher mail is not a teacher',
+        HttpStatus.NOT_FOUND,
+      );
+    }
+
+    // assign teacher
+    await this.addTeacherToClass(teacherLoginIDs, classID, prisma);
+
+    // get new class and return it
+    return await prisma.class.findUnique({
+      where: {
+        classID: classID,
+      },
+      include: {
+        students: true,
+        teachers: true,
       },
     });
   }
