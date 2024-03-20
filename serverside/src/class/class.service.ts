@@ -163,10 +163,7 @@ export class ClassService {
     });
   }
 
-  private async checkClass(
-    classID: number,
-    prisma: PrismaClient,
-  ): Promise<boolean> {
+  async checkClass(classID: number, prisma: PrismaClient): Promise<boolean> {
     const classCount = await prisma.class.count({
       where: {
         classID: classID,
@@ -175,7 +172,7 @@ export class ClassService {
     return classCount === 1;
   }
 
-  private async addStudentsToClass(
+  async addStudentsToClass(
     students: number[],
     classID: number,
     prisma: PrismaClient,
@@ -191,7 +188,7 @@ export class ClassService {
       },
     });
   }
-  private async addTeacherToClass(
+  async addTeacherToClass(
     teacherIDs: number[],
     classID: number,
     prisma: PrismaClient,
@@ -212,7 +209,7 @@ export class ClassService {
     );
   }
 
-  private async checkTeacher(
+  async checkTeacher(
     teachers: number[],
     prisma: PrismaClient,
   ): Promise<boolean> {
@@ -226,7 +223,7 @@ export class ClassService {
     return teachers.length === foundTeacher.length;
   }
 
-  private async checkStudents(
+  async checkStudents(
     students: number[],
     classID: number,
     prisma: PrismaClient,
@@ -250,10 +247,7 @@ export class ClassService {
     }
   }
 
-  private async checkMails(
-    emails: string[],
-    prisma: PrismaClient,
-  ): Promise<boolean> {
+  async checkMails(emails: string[], prisma: PrismaClient): Promise<boolean> {
     const foundEmails = await prisma.user_Login_Data.findMany({
       where: {
         email: {
@@ -264,7 +258,7 @@ export class ClassService {
     // if found emails are less than given emails, at least one email is missing
     return emails.length === foundEmails.length;
   }
-  private async getUsersByEmail(
+  async getUsersByEmail(
     emails: string[],
     prisma: PrismaClient,
   ): Promise<number[]> {
@@ -280,10 +274,7 @@ export class ClassService {
     });
     return users.map((user) => user.user_Login_DataID);
   }
-  private async getRoleID(
-    login_ID: number[],
-    prisma: PrismaClient,
-  ): Promise<number[]> {
+  async getRoleID(login_ID: number[], prisma: PrismaClient): Promise<number[]> {
     const users = await prisma.teacher.findMany({
       where: {
         user_Login_DataUser_Login_DataID: {
