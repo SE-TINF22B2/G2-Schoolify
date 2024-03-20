@@ -1,10 +1,9 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { Class, PrismaClient } from '@prisma/client';
-import { Create_Class_Dto } from 'dto/createClassDto';
+import { Create_Class_Dto, UpdateStudentsDto } from 'dto/createClassDto';
 
 @Injectable()
 export class ClassService {
-  
   async createClass(newClass: Create_Class_Dto, prisma: PrismaClient) {
     // check if teachers exists
     const teacherEmails = newClass.teachers.map((emailsDto) => emailsDto.email);
@@ -72,6 +71,10 @@ export class ClassService {
   async getClassByID(id: number, prisma: PrismaClient): Promise<Class> {
     return await prisma.class.findUnique({
       where: { classID: id },
+      include: {
+        students: true,
+        teachers: true,
+      },
     });
   }
   async getClassByYear(year: string, prisma: PrismaClient): Promise<Class[]> {
@@ -79,7 +82,58 @@ export class ClassService {
       where: {
         year: year,
       },
+      include: {
+        students: true,
+        teachers: true,
+      },
     });
+  }
+  async assignStudents(
+    newStudents: UpdateStudentsDto,
+    classID: number,
+    prisma: PrismaClient,
+  ): Promise<Class> {
+    // check if class exists
+    if (!(await this.checkClass(classID, prisma))) {
+      throw new HttpException(
+        'class with ID ' + classID + ' not found',
+        HttpStatus.NOT_FOUND,
+      );
+    }
+    //check if given emails exist
+    const emails = newStudents.students.map((emailsDto) => emailsDto.email);
+    if (!(await this.checkMails(emails, prisma))) {
+      throw new HttpException(
+        'One or more student was not found',
+        HttpStatus.NOT_FOUND,
+      );
+    }
+    // get student IDs
+    const studentIDs = await this.getUsersByEmail(emails, prisma);
+
+    // assign students
+    await this.addStudentsToClass(studentIDs, classID, prisma);
+
+    // return new class
+    return await prisma.class.findUnique({
+      where: {
+        classID: classID,
+      },
+      include: {
+        students: true,
+      },
+    });
+  }
+  private async checkClass(
+    classID: number,
+    prisma: PrismaClient,
+  ): Promise<boolean> {
+    const classCount = await prisma.class.count({
+      where: {
+        classID: classID,
+      },
+    });
+    return classCount === 1;
   }
 
   private async addStudentsToClass(

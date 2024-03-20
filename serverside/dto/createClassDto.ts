@@ -34,7 +34,16 @@ export class Create_Class_Dto {
   readonly students: EmailDto[];
 }
 
+export class UpdateStudentsDto {
+  @IsArray()
+  @ArrayNotEmpty()
+  @ValidateNested({ each: true })
+  @Type(() => EmailDto)
+  readonly students: EmailDto[];
+}
+
 export class EmailDto {
   @IsEmail()
   readonly email: string;
 }
+
