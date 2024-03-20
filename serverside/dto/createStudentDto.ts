@@ -33,8 +33,4 @@ export class CreateStudentDto {
   @IsNotEmpty()
   @IsString()
   readonly lastname: string;
-
-  @IsNotEmpty()
-  @IsNumber()
-  readonly classID: number;
 }
