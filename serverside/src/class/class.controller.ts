@@ -37,7 +37,7 @@ export class ClassController {
       return await this.classService.createClass(newClass, this.prisma);
     }
   }
-  @Get('byID/:id')
+  @Get('getByID/:id')
   async getClassByID(
     @Headers('role') role,
     @Param('id', new ParseIntPipe()) id: number,
@@ -53,7 +53,7 @@ export class ClassController {
     }
   }
 
-  @Get('byYear/:year')
+  @Get('getByYear/:year')
   async getClassByYear(
     @Headers('role') role,
     @Param('year') year: string,
