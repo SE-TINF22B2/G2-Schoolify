@@ -1,8 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ClassService } from '../../src/class/class.service';
 import { Class, PrismaClient } from '@prisma/client';
-import { CreateStudentDto } from 'dto/createStudentDto';
-import { Create_Class_Dto } from 'dto/createClassDto';
+import { Create_Class_Dto, UpdateStudentsDto } from 'dto/createClassDto';
 import { HttpException, HttpStatus } from '@nestjs/common';
 
 describe('ClassService', () => {
@@ -18,6 +17,8 @@ describe('ClassService', () => {
           useFactory: () => ({
             class: {
               create: jest.fn(),
+              findUnique: jest.fn(),
+              findMany: jest.fn(),
             },
             user_Login_Data: {
               findMany: jest.fn(),
@@ -171,6 +172,152 @@ describe('ClassService', () => {
       expect(service.addStudentsToClass).toBeCalledTimes(1);
       expect(service.getRoleID).toBeCalledTimes(1);
       expect(service.addTeacherToClass).toBeCalledTimes(1);
+    });
+  });
+  describe('tests for getClassById function', () => {
+    it('should call function correctly', async () => {
+      const classID = 1;
+
+      const expectedClass: Class = {
+        classID: classID,
+        roomNumber: 1,
+        year: '10',
+        letter: 'A',
+      };
+
+      jest.spyOn(prisma.class, 'findUnique').mockResolvedValue(expectedClass);
+
+      const result = await service.getClassByID(classID, prisma);
+
+      expect(result).toEqual(expectedClass);
+      expect(prisma.class.findUnique).toHaveBeenCalledWith({
+        where: { classID: classID },
+        include: {
+          students: true,
+          teachers: true,
+        },
+      });
+    });
+  });
+  describe('tests for getClassByYear function', () => {
+    it('should call function correctly', async () => {
+      const year = '1';
+
+      const expectedClass: Class = {
+        classID: 1,
+        roomNumber: 1,
+        year: year,
+        letter: 'A',
+      };
+
+      jest.spyOn(prisma.class, 'findMany').mockResolvedValue([expectedClass]);
+
+      const result = await service.getClassByYear(year, prisma);
+
+      expect(result).toEqual([expectedClass]);
+      expect(prisma.class.findMany).toHaveBeenCalledWith({
+        where: { year: year },
+        include: {
+          students: true,
+          teachers: true,
+        },
+      });
+    });
+  });
+  describe('tests for assignStudents function', () => {
+    it('should throw an error if the class does not exist', async () => {
+      const classID = 1;
+      const newStudents: UpdateStudentsDto = {
+        students: [{ email: 'test_student@test.com' }],
+      };
+
+      jest
+        .spyOn(service, 'checkClass')
+        .mockImplementation(() => Promise.resolve(false));
+
+      await expect(
+        service.assignStudents(newStudents, classID, prisma),
+      ).rejects.toThrow(
+        new HttpException(
+          'class with ID ' + classID + ' not found',
+          HttpStatus.NOT_FOUND,
+        ),
+      );
+
+      expect(service.checkClass).toHaveBeenCalledWith(classID, prisma);
+    });
+    it('should throw error if one or more students were not found', async () => {
+      const classID = 1;
+      const newStudents: UpdateStudentsDto = {
+        students: [{ email: 'test_student@test.com' }],
+      };
+
+      jest
+        .spyOn(service, 'checkClass')
+        .mockImplementation(() => Promise.resolve(true));
+      jest
+        .spyOn(service, 'checkMails')
+        .mockImplementation(() => Promise.resolve(false));
+
+      await expect(
+        service.assignStudents(newStudents, classID, prisma),
+      ).rejects.toThrow(
+        new HttpException(
+          'One or more students were not found',
+          HttpStatus.NOT_FOUND,
+        ),
+      );
+
+      const emails = newStudents.students.map((emailsDto) => emailsDto.email);
+      expect(service.checkMails).toHaveBeenCalledWith(emails, prisma);
+    });
+    it('should call all functions with correct parameters', async () => {
+      const classID = 1;
+
+      const newStudents: UpdateStudentsDto = {
+        students: [{ email: 'test_student@test.com' }],
+      };
+
+      const studentIDs = [1];
+      const classData = {
+        classID: 1,
+        teachers: [],
+        students: [],
+        roomNumber: 1,
+        year: '10',
+        letter: 'A',
+      };
+
+      jest.spyOn(service, 'checkClass').mockResolvedValue(true);
+      jest.spyOn(service, 'checkMails').mockResolvedValue(true);
+      jest.spyOn(service, 'getUsersByEmail').mockResolvedValue(studentIDs);
+      jest.spyOn(service, 'addStudentsToClass').mockResolvedValue();
+      jest.spyOn(prisma.class, 'findUnique').mockResolvedValue(classData);
+
+      const result = await service.assignStudents(newStudents, classID, prisma);
+
+      expect(result).toEqual(classData);
+      expect(service.checkClass).toHaveBeenCalledWith(classID, prisma);
+      expect(service.checkMails).toHaveBeenCalledWith(
+        newStudents.students.map((emailsDto) => emailsDto.email),
+        prisma,
+      );
+      expect(service.getUsersByEmail).toHaveBeenCalledWith(
+        newStudents.students.map((emailsDto) => emailsDto.email),
+        prisma,
+      );
+      expect(service.addStudentsToClass).toHaveBeenCalledWith(
+        studentIDs,
+        classID,
+        prisma,
+      );
+      expect(prisma.class.findUnique).toHaveBeenCalledWith({
+        where: { classID: classID },
+        include: {
+          students: true,
+          teachers: true,
+        },
+      });
     });
   });
 });

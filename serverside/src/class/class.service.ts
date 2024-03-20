@@ -96,7 +96,7 @@ export class ClassService {
     const emails = newStudents.students.map((emailsDto) => emailsDto.email);
     if (!(await this.checkMails(emails, prisma))) {
       throw new HttpException(
-        'One or more student was not found',
+        'One or more students were not found',
         HttpStatus.NOT_FOUND,
       );
     }
