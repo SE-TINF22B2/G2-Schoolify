@@ -4,6 +4,7 @@ import { Create_Class_Dto } from 'dto/createClassDto';
 
 @Injectable()
 export class ClassService {
+  // to-do: check if at least one student and one teacher was given
   async createClass(newClass: Create_Class_Dto, prisma: PrismaClient) {
     // check if teachers exists
     const teacherEmails = newClass.teachers.map((emailsDto) => emailsDto.email);
@@ -54,8 +55,12 @@ export class ClassService {
       teacherIDs.map((teacherId) =>
         prisma.role.create({
           data: {
-            teacherID: teacherId,
-            classID: createdClass.classID,
+            Teacher: {
+              connect: { teacherID: teacherId },
+            },
+            Class: {
+              connect: { classID: createdClass.classID },
+            },
           },
         }),
       ),
@@ -84,12 +89,12 @@ export class ClassService {
   ) {
     await prisma.student.updateMany({
       where: {
-        user_Login_DataID: {
+        user_Login_DataUser_Login_DataID: {
           in: students,
         },
       },
       data: {
-        classID: classID,
+        classClassID: classID,
       },
     });
   }
@@ -100,7 +105,7 @@ export class ClassService {
   ): Promise<boolean> {
     const foundTeacher = await prisma.teacher.findMany({
       where: {
-        user_Login_DataID: {
+        user_Login_DataUser_Login_DataID: {
           in: teachers,
         },
       },
@@ -116,10 +121,10 @@ export class ClassService {
     // check if every student is not assigned to a class already
     const foundStudentsWithClass = await prisma.student.findMany({
       where: {
-        user_Login_DataID: {
+        user_Login_DataUser_Login_DataID: {
           in: students,
         },
-        classID: {
+        classClassID: {
           not: null,
         },
       },
@@ -168,7 +173,7 @@ export class ClassService {
   ): Promise<number[]> {
     const users = await prisma.teacher.findMany({
       where: {
-        user_Login_DataID: {
+        user_Login_DataUser_Login_DataID: {
           in: login_ID,
         },
       },
