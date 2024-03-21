@@ -34,7 +34,7 @@ describe('ClassController', () => {
   });
 
   describe('tests for get class by ID request', () => {
-    it('should return the class for Admin or Teacher role', async () => {
+    it('should return the class for Admin role', async () => {
       const mockResult = {
         classID: 1,
         roomNumber: 1,
@@ -46,10 +46,9 @@ describe('ClassController', () => {
         .mockImplementation(() => Promise.resolve(mockResult));
 
       expect(await controller.getClassByID('Admin', 1)).toBe(mockResult);
-      expect(await controller.getClassByID('Teacher', 1)).toBe(mockResult);
-      expect(service.getClassByID).toBeCalledTimes(2);
+      expect(service.getClassByID).toBeCalled();
     });
-    it('should throw an exception for roles other than Admin or Teacher', async () => {
+    it('should throw an exception for roles other than Admin', async () => {
       try {
         await controller.getClassByID('Student', 1);
         fail('Should throw an exception');
@@ -62,26 +61,22 @@ describe('ClassController', () => {
     });
   });
   describe('tests for get class by year request', () => {
-    it('should return the classes for admin or teacher role', async () => {
+    it('should return the classes for admin role', async () => {
       const mockResult: Class[] = [
         { classID: 1, roomNumber: 2, letter: 'A', year: '2024' },
         { classID: 2, roomNumber: 2, letter: 'A', year: '2024' },
       ];
-      const roles = ['Admin', 'Teacher'];
+      const role = 'Admin';
 
       jest
         .spyOn(service, 'getClassByYear')
         .mockImplementation(() => Promise.resolve(mockResult));
 
-      for (const role of roles) {
-        expect(await controller.getClassByYear(role, '2001')).toEqual(
-          mockResult,
-        );
-      }
+      expect(await controller.getClassByYear(role, '2001')).toEqual(mockResult);
 
-      expect(service.getClassByYear).toBeCalledTimes(roles.length);
+      expect(service.getClassByYear).toBeCalled();
     });
-    it('should throw an exception for roles not admin or teacher', async () => {
+    it('should throw an exception for roles not admin', async () => {
       const invalidRole = 'Student';
       try {
         await controller.getClassByYear(invalidRole, '2001');

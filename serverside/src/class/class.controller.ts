@@ -47,7 +47,7 @@ export class ClassController {
     @Param('id', new ParseIntPipe()) id: number,
   ): Promise<Class> {
     // check role
-    if (role !== 'Admin' && role !== 'Teacher') {
+    if (role !== 'Admin') {
       throw new HttpException(
         role + ' is not allowed to get a class by ID',
         HttpStatus.FORBIDDEN,
@@ -62,7 +62,7 @@ export class ClassController {
     @Param('year') year: string,
   ): Promise<Class[]> {
     // check role
-    if (role !== 'Admin' && role !== 'Teacher') {
+    if (role !== 'Admin') {
       throw new HttpException(
         role + ' is not allowed to get a class by Year',
         HttpStatus.FORBIDDEN,
