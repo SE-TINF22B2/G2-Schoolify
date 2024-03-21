@@ -5,6 +5,7 @@ import { CreateMealDto } from 'dto/createMealDto';
 @Injectable()
 export class MealService {
   async createMeal(newMeal: CreateMealDto, prisma: PrismaClient) {
+    // if foodweek does not exist, error will be thrown
     if (!(await this.checkFoodWeek(newMeal.foodWeekId, prisma))) {
       throw new HttpException(
         'foodWeek with ID ' + newMeal.foodWeekId + ' was not found',
@@ -26,6 +27,7 @@ export class MealService {
     return createdMeal;
   }
 
+  // check if foodWeek exist
   async checkFoodWeek(
     foodWeekId: number,
     prisma: PrismaClient,
