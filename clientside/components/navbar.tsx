@@ -1,3 +1,4 @@
+'use client'
 import {
     Navbar as NavbarNextUi,
     NavbarBrand,
@@ -7,14 +8,15 @@ import {
     Button,
 } from "@nextui-org/react";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import VaccinesOutlinedIcon from "@mui/icons-material/VaccinesOutlined";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import FaceOutlinedIcon from "@mui/icons-material/FaceOutlined";
 import DateRangeOutlinedIcon from "@mui/icons-material/DateRangeOutlined";
 import RestaurantOutlinedIcon from "@mui/icons-material/RestaurantOutlined";
-import CloudOutlinedIcon from '@mui/icons-material/CloudOutlined';
-import NotificationsOutlinedIcon from '@mui/icons-material/NotificationsOutlined';
-import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
+import CloudOutlinedIcon from "@mui/icons-material/CloudOutlined";
+import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
+import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 
 export default function Navbar() {
     return (
@@ -44,40 +46,40 @@ export default function Navbar() {
             <NavbarContent
                 className="hidden sm:flex gap-4 bg-popover rounded-full px-4 "
                 justify="center">
-                <NavbarItem>
-                    <Link color="primary" href="#" className="columns-1">
+                <NavbarItem isActive={usePathname() == "/" ? true : false}>
+                    <Link color="primary" href="/" className="columns-1">
                         <div className="grid grid-cols-1 justify-items-center">
                             <HomeOutlinedIcon />
                             Startseite
                         </div>
                     </Link>
                 </NavbarItem>
-                <NavbarItem isActive>
-                    <Link href="#" aria-current="page">
+                <NavbarItem isActive={usePathname() == "/marks" ? true : false}>
+                    <Link href="/marks" aria-current="page">
                         <div className="grid grid-cols-1 justify-items-center">
-                            <FaceOutlinedIcon/>
-                             Noten
+                            <FaceOutlinedIcon />
+                            Noten
                         </div>
                     </Link>
                 </NavbarItem>
-                <NavbarItem>
-                    <Link color="primary" href="#">
+                <NavbarItem isActive={usePathname() == "/timetable" ? true : false}>
+                    <Link color="primary" href="/timetable">
                         <div className="grid grid-cols-1 justify-items-center">
                             <DateRangeOutlinedIcon />
                             Stundenplan
                         </div>
                     </Link>
                 </NavbarItem>
-                <NavbarItem>
-                    <Link color="primary" href="#">
+                <NavbarItem isActive={usePathname() == "/canteen_plan" ? true : false}>
+                    <Link color="primary" href="canteen_plan">
                         <div className="grid grid-cols-1 justify-items-center">
                             <RestaurantOutlinedIcon />
                             Mensa
                         </div>
                     </Link>
                 </NavbarItem>
-                <NavbarItem>
-                    <Link color="primary" href="#">
+                <NavbarItem isActive={usePathname() == "/absence" ? true : false}>
+                    <Link color="primary" href="/absence">
                         <div className="grid grid-cols-1 justify-items-center">
                             <VaccinesOutlinedIcon />
                             Abwesenheit
@@ -87,15 +89,20 @@ export default function Navbar() {
             </NavbarContent>
             <NavbarContent justify="end">
                 <NavbarItem className="hidden lg:flex">
-                    <Link className="rounded-full" href="#"><CloudOutlinedIcon/></Link>
+                    <Link className="rounded-full" href="#">
+                        <CloudOutlinedIcon />
+                    </Link>
                 </NavbarItem>
                 <NavbarItem>
-                <Link className="rounded-full" href="#"><NotificationsOutlinedIcon/></Link>
+                    <Link className="rounded-full" href="#">
+                        <NotificationsOutlinedIcon />
+                    </Link>
                 </NavbarItem>
                 <NavbarItem>
-                <Link className="rounded-full" href="#"><AccountCircleOutlinedIcon/></Link>
+                    <Link className="rounded-full" href="#">
+                        <AccountCircleOutlinedIcon />
+                    </Link>
                 </NavbarItem>
-  
             </NavbarContent>
         </NavbarNextUi>
     );
