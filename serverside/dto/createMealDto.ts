@@ -17,8 +17,7 @@ export class CreateMealDto {
   @IsString()
   readonly allergies: string;
 
-  @IsNotEmpty()
-  @IsString()
+  
   readonly extra: string;
 
   @IsNotEmpty()

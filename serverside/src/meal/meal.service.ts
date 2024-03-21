@@ -18,7 +18,7 @@ export class MealService {
         ingredients: newMeal.ingredients,
         calories: newMeal.calories,
         allergies: newMeal.allergies,
-        extra: newMeal.extra,
+        extra: newMeal.extra ? newMeal.extra : 'None',
         foodWeekFoodWeekID: newMeal.foodWeekId,
       },
     });
