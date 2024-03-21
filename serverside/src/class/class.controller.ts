@@ -52,9 +52,8 @@ export class ClassController {
         role + ' is not allowed to get a class by ID',
         HttpStatus.FORBIDDEN,
       );
-    } else {
-      return await this.classService.getClassByID(id, this.prisma);
     }
+    return await this.classService.getClassByID(id, this.prisma);
   }
 
   @Get('getByYear/:year')
@@ -68,9 +67,8 @@ export class ClassController {
         role + ' is not allowed to get a class by Year',
         HttpStatus.FORBIDDEN,
       );
-    } else {
-      return await this.classService.getClassByYear(year, this.prisma);
     }
+    return await this.classService.getClassByYear(year, this.prisma);
   }
 
   @Put('assignStudent/:classID')
@@ -84,13 +82,12 @@ export class ClassController {
         role + ' is not allowed to assign new students to the class',
         HttpStatus.FORBIDDEN,
       );
-    } else {
-      return await this.classService.assignStudents(
-        newStudents,
-        classID,
-        this.prisma,
-      );
     }
+    return await this.classService.assignStudents(
+      newStudents,
+      classID,
+      this.prisma,
+    );
   }
 
   @Put('assignTeacher/:classID')
@@ -104,12 +101,11 @@ export class ClassController {
         role + ' is not allowed to assign new teacher to the class',
         HttpStatus.FORBIDDEN,
       );
-    } else {
-      return await this.classService.assignTeacher(
-        newTeacher,
-        classID,
-        this.prisma,
-      );
     }
+    return await this.classService.assignTeacher(
+      newTeacher,
+      classID,
+      this.prisma,
+    );
   }
 }
