@@ -9,7 +9,7 @@ import {
 } from '@nestjs/common';
 import { MealService } from './meal.service';
 import { PrismaClient, Prisma, Food } from '@prisma/client';
-import { CreateMealDto } from 'dto/createMealDto';
+import { CreateMealDto } from '../../dto/createMealDto';
 
 @Controller('meal')
 export class MealController {
