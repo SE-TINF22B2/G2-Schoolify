@@ -1,6 +1,7 @@
-import { NestFactory } from '@nestjs/core';
+import { HttpAdapterHost, NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common/pipes';
+import { PrismaClientExceptionFilter } from 'nestjs-prisma';
 import * as dotenv from 'dotenv';
 
 async function primsaEnvDefinition() {
@@ -16,6 +17,11 @@ async function primsaEnvDefinition() {
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  //Global exception filter
+  const { httpAdapter } = app.get(HttpAdapterHost);
+  app.useGlobalFilters(new PrismaClientExceptionFilter(httpAdapter));
+
   app.useGlobalPipes(new ValidationPipe());
   await app.listen(3000);
 }
