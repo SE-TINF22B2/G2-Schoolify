@@ -3,6 +3,8 @@
 </p>
 <p align="center">This is <b>Schoolify</b>, an all in one organizer for schools</p>
 
+Schoolify ist ein Web-basierter Schulplaner, der das Problem der mangelnden Organisation im schulischen Alltag löst. Viele Schüler und Lehrer haben Schwierigkeiten, den Überblick über Stundenpläne, Noten, Hausaufgaben und Prüfungstermine zu behalten. Dies führt oft zu Stress, Fehlern und ineffizienter Nutzung von Ressourcen.
+
 In unserer [Wiki](https://github.com/SE-TINF22B2/G2-Schoolify/wiki/) ist die Dokumentation zu finden. Darin sind alle wichtigen Informationen über unser Projekt und die enthaltenen Funktionen zu finden.
 
 Noch spezifischere Funktionsbeschreibungen sind in den [User Stories](https://github.com/SE-TINF22B2/G2-Schoolify/discussions/categories/user-stories) zu finden.
