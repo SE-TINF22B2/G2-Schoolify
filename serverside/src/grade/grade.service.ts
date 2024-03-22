@@ -18,23 +18,14 @@ export class GradeService {
         studentID: newGrade.studentID,
       },
     });
+    if (!student) doesNotExist('Student', newGrade.studentID);
+
     const teacher = await prisma.teacher.findFirst({
       where: {
         teacherID: newGrade.teacherID,
       },
     });
-    if (!student) {
-      throw new HttpException(
-        'Student ' + newGrade.studentID + ' does not exist!',
-        HttpStatus.CONFLICT,
-      );
-    }
-    if (!teacher) {
-      throw new HttpException(
-        'Teacher ' + newGrade.teacherID + ' does not exist!',
-        HttpStatus.CONFLICT,
-      );
-    }
+    if (!teacher) doesNotExist('Teacher', newGrade.teacherID);
     //Subject überhaupt dem Student assigned
     //ist Lehrer überhaupt der Lehrer
     //--> neue user stories
@@ -55,18 +46,11 @@ export class GradeService {
     studentId: number,
     prisma: PrismaClient,
   ): Promise<Grade[]> {
-    let grade: Grade[];
-
-    //secure database request
-    try {
-      grade = await prisma.grade.findMany({
-        where: {
-          studentStudentID: studentId,
-        },
-      });
-    } catch (e) {
-      console.log(e);
-    }
+    const grade: Grade[] = await prisma.grade.findMany({
+      where: {
+        studentStudentID: studentId,
+      },
+    });
 
     if (!grade || grade.length < 1) {
       throw new NotFoundException('Grade not found');
@@ -78,22 +62,22 @@ export class GradeService {
     testId: number,
     prisma: PrismaClient,
   ): Promise<Grade[]> {
-    let grade: Grade[];
-
-    //secure database request
-    try {
-      grade = await prisma.grade.findMany({
-        where: {
-          testTestID: testId,
-        },
-      });
-    } catch (e) {
-      console.log(e);
-    }
+    const grade: Grade[] = await prisma.grade.findMany({
+      where: {
+        testTestID: testId,
+      },
+    });
 
     if (!grade || grade.length < 1) {
       throw new NotFoundException('Grade not found');
     }
     return grade;
   }
+}
+
+function doesNotExist(entity, name) {
+  throw new HttpException(
+    entity + ' ' + name + ' does not exist!',
+    HttpStatus.CONFLICT,
+  );
 }

@@ -3,7 +3,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { GradeService } from '../../src/grade/grade.service';
 import { SaveGradeDto } from '../../dto/saveGradeDto';
 import { PrismaClient, Grade, Teacher, Student } from '@prisma/client';
-import { HttpException, HttpStatus, NotFoundException } from '@nestjs/common';
+import { HttpException, NotFoundException } from '@nestjs/common';
 
 describe('GradeService', () => {
   let gradeService: GradeService;
@@ -26,16 +26,16 @@ describe('GradeService', () => {
   };
   const mockTeacher: Teacher = {
     teacherID: 1,
-    user_Login_DataID: 1,
+    user_Login_DataUser_Login_DataID: 1,
     name: 'yeet',
     lastname: 'yeet',
   };
   const mockStudent: Student = {
     studentID: 1,
-    user_Login_DataID: 1,
+    user_Login_DataUser_Login_DataID: 1,
     name: 'abc',
     lastname: 'def',
-    classID: 0,
+    classClassID: 0,
   };
 
   beforeEach(async () => {
