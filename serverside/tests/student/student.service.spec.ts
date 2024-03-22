@@ -54,6 +54,7 @@ describe('StudentService', () => {
           name: true,
           lastname: true,
           classClassID: true,
+          Class: true,
           user_Login_DataUser_Login_DataID: true,
           grades: {
             select: {
@@ -89,6 +90,7 @@ describe('StudentService', () => {
           name: true,
           lastname: true,
           classClassID: true,
+          Class: true,
           user_Login_DataUser_Login_DataID: true,
           grades: {
             select: {
