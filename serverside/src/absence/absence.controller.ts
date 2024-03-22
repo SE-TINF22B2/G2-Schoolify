@@ -25,7 +25,7 @@ export class AbsenceController {
   ): Promise<Absent[]> {
     if (role !== 'Teacher') {
       throw new HttpException(
-        role + ' is not allowed to get a class by ID',
+        role + ' is not allowed to get absences by lesson ID',
         HttpStatus.FORBIDDEN,
       );
     }
