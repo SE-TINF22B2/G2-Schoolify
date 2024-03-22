@@ -28,6 +28,7 @@ export class StudentService {
         },
       },
     });
+    // prisma statement returns undefined if no student was found, then an exception will be thrown
     if (!student)
       throw new HttpException(
         'student with id ' + id + ' was not found',
