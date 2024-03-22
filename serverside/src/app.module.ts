@@ -23,6 +23,8 @@ import { EventServiceMock } from 'prisma/data/testdata/mockEvent.service';
 import { SubjectLessonServiceMock } from 'prisma/data/testdata/mockSubjectsLesson.service';
 import { UserService } from './user/user.service';
 import { GradesServiceMock } from 'prisma/data/testdata/mockGrades.service';
+import { AbsenceModule } from './absence/absence.module';
+import { ClassbookModule } from './classbook/classbook.module';
 
 @Module({
   imports: [
@@ -37,6 +39,8 @@ import { GradesServiceMock } from 'prisma/data/testdata/mockGrades.service';
     ClassModule,
     GradeModule,
     LessonModule,
+    AbsenceModule,
+    ClassbookModule,
   ],
   controllers: [AppController, EventController],
   providers: [
