@@ -269,7 +269,7 @@ export class ClassService {
         },
       },
       select: {
-        user_Login_DataID: true
+        user_Login_DataID: true,
       },
     });
     return users.map((user) => user.user_Login_DataID);
