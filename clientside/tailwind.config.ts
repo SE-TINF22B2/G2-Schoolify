@@ -23,14 +23,14 @@ module.exports = {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
-        background: "hsl(var(--background))",
-        foreground: "hsl(var(--foreground))",
+        background: "#ffffff",
+        foreground: "#d4d4d4",
         primary: {
-          DEFAULT: "hsl(var(--primary))",
+          DEFAULT: "#0a0a0a",
           foreground: "hsl(var(--primary-foreground))",
         },
         secondary: {
-          DEFAULT: "hsl(var(--secondary))",
+          DEFAULT: "#5122B5",
           foreground: "hsl(var(--secondary-foreground))",
         },
         destructive: {
