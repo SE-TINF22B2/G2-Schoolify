@@ -25,18 +25,6 @@ import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined
 
 export default function Navbar() {
     const [isMenuOpen, setIsMenuOpen] = React.useState(false);
-    const menuItems = [
-      "Startseite",
-      "Noten",
-      "Stundenplan",
-      "Mensa",
-      "Abwesenheit",
-      "Deployments",
-      "My Settings",
-      "Team Settings",
-      "Help & Feedback",
-      "Log Out",
-    ];
     return (
         <NavbarNextUi
             classNames={{
