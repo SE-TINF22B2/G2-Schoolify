@@ -1,4 +1,3 @@
-import { ApiTags } from '@nestjs/swagger';
 import {
   Headers,
   Body,
@@ -12,7 +11,6 @@ import { MealService } from './meal.service';
 import { PrismaClient, Prisma, Food } from '@prisma/client';
 import { CreateMealDto } from '../../dto/createMealDto';
 
-@ApiTags('Meal')
 @Controller('meal')
 export class MealController {
   constructor(

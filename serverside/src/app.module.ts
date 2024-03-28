@@ -1,5 +1,6 @@
 import { AppController } from './app.controller';
 import { Logger } from '@nestjs/common';
+import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { MealModule } from './meal/meal.module';
@@ -41,8 +42,9 @@ import { AbsentServiceMock } from 'prisma/data/testdata/mockAbsent.service';
     GradeModule,
     LessonModule,
   ],
-  controllers: [EventController],
+  controllers: [AppController, EventController],
   providers: [
+    AppService,
     ClassService,
     GradeService,
     LessonService,
