@@ -1,3 +1,4 @@
+import { ApiTags } from '@nestjs/swagger';
 import {
   Body,
   Controller,
@@ -13,6 +14,7 @@ import { Prisma, PrismaClient } from '@prisma/client';
 import { SaveGradeDto } from '../../dto/saveGradeDto';
 // .../grade/
 
+@ApiTags('Grade')
 @Controller('grade')
 export class GradeController {
   constructor(
