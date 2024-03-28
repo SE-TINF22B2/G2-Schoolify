@@ -4,8 +4,6 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common/pipes';
 import * as dotenv from 'dotenv';
 
-const PORT = 3000;
-
 async function primsaEnvDefinition() {
   if (process.env.NODE_ENV === 'production') {
     dotenv.config({ path: '.env.production' });
@@ -22,13 +20,13 @@ async function bootstrap() {
 
   const config = new DocumentBuilder()
     .setTitle('Schoolify API')
-    .setVersion('1.0')
+    .setVersion('0.0.1')
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api-docs', app, document);
 
   await app.listen(PORT);
-  console.log(`Application is running on: ${PORT}`);
+  console.log(`Application is running on: 3000`);
   app.useGlobalPipes(new ValidationPipe());
   await app.listen(3000);
 }
