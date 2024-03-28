@@ -1,23 +1,13 @@
 import {
   IsString,
-  IsEmail,
   IsNotEmpty,
   IsObject,
-  IsNumber,
   ValidateNested,
   IsNotEmptyObject,
 } from '@nestjs/class-validator';
 import { Type } from 'class-transformer';
+import { User_Login_DataDto } from './loginDTO';
 
-export class User_Login_DataDto {
-  @IsNotEmpty()
-  @IsEmail()
-  readonly email: string;
-
-  @IsNotEmpty()
-  @IsString()
-  readonly password: string;
-}
 export class CreateStudentDto {
   @IsNotEmpty()
   @IsObject()
