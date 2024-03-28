@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { UsersController } from '../../../src/auth/users/users.controller';
 import { HttpException, HttpStatus, INestApplication } from '@nestjs/common';
 import { UsersService } from '../../../src/auth/users/users.service';
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, Student } from '@prisma/client';
 import {
   CreateStudentDto,
   User_Login_DataDto,
@@ -20,7 +20,6 @@ describe('UsersController', () => {
     user_Login_Data: mockLoginData,
     name: 'Test',
     lastname: 'Student',
-    classID: 1,
   };
 
   beforeEach(async () => {
@@ -49,17 +48,17 @@ describe('UsersController', () => {
     //mock role
     const mockRole = 'Admin';
     //mock return value
-    const mockReturnStudent = {
+    const mockReturnStudent: Student = {
       studentID: 1,
-      user_Login_DataID: 1,
+      user_Login_DataUser_Login_DataID: 1,
       name: 'mock',
       lastname: 'mock',
-      classID: 1,
+      classClassID: 1,
     };
     const createUserSpy = jest
       .spyOn(controller['userService'], 'createUser')
       .mockResolvedValueOnce(mockReturnStudent);
-    //
+
     const result = await controller.createStudent(mockRole, mockStudent);
 
     // check if result is as expected
