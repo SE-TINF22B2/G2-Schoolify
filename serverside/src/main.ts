@@ -1,10 +1,9 @@
-import { NestFactory } from '@nestjs/core';
+import { HttpAdapterHost, NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common/pipes';
+import { PrismaClientExceptionFilter } from 'nestjs-prisma';
 import * as dotenv from 'dotenv';
-
-const PORT = 3000;
 
 async function primsaEnvDefinition() {
   if (process.env.NODE_ENV === 'production') {
@@ -27,8 +26,9 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api-docs', app, document);
 
-  await app.listen(PORT);
-  console.log(`Application is running on: ${PORT}`);
+  //Global exception filter
+  const { httpAdapter } = app.get(HttpAdapterHost);
+  app.useGlobalFilters(new PrismaClientExceptionFilter(httpAdapter));
   app.useGlobalPipes(new ValidationPipe());
   await app.listen(3000);
 }

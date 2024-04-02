@@ -19,7 +19,6 @@ describe('UsersService', () => {
     user_Login_Data: mockLoginData,
     name: 'Test',
     lastname: 'Student',
-    classID: 1,
   };
 
   beforeEach(async () => {
@@ -55,10 +54,7 @@ describe('UsersService', () => {
   });
   describe('tests for createUser function', () => {
     it('should create a user with valid input', async () => {
-      // mock result of checkClass and createLoginData
-      const checkCLassSpy = jest
-        .spyOn(service, 'checkClass')
-        .mockResolvedValueOnce(undefined);
+      // mock result of  createLoginData
       const createLoginDataSyp = jest
         .spyOn(service, 'createLoginData')
         .mockResolvedValueOnce({
@@ -71,10 +67,10 @@ describe('UsersService', () => {
       // mock student creation
       const mockCreatedStudent: Student = {
         studentID: 1,
-        user_Login_DataID: 1234,
+        user_Login_DataUser_Login_DataID: 1234,
         name: 'mock',
         lastname: 'mock',
-        classID: 1,
+        classClassID: 1,
       };
 
       const createStudentMock = prisma.student.create as jest.Mock;
@@ -87,17 +83,19 @@ describe('UsersService', () => {
       expect(result).toEqual(mockCreatedStudent);
 
       // check if all functions have been called correctly
-      expect(checkCLassSpy).toHaveBeenCalledWith(mockStudent.classID, prisma);
       expect(createLoginDataSyp).toHaveBeenCalledWith(
         mockStudent.user_Login_Data,
         prisma,
       );
       expect(createStudentMock).toHaveBeenCalledWith({
         data: {
-          user_Login_DataID: mockCreatedStudent.user_Login_DataID,
+          User_Login_Data: {
+            connect: {
+              user_Login_DataID: 1234,
+            },
+          },
           name: mockStudent.name,
           lastname: mockStudent.lastname,
-          classID: mockStudent.classID,
         },
       });
     });
@@ -156,51 +154,6 @@ describe('UsersService', () => {
           email: mockLoginData.email,
           password: mockLoginData.password,
           role: 'Student',
-        },
-      });
-    });
-  });
-  describe('tests for check class function', () => {
-    it('should not throw exception when class exists', async () => {
-      // mock classID
-      const mockClass = 1;
-
-      //mock class count
-      const classCountMock = jest.spyOn(prisma.class, 'count');
-      classCountMock.mockResolvedValueOnce(1);
-
-      // call method
-      await expect(
-        service.checkClass(mockClass, prisma),
-      ).resolves.not.toThrow();
-
-      // check if prisma clount has been called correctly
-      expect(classCountMock).toHaveBeenCalledWith({
-        where: {
-          classID: mockClass,
-        },
-      });
-    });
-    it('should throw exception', async () => {
-      // mock classID
-      const mockClass = 1;
-
-      // mock class count to return 0
-      const classCountMock = jest.spyOn(prisma.class, 'count');
-      classCountMock.mockResolvedValueOnce(0);
-
-      // call method and expect it to throw exception
-      await expect(service.checkClass(mockClass, prisma)).rejects.toThrowError(
-        new HttpException(
-          'class with ID: ' + mockClass + ' does not exist',
-          HttpStatus.NOT_FOUND,
-        ),
-      );
-
-      // check if prisma count has been called correctly
-      expect(classCountMock).toHaveBeenCalledWith({
-        where: {
-          classID: mockClass,
         },
       });
     });
