@@ -40,12 +40,12 @@ export class UserServiceMock {
       update: {
         name: 'Admin1',
         lastname: 'Surname1',
-        user_Login_DataID: adminLoginData.user_Login_DataID,
+        user_Login_DataUser_Login_DataID: adminLoginData.user_Login_DataID,
       },
       create: {
         name: 'Admin1',
         lastname: 'Surname1',
-        user_Login_DataID: adminLoginData.user_Login_DataID,
+        user_Login_DataUser_Login_DataID: adminLoginData.user_Login_DataID,
       },
     });
     // Import Classes
@@ -70,27 +70,29 @@ export class UserServiceMock {
         update: {
           name: `Teacher${i + 1}`,
           lastname: `Surname${i + 1}`,
-          user_Login_DataID: teacherLoginData.user_Login_DataID,
+          user_Login_DataUser_Login_DataID: teacherLoginData.user_Login_DataID,
         },
         create: {
           name: `Teacher${i + 1}`,
           lastname: `Surname${i + 1}`,
-          user_Login_DataID: teacherLoginData.user_Login_DataID,
+          user_Login_DataUser_Login_DataID: teacherLoginData.user_Login_DataID,
         },
       });
       // Check if role for classA exists
       const classARoleExists = existingRoles.find(
         (role) =>
-          role.teacherID === this.teacherMocks[i].teacherID &&
-          role.classID === classA.classID,
+          role.teacherTeacherID === this.teacherMocks[i].teacherID &&
+          role.classClassID === classA.classID,
       );
 
       // If it doesn't exist, create
       if (!classARoleExists) {
         await prisma.role.create({
           data: {
-            teacherID: this.teacherMocks[i].teacherID,
-            classID: classA.classID,
+            Teacher: {
+              connect: { teacherID: this.teacherMocks[i].teacherID },
+            },
+            Class: { connect: { classID: classA.classID } },
           },
         });
       }
@@ -98,15 +100,23 @@ export class UserServiceMock {
       // Repeat the same process for classB
       const classBRoleExists = existingRoles.find(
         (role) =>
-          role.teacherID === this.teacherMocks[i].teacherID &&
-          role.classID === classB.classID,
+          role.teacherTeacherID === this.teacherMocks[i].teacherID &&
+          role.classClassID === classB.classID,
       );
 
       if (!classBRoleExists) {
         await prisma.role.create({
           data: {
-            teacherID: this.teacherMocks[i].teacherID,
-            classID: classB.classID,
+            Teacher: {
+              connect: {
+                teacherID: this.teacherMocks[i].teacherID,
+              },
+            },
+            Class: {
+              connect: {
+                classID: classB.classID,
+              },
+            },
           },
         });
       }
@@ -129,12 +139,12 @@ export class UserServiceMock {
         update: {
           name: `Student${i + 1}`,
           lastname: `Surname${i + 1}`,
-          class: {
+          Class: {
             connect: {
               classID: i > 1 ? classB.classID : classA.classID,
             },
           },
-          user_Login_Data: {
+          User_Login_Data: {
             connect: {
               user_Login_DataID: studentLoginData.user_Login_DataID,
             },
@@ -143,12 +153,12 @@ export class UserServiceMock {
         create: {
           name: `Student${i + 1}`,
           lastname: `Surname${i + 1}`,
-          class: {
+          Class: {
             connect: {
               classID: i > 1 ? classB.classID : classA.classID,
             },
           },
-          user_Login_Data: {
+          User_Login_Data: {
             connect: {
               user_Login_DataID: studentLoginData.user_Login_DataID,
             },
