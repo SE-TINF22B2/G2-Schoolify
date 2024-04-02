@@ -1,4 +1,5 @@
 import { AppController } from './app.controller';
+import { Logger } from '@nestjs/common';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
@@ -23,6 +24,10 @@ import { EventServiceMock } from 'prisma/data/testdata/mockEvent.service';
 import { SubjectLessonServiceMock } from 'prisma/data/testdata/mockSubjectsLesson.service';
 import { UserService } from './user/user.service';
 import { GradesServiceMock } from 'prisma/data/testdata/mockGrades.service';
+import { FoodServiceMock } from 'prisma/data/testdata/mockFood.service';
+import { ClassbookEntryServiceMock } from 'prisma/data/testdata/mockClassEntries.service';
+import { AbsentServiceMock } from 'prisma/data/testdata/mockAbsent.service';
+import { AuthService } from './auth/auth.service';
 
 @Module({
   imports: [
@@ -51,6 +56,10 @@ import { GradesServiceMock } from 'prisma/data/testdata/mockGrades.service';
     EventServiceMock,
     SubjectLessonServiceMock,
     GradesServiceMock,
+    FoodServiceMock,
+    ClassbookEntryServiceMock,
+    AbsentServiceMock,
+    AuthService,
     {
       provide: 'PRISMA',
       useValue: new PrismaClient(),
@@ -58,11 +67,14 @@ import { GradesServiceMock } from 'prisma/data/testdata/mockGrades.service';
   ],
 })
 export class AppModule implements OnApplicationBootstrap {
+  private readonly logger = new Logger(AppModule.name);
   constructor(private readonly mockService: MockService) {}
   async onApplicationBootstrap() {
-    if (process.env.NODE_ENV !== 'production') {
+    if (process.env.npm_lifecycle_event === 'start:mock') {
       await this.mockService.createMockData();
-      console.log('Mock data created.');
+      this.logger.log('Mock data created.');
+    } else {
+      this.logger.log('Mock data creation was skiped.');
     }
   }
 }

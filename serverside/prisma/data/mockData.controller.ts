@@ -6,6 +6,9 @@ import { EventServiceMock } from './testdata/mockEvent.service';
 import { Prisma, PrismaClient } from '@prisma/client';
 import { SubjectLessonServiceMock } from './testdata/mockSubjectsLesson.service';
 import { GradesServiceMock } from './testdata/mockGrades.service';
+import { FoodServiceMock } from './testdata/mockFood.service';
+import { ClassbookEntryServiceMock } from './testdata/mockClassEntries.service';
+import { AbsentServiceMock } from './testdata/mockAbsent.service';
 
 @Injectable()
 export class MockService {
@@ -15,6 +18,9 @@ export class MockService {
     private readonly eventService: EventServiceMock,
     private readonly sublesService: SubjectLessonServiceMock,
     private readonly gradesService: GradesServiceMock,
+    private readonly foodService: FoodServiceMock,
+    private readonly classbookEntryServiceMock: ClassbookEntryServiceMock,
+    private readonly absentServiceMock: AbsentServiceMock,
     @Inject('PRISMA') private prisma: PrismaClient<Prisma.PrismaClientOptions>,
   ) {}
 
@@ -24,5 +30,8 @@ export class MockService {
     await this.sublesService.create(this.prisma);
     await this.eventService.create(this.prisma);
     await this.gradesService.create(this.prisma);
+    await this.foodService.create(this.prisma);
+    await this.classbookEntryServiceMock.create(this.prisma);
+    await this.absentServiceMock.create(this.prisma);
   }
 }
