@@ -1,10 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { UsersService } from '../../../src/auth/users/users.service';
 import { PrismaClient, Student, User_Login_Data } from '@prisma/client';
-import {
-  CreateStudentDto,
-  User_Login_DataDto,
-} from '../../../dto/createStudentDto';
+import { CreateStudentDto } from '../../../dto/createStudentDto';
+import { User_Login_DataDto } from 'dto/loginDTO';
 import { HttpException, HttpStatus } from '@nestjs/common';
 
 describe('UsersService', () => {
