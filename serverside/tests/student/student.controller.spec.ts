@@ -38,7 +38,9 @@ describe('StudentController', () => {
 
       const mockRole = 'NotAdmin';
 
-      await expect(controller.getStudentByID(mockRole, 1)).rejects.toThrowError(
+      await expect(
+        controller.getStudentByID(mockRole, 'mail'),
+      ).rejects.toThrowError(
         new HttpException(
           mockRole + ' is not allowed to get a students info',
           HttpStatus.FORBIDDEN,
@@ -52,7 +54,9 @@ describe('StudentController', () => {
         .spyOn(controller['studentService'], 'getStudent')
         .mockResolvedValue(undefined);
 
-      expect(await controller.getStudentByID('Admin', 1)).toBeUndefined();
+      expect(
+        await controller.getStudentByID('Admin', 'mockMail'),
+      ).toBeUndefined();
       expect(serviceSpy).toHaveBeenCalled();
     });
   });

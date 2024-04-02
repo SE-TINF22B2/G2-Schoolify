@@ -18,10 +18,10 @@ export class StudentController {
     @Inject('PRISMA') private prisma: PrismaClient<Prisma.PrismaClientOptions>,
   ) {}
 
-  @Get(':id')
+  @Get(':studentMail')
   async getStudentByID(
     @Headers('role') role,
-    @Param('id', new ParseIntPipe()) id: number,
+    @Param('studentMail') studentMail: string,
   ): Promise<Student> {
     if (role !== 'Admin') {
       throw new HttpException(
@@ -29,6 +29,6 @@ export class StudentController {
         HttpStatus.FORBIDDEN,
       );
     }
-    return await this.studentService.getStudent(id, this.prisma);
+    return await this.studentService.getStudent(studentMail, this.prisma);
   }
 }

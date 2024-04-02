@@ -3,10 +3,31 @@ import { PrismaClient, Student } from '@prisma/client';
 
 @Injectable()
 export class StudentService {
-  async getStudent(id: number, prisma: PrismaClient): Promise<Student> {
+  async getStudent(
+    studentMail: string,
+    prisma: PrismaClient,
+  ): Promise<Student> {
+    // get student logindata id
+    const studentLoginData = await prisma.user_Login_Data.findUnique({
+      where: {
+        email: studentMail,
+      },
+      select: {
+        user_Login_DataID: true,
+        role: true,
+      },
+    });
+    if (!studentLoginData || studentLoginData.role != 'Student') {
+      throw new HttpException(
+        'student with mail ' + studentMail + ' was not found',
+        HttpStatus.NOT_FOUND,
+      );
+    }
+    const studentLoginID = studentLoginData.user_Login_DataID;
+
     const student = await prisma.student.findUnique({
       where: {
-        studentID: id,
+        user_Login_DataUser_Login_DataID: studentLoginID,
       },
       select: {
         studentID: true,
@@ -30,11 +51,6 @@ export class StudentService {
       },
     });
     // prisma statement returns undefined if no student was found, then an exception will be thrown
-    if (!student)
-      throw new HttpException(
-        'student with id ' + id + ' was not found',
-        HttpStatus.NOT_FOUND,
-      );
     return student;
   }
 }
