@@ -63,7 +63,7 @@ describe('AuthService', () => {
       await expect(
         service.logIn(mockLogin_dataDTO, prisma),
       ).rejects.toThrowError(
-        'User with email test.mail@gmail.com is not registered. Please check your input or ask the admin.',
+        'Either the User does not exist or the password is wrong. Please try again!',
       );
     });
 
@@ -83,7 +83,7 @@ describe('AuthService', () => {
           prisma,
         ),
       ).rejects.toThrowError(
-        "Password for User with the email test.mail@gmail.com is wrong. Please try again or press 'Forgot password'",
+        'Either the User does not exist or the password is wrong. Please try again!',
       );
     });
   });

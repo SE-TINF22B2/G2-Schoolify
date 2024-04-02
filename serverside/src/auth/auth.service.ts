@@ -13,25 +13,16 @@ export class AuthService {
         email: newLogin.email,
       },
     });
-    //Student with email given?
-    if (!student) throwEmailNotFound(newLogin.email);
-    //Check for password
-    if (student.password !== newLogin.password) {
-      throwWrongPassword(newLogin.email);
+    if (!student || student.password !== newLogin.password) {
+      throwNotFound();
     }
     return true;
   }
 }
 
-function throwEmailNotFound(email) {
+function throwNotFound() {
   throw new HttpException(
-    `User with email ${email} is not registered. Please check your input or ask the admin.`,
-    HttpStatus.NOT_FOUND,
-  );
-}
-function throwWrongPassword(email) {
-  throw new HttpException(
-    `Password for User with the email ${email} is wrong. Please try again or press 'Forgot password'`,
+    'Either the User does not exist or the password is wrong. Please try again!',
     HttpStatus.BAD_REQUEST,
   );
 }
