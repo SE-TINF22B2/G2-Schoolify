@@ -6,7 +6,6 @@ import {
   HttpStatus,
   Inject,
   Param,
-  ParseIntPipe,
 } from '@nestjs/common';
 import { StudentService } from './student.service';
 import { PrismaClient, Prisma, Student } from '@prisma/client';
