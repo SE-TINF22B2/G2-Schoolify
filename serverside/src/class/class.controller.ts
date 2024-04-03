@@ -1,3 +1,4 @@
+import { ApiTags } from '@nestjs/swagger';
 import {
   Body,
   Controller,
@@ -19,6 +20,7 @@ import {
   UpdateTeacherDto,
 } from '../../dto/createClassDto';
 
+@ApiTags('Class')
 @Controller('class')
 export class ClassController {
   constructor(

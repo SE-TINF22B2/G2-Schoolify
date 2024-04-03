@@ -10,7 +10,9 @@ import {
 import { UsersService } from './users.service';
 import { CreateStudentDto } from './../../../dto/createStudentDto';
 import { Prisma, PrismaClient } from '@prisma/client';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Users')
 @Controller('users')
 export class UsersController {
   constructor(
