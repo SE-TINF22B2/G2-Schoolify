@@ -1,6 +1,4 @@
-import { AppController } from './app.controller';
 import { Logger } from '@nestjs/common';
-import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { MealModule } from './meal/meal.module';
@@ -43,9 +41,8 @@ import { AuthService } from './auth/auth.service';
     GradeModule,
     LessonModule,
   ],
-  controllers: [AppController, EventController],
+  controllers: [EventController],
   providers: [
-    AppService,
     ClassService,
     GradeService,
     LessonService,
