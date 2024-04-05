@@ -130,4 +130,38 @@ describe('GradeController', () => {
       );
     });
   });
+
+  describe('getCorrectedTests', () => {
+    it('should call function correctly', async () => {
+      const mockRole = 'Admin';
+      const mockTestId = 1;
+
+      const getCorrectedTestsSpy = jest
+        .spyOn(controller['gradeService'], 'getCorrectedTests')
+        .mockResolvedValue(null);
+
+      await controller.CorrectedTests(mockRole, mockTestId);
+
+      expect(getCorrectedTestsSpy).toHaveBeenCalledWith(
+        mockTestId,
+        controller['prisma'],
+      );
+    });
+
+    it('should throw when dont have access', async () => {
+      const mockRole = 'User';
+      const mockTestId = 1;
+
+      await expect(
+        controller.getGradesByTestID(mockRole, mockTestId),
+      ).rejects.toThrow(
+        new HttpException(
+          mockRole + ' is not allowed to see the grades!',
+          HttpStatus.FORBIDDEN,
+        ),
+      );
+    });
+  });
+
+  describe('getNotCorrectedTests', () => {});
 });

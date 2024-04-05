@@ -24,6 +24,16 @@ describe('GradeService', () => {
     teacherTeacherID: 1,
     subjectSubjectID: 1,
   };
+
+  const mockedNullGrade: Grade = {
+    gradeID: 1,
+    grade: null,
+    testTestID: 1,
+    studentStudentID: 2,
+    teacherTeacherID: 1,
+    subjectSubjectID: 1,
+  };
+
   const mockTeacher: Teacher = {
     teacherID: 1,
     user_Login_DataUser_Login_DataID: 1,
@@ -188,6 +198,84 @@ describe('GradeService', () => {
       expect(prisma.grade.findMany).toHaveBeenCalledWith({
         where: {
           studentStudentID: invalidStudentId,
+        },
+      });
+    });
+  });
+
+  describe('getCorrectedTests', () => {
+    it('should return valid tests', async () => {
+      const testId = 1;
+
+      const findManyMock = prisma.grade.findMany as jest.Mock;
+      findManyMock.mockResolvedValueOnce(mockGrade);
+
+      const result = await gradeService.getCorrectedTests(
+        testId,
+        prisma as PrismaClient,
+      );
+
+      expect(result).toEqual(mockGrade);
+      expect(prisma.grade.findMany).toHaveBeenCalledWith({
+        where: {
+          testTestID: testId,
+          grade: {
+            not: null,
+          },
+        },
+      });
+    });
+    it('should throw not Found for invalid ID', async () => {
+      const testId = 2;
+      const findManyMock = prisma.grade.create as jest.Mock;
+      findManyMock.mockResolvedValue([]);
+
+      await expect(
+        gradeService.getCorrectedTests(testId, prisma as PrismaClient),
+      ).rejects.toThrowError('No tests were found.');
+      expect(prisma.grade.findMany).toHaveBeenCalledWith({
+        where: {
+          testTestID: testId,
+          grade: {
+            not: null,
+          },
+        },
+      });
+    });
+  });
+
+  describe('getNotCorrectedTests', () => {
+    it('should return valid tests', async () => {
+      const testId = 1;
+
+      const findManyMock = prisma.grade.findMany as jest.Mock;
+      findManyMock.mockResolvedValueOnce(mockedNullGrade);
+
+      const result = await gradeService.getNotCorrectedTests(
+        testId,
+        prisma as PrismaClient,
+      );
+
+      expect(result).toEqual(mockedNullGrade);
+      expect(prisma.grade.findMany).toHaveBeenCalledWith({
+        where: {
+          testTestID: testId,
+          grade: null,
+        },
+      });
+    });
+    it('should throw not Found for invalid ID', async () => {
+      const testId = 2;
+      const findManyMock = prisma.grade.create as jest.Mock;
+      findManyMock.mockResolvedValue([]);
+
+      await expect(
+        gradeService.getNotCorrectedTests(testId, prisma as PrismaClient),
+      ).rejects.toThrowError('No tests were found.');
+      expect(prisma.grade.findMany).toHaveBeenCalledWith({
+        where: {
+          testTestID: testId,
+          grade: null,
         },
       });
     });

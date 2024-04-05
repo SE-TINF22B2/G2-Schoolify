@@ -8,6 +8,8 @@ import {
   Inject,
   Post,
   Get,
+  ParseIntPipe,
+  Param,
 } from '@nestjs/common';
 import { GradeService } from './grade.service';
 import { Prisma, PrismaClient } from '@prisma/client';
@@ -60,5 +62,32 @@ export class GradeController {
       );
     }
     return await this.gradeService.getGradesByTestID(testId, this.prisma);
+  }
+
+  @Get('allCorrectedTests')
+  async CorrectedTests(
+    @Headers('role') role,
+    @Param('id', new ParseIntPipe()) id: number,
+  ): Promise<any> {
+    checkRole(role);
+    return await this.gradeService.getCorrectedTests(id, this.prisma);
+  }
+
+  @Get('notCorrectedTests')
+  async notCorrectedTests(
+    @Headers('role') role,
+    @Param('id', new ParseIntPipe()) id: number,
+  ): Promise<any> {
+    checkRole(role);
+    return await this.gradeService.getNotCorrectedTests(id, this.prisma);
+  }
+}
+
+function checkRole(role) {
+  if (role !== 'Teacher' && role !== 'Admin') {
+    throw new HttpException(
+      role + ' is not allowed to see the tests!',
+      HttpStatus.FORBIDDEN,
+    );
   }
 }
