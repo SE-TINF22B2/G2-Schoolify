@@ -36,7 +36,7 @@ export class GradeController {
     return await this.gradeService.saveGrade(grade, this.prisma);
   }
 
-  @Get(':studentId')
+  @Get('getByStudentId/:studentId')
   async getGradesByStudentID(
     @Headers('id') userId: number,
     @Body('studentId') studentId: number,
@@ -50,7 +50,7 @@ export class GradeController {
     return await this.gradeService.getGradesByStudentID(studentId, this.prisma);
   }
 
-  @Get(':testId')
+  @Get('getByTestId/:testId')
   async getGradesByTestID(
     @Headers('role') role,
     @Body('id') testId: number,
