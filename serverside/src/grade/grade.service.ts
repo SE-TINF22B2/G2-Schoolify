@@ -73,6 +73,33 @@ export class GradeService {
     }
     return grade;
   }
+
+  async getCorrectedTests(id: number, prisma: PrismaClient): Promise<Grade[]> {
+    const tests: Grade[] = await prisma.grade.findMany({
+      where: {
+        testTestID: id,
+        grade: {
+          not: null,
+        },
+      },
+    });
+    resultDefined(tests);
+    return tests;
+  }
+
+  async getNotCorrectedTests(
+    id: number,
+    prisma: PrismaClient,
+  ): Promise<Grade[]> {
+    const tests: Grade[] = await prisma.grade.findMany({
+      where: {
+        testTestID: id,
+        grade: null,
+      },
+    });
+    resultDefined(tests);
+    return tests;
+  }
 }
 
 function doesNotExist(entity, name) {
@@ -80,4 +107,10 @@ function doesNotExist(entity, name) {
     entity + ' ' + name + ' does not exist!',
     HttpStatus.CONFLICT,
   );
+}
+
+function resultDefined(result) {
+  if (!result) {
+    throw new HttpException('No tests were found.', HttpStatus.BAD_REQUEST);
+  }
 }
