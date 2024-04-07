@@ -2,8 +2,9 @@
 name: Status Report Template
 about: A template to create a Status Report
 title: 'Status Report Iteration '
-labels: 
-assignees: '@CodeRider101'
+labels: ''
+assignees: ''
+
 ---
 
 Die Ergebnisse des Teammeetings zusammenfassen und weitere Schritte aufzählen.
