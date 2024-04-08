@@ -75,6 +75,13 @@ describe('EventService', () => {
   const mockTeacherID = 1;
   const mockClassID = 1;
 
+  const now = new Date();
+  const toDate = new Date(
+    now.getFullYear(),
+    now.getMonth() + 12,
+    now.getDate(),
+  );
+
   it('should be defined', () => {
     expect(service).toBeDefined();
   });
@@ -163,19 +170,23 @@ describe('EventService', () => {
       expect(findFirstMock).toHaveBeenCalledWith({
         where: {
           eventID: mockEventID,
+          dateFrom: {
+            gte: new Date(),
+            lte: toDate,
+          },
         },
       });
       expect(result).toEqual(mockEvent);
     });
 
-    it('should throw for invalid event ID', async () => {
+    it('should return null for invalid event ID', async () => {
       const mockEventID = 1;
       const findFirstMock = jest.spyOn(prisma.event, 'findFirst');
       findFirstMock.mockResolvedValueOnce(null);
 
-      await expect(service.getEventByID(mockEventID, prisma)).rejects.toThrow(
-        HttpException,
-      );
+      await expect(
+        service.getEventByID(mockEventID, prisma),
+      ).resolves.toBeNull();
     });
   });
 
@@ -189,18 +200,25 @@ describe('EventService', () => {
       expect(findManyMock).toHaveBeenCalledWith({
         where: {
           teacherTeacherID: mockTeacherID,
+          dateFrom: {
+            gte: new Date(),
+            lte: toDate,
+          },
         },
       });
       expect(result).toEqual([mockEvent]);
     });
 
-    it('should throw for invalid teacher ID', async () => {
+    it('should return null for invalid teacher ID', async () => {
       const findFirstTeacherMock = jest.spyOn(prisma.teacher, 'findFirst');
       findFirstTeacherMock.mockResolvedValue(null);
 
+      const findManyMock = jest.spyOn(prisma.event, 'findMany');
+      findManyMock.mockResolvedValueOnce(null);
+
       await expect(
         service.getEventsByTeacherID(mockTeacherID, prisma),
-      ).rejects.toThrow(HttpException);
+      ).resolves.toBeNull();
     });
   });
 
@@ -214,18 +232,25 @@ describe('EventService', () => {
       expect(findManyMock).toHaveBeenCalledWith({
         where: {
           classClassID: mockClassID,
+          dateFrom: {
+            gte: new Date(),
+            lte: toDate,
+          },
         },
       });
       expect(result).toEqual([mockEvent]);
     });
 
-    it('should throw for invalid class ID', async () => {
+    it('should return null for invalid class ID', async () => {
       const findFirstClass = jest.spyOn(prisma.class, 'findFirst');
       findFirstClass.mockResolvedValue(null);
 
+      const findManyMock = jest.spyOn(prisma.event, 'findMany');
+      findManyMock.mockResolvedValueOnce(null);
+
       await expect(
         service.getEventsByClassID(mockClassID, prisma),
-      ).rejects.toThrow(HttpException);
+      ).resolves.toBeNull();
     });
   });
 
@@ -240,11 +265,11 @@ describe('EventService', () => {
       expect(result).toEqual([mockEvent]);
     });
 
-    it('should throw when there are no events', async () => {
+    it('should return null when there are no events', async () => {
       const findManyMock = jest.spyOn(prisma.event, 'findMany');
       findManyMock.mockResolvedValueOnce(null);
 
-      await expect(service.getEvents(prisma)).rejects.toThrow(HttpException);
+      await expect(service.getEvents(prisma)).resolves.toBeNull();
     });
   });
 });

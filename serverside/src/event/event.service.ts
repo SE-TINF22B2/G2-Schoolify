@@ -29,13 +29,13 @@ export class EventService {
 
   async getEventsByTeacherID(
     teacherID: number,
-    timespan: number,
     prisma: PrismaClient,
+    timespan?: number,
   ): Promise<Event[]> {
     const now = new Date();
     const toDate = new Date(
-      now.getFullYear() + (timespan || 1),
-      now.getMonth(),
+      now.getFullYear(),
+      now.getMonth() + (timespan || 12),
       now.getDate(),
     );
     const events: Event[] = await prisma.event.findMany({
@@ -52,13 +52,13 @@ export class EventService {
 
   async getEventsByClassID(
     classID: number,
-    timespan: number,
     prisma: PrismaClient,
+    timespan?: number,
   ): Promise<Event[]> {
     const now = new Date();
     const toDate = new Date(
-      now.getFullYear() + (timespan || 1),
-      now.getMonth(),
+      now.getFullYear(),
+      now.getMonth() + (timespan || 12),
       now.getDate(),
     );
     const events: Event[] = await prisma.event.findMany({
@@ -73,11 +73,11 @@ export class EventService {
     return events;
   }
 
-  async getEvents(timespan: number, prisma: PrismaClient): Promise<Event[]> {
+  async getEvents(prisma: PrismaClient, timespan?: number): Promise<Event[]> {
     const now = new Date();
     const toDate = new Date(
-      now.getFullYear() + (timespan || 1),
-      now.getMonth(),
+      now.getFullYear(),
+      now.getMonth() + (timespan || 12),
       now.getDate(),
     );
     const events: Event[] = await prisma.event.findMany({
@@ -93,13 +93,13 @@ export class EventService {
 
   async getEventByID(
     id: number,
-    timespan: number,
     prisma: PrismaClient,
+    timespan?: number,
   ): Promise<Event> {
     const now = new Date();
     const toDate = new Date(
-      now.getFullYear() + (timespan || 1),
-      now.getMonth(),
+      now.getFullYear(),
+      now.getMonth() + (timespan || 12),
       now.getDate(),
     );
     const event: Event = await prisma.event.findFirst({

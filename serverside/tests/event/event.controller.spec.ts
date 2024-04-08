@@ -84,7 +84,10 @@ describe('EventController', () => {
 
         await controller.getEvents();
 
-        expect(getEventsSpy).toHaveBeenCalledWith(controller['prisma']);
+        expect(getEventsSpy).toHaveBeenCalledWith(
+          controller['prisma'],
+          undefined,
+        );
       });
     });
     describe('getByID', () => {
@@ -98,6 +101,7 @@ describe('EventController', () => {
         expect(getEventByIDSpy).toHaveBeenCalledWith(
           mockEventId,
           controller['prisma'],
+          undefined,
         );
       });
     });
@@ -112,6 +116,7 @@ describe('EventController', () => {
         expect(getEventsByClassIDSpy).toHaveBeenCalledWith(
           mockClassId,
           controller['prisma'],
+          undefined,
         );
       });
     });
@@ -126,6 +131,7 @@ describe('EventController', () => {
         expect(getEventsByTeacherIDSpy).toHaveBeenCalledWith(
           mockTeacherId,
           controller['prisma'],
+          undefined,
         );
       });
     });
