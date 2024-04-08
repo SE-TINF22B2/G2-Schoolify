@@ -4,8 +4,6 @@ import { ValidationPipe } from '@nestjs/common/pipes';
 import { PrismaClientExceptionFilter } from 'nestjs-prisma';
 import * as dotenv from 'dotenv';
 
-const PORT = 3000;
-
 async function primsaEnvDefinition() {
   if (process.env.NODE_ENV === 'production') {
     dotenv.config({ path: '.env.production' });

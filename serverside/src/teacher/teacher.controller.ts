@@ -4,7 +4,6 @@ import {
   Param,
   Post,
   Body,
-  Put,
   Delete,
   UsePipes,
   ValidationPipe,
@@ -13,6 +12,7 @@ import {
 import { TeacherService } from './teacher.service';
 import { Teacher } from '@prisma/client';
 import { CreateTeacherDto } from './dto/createTeacher.dto';
+
 @Controller('teacher')
 export class TeacherController {
   constructor(private readonly teacherService: TeacherService) {}

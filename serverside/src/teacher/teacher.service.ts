@@ -19,9 +19,13 @@ export class TeacherService {
     return this.prisma.teacher.findMany();
   }
 
-  async createTeacher(data: CreateTeacherDto): Promise<Teacher | null> {
+  async createTeacher(passedData: CreateTeacherDto): Promise<Teacher | null> {
     return this.prisma.teacher.create({
-      data: data,
+      data: {
+        user_Login_DataUser_Login_DataID: passedData.user_Login_DataID,
+        name: passedData.name,
+        lastname: passedData.lastname,
+      },
     });
   }
 
