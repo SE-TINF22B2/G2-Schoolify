@@ -29,63 +29,88 @@ export class EventService {
 
   async getEventsByTeacherID(
     teacherID: number,
+    timespan: number,
     prisma: PrismaClient,
   ): Promise<Event[]> {
+    const now = new Date();
+    const toDate = new Date(
+      now.getFullYear() + (timespan || 1),
+      now.getMonth(),
+      now.getDate(),
+    );
     const events: Event[] = await prisma.event.findMany({
       where: {
         teacherTeacherID: teacherID,
+        dateFrom: {
+          gte: now,
+          lte: toDate,
+        },
       },
     });
-    if (!events) {
-      throw new HttpException(
-        `There are no events planned for teacher ${teacherID}.`,
-        HttpStatus.NOT_FOUND,
-      );
-    }
     return events;
   }
 
   async getEventsByClassID(
     classID: number,
+    timespan: number,
     prisma: PrismaClient,
   ): Promise<Event[]> {
+    const now = new Date();
+    const toDate = new Date(
+      now.getFullYear() + (timespan || 1),
+      now.getMonth(),
+      now.getDate(),
+    );
     const events: Event[] = await prisma.event.findMany({
       where: {
         classClassID: classID,
+        dateFrom: {
+          gte: now,
+          lte: toDate,
+        },
       },
     });
-    if (!events) {
-      throw new HttpException(
-        `There are no events planned for class ${classID}.`,
-        HttpStatus.NOT_FOUND,
-      );
-    }
     return events;
   }
 
-  async getEvents(prisma: PrismaClient): Promise<Event[]> {
-    const events: Event[] = await prisma.event.findMany();
-    if (!events) {
-      throw new HttpException(
-        'There are no events planned.',
-        HttpStatus.NOT_FOUND,
-      );
-    }
+  async getEvents(timespan: number, prisma: PrismaClient): Promise<Event[]> {
+    const now = new Date();
+    const toDate = new Date(
+      now.getFullYear() + (timespan || 1),
+      now.getMonth(),
+      now.getDate(),
+    );
+    const events: Event[] = await prisma.event.findMany({
+      where: {
+        dateFrom: {
+          gte: now,
+          lte: toDate,
+        },
+      },
+    });
     return events;
   }
 
-  async getEventByID(id: number, prisma: PrismaClient): Promise<Event> {
+  async getEventByID(
+    id: number,
+    timespan: number,
+    prisma: PrismaClient,
+  ): Promise<Event> {
+    const now = new Date();
+    const toDate = new Date(
+      now.getFullYear() + (timespan || 1),
+      now.getMonth(),
+      now.getDate(),
+    );
     const event: Event = await prisma.event.findFirst({
       where: {
         eventID: id,
+        dateFrom: {
+          gte: now,
+          lte: toDate,
+        },
       },
     });
-    if (!event) {
-      throw new HttpException(
-        `Event ${id} does not exist.`,
-        HttpStatus.NOT_FOUND,
-      );
-    }
     return event;
   }
 

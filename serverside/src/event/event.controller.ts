@@ -44,30 +44,34 @@ export class EventController {
   @Get('getEventByID/:id')
   async getEventByID(
     @Param('id', new ParseIntPipe()) id: number,
+    @Body() timespan: number,
   ): Promise<Event> {
-    return await this.eventService.getEventByID(id, this.prisma);
+    return await this.eventService.getEventByID(id, timespan, this.prisma);
   }
 
   //All Events
+  //timespan in years
   @Get('getAllEvent')
-  async getEvents(): Promise<Event[]> {
-    return await this.eventService.getEvents(this.prisma);
+  async getEvents(@Body() timespan: number): Promise<Event[]> {
+    return await this.eventService.getEvents(timespan, this.prisma);
   }
 
   //All Events for Class
   @Get('getEventsByClassID/:id')
   async getEventsByClassID(
     @Param('id', new ParseIntPipe()) id: number,
+    @Body() timespan: number,
   ): Promise<Event[]> {
-    return await this.eventService.getEventsByClassID(id, this.prisma);
+    return await this.eventService.getEventsByClassID(id, timespan, this.prisma);
   }
 
   //All Events for Teacher
   @Get('getEventsByTeacherID/:id')
   async getEventsByTeacherID(
     @Param('id', new ParseIntPipe()) id: number,
+    @Body() timespan: number,
   ): Promise<Event[]> {
-    return await this.eventService.getEventsByTeacherID(id, this.prisma);
+    return await this.eventService.getEventsByTeacherID(id, timespan, this.prisma);
   }
 
   //Change Event (only Teacher and Admin)
