@@ -3,6 +3,7 @@ import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { MealModule } from './meal/meal.module';
 import { EventController } from './event/event.controller';
+import { EventService } from './event/event.service';
 import { EventModule } from './event/event.module';
 import { TestModule } from './test/test.module';
 import { TeacherModule } from './teacher/teacher.module';
@@ -51,6 +52,7 @@ import { AuthService } from './auth/auth.service';
     UserServiceMock,
     MockService,
     EventServiceMock,
+    EventService,
     SubjectLessonServiceMock,
     GradesServiceMock,
     FoodServiceMock,
