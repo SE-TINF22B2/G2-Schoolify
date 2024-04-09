@@ -1,13 +1,66 @@
 {
-  "lessons" : [
-  { "timeslot": 1, "day": 1, "label": "Deutsch" },
-  { "timeslot": 1, "day": 2, "label": "Mathe" },
-  { "timeslot": 1, "day": 3, "label": "Physik" },
-  { "timeslot": 1, "day": 4, "label": "Chemie" },
-  { "timeslot": 2, "day": 1, "label": "Geschichte" },
-  { "timeslot": 2, "day": 2, "label": "Geografie" },
-  { "timeslot": 2, "day": 3, "label": "Englisch" },
-  { "timeslot": 2, "day": 4, "label": "Kunst" },
-  { "timeslot": 2, "day": 5, "label": "Musik" }
-]
+  "lessons": [
+    {
+      "timeslot": 1,
+      "day": 1,
+      "label": "Deutsch"
+    },
+    {
+      "timeslot": 1,
+      "day": 2,
+      "label": "Mathe"
+    },
+    {
+      "timeslot": 1,
+      "day": 3,
+      "label": "Physik"
+    },
+    {
+      "timeslot": 1,
+      "day": 4,
+      "label": "Chemie"
+    },
+    {
+      "timeslot": 2,
+      "day": 1,
+      "label": "Geschichte"
+    },
+    {
+      "timeslot": 2,
+      "day": 2,
+      "label": "Geografie"
+    },
+    {
+      "timeslot": 2,
+      "day": 3,
+      "label": "Englisch"
+    },
+    {
+      "timeslot": 2,
+      "day": 4,
+      "label": "Kunst"
+    },
+    {
+      "timeslot": 2,
+      "day": 5,
+      "label": "Musik"
+    }
+  ],
+  "lessons1": [
+    {
+      "timeslot": 1,
+      "day": 1,
+      "label": "Deutsch"
+    },
+    {
+      "timeslot": 1,
+      "day": 2,
+      "label": "Mathe"
+    },
+    {
+      "timeslot": 1,
+      "day": 3,
+      "label": "Physik"
+    }
+  ]
 }

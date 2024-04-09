@@ -1,10 +1,8 @@
 "use client";
-
-import { Button } from "@nextui-org/react";
 import ArrowBackIosNewOutlinedIcon from "@mui/icons-material/ArrowBackIosNewOutlined";
 import ArrowForwardIosOutlinedIcon from "@mui/icons-material/ArrowForwardIosOutlined";
 import mockdata from "./lessons.json";
-import  moment from "moment";
+import moment from "moment";
 
 import React, { useEffect, useState } from "react";
 import {
@@ -17,7 +15,6 @@ import {
 } from "@nextui-org/react";
 
 import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/react";
-import { Hidden } from "@mui/material";
 const columns = [
     "Stunde",
     "Montag",
@@ -27,7 +24,6 @@ const columns = [
     "Freitag",
 ];
 const timeslots = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-const lessons = mockdata.lessons;
 
 function getColorForLesson(label: string): string {
     let color = "black";
@@ -66,23 +62,50 @@ function getColorForLesson(label: string): string {
 
 function getLesson(
     timeslot: number,
-    day: number
+    day: number,
+    lessons: { timeslot: number; day: number; label: string }[]
 ): { timeslot: number; day: number; label: string } | undefined {
     return lessons.find(
         (lesson) => lesson.timeslot === timeslot && lesson.day === day
     );
 }
-function convertToWeekFormat(m: moment.Moment){
+
+function convertToWeekFormat(m: moment.Moment) {
     const weekend = moment(m);
-    weekend.add(4, "days")
+    weekend.add(4, "days");
     return m.format("D[.] M[.]") + " - " + weekend.format("D[.] M[.]");
+}
+
+function fetchLessons(weekstart: moment.Moment) {
+    if (weekstart.toISOString() === moment().startOf("isoWeek").toISOString()) {
+        return mockdata.lessons;
+    } else {
+        return mockdata.lessons1;
+    }
 }
 
 //@ts-nocheck
 export default function Timetable() {
     const [weekstart] = useState(moment().startOf("isoWeek"));
     const [week, setWeek] = useState(convertToWeekFormat(weekstart));
-    useEffect(() => {});
+    const [lessons, setLessons] = useState(mockdata.lessons);
+
+    useEffect(() => {
+        columns.forEach((column, index) => {
+            if(column !== "Stunde"){
+                const dayOffset = index - 1; // Offset because first column is for timeslots
+                const columnDate = moment(weekstart)
+                    .add(dayOffset, "days")
+                    .format("D[.] M[.]");
+                const element = document.getElementById("date" + column);
+                if (element) {
+                    element.innerText = columnDate;
+                }
+            }
+
+        });
+    }),
+        [week];
 
     return (
         <div>
@@ -91,9 +114,10 @@ export default function Timetable() {
                     id="center"
                     className="flex justify-center items-center text-black">
                     <button
-                        onClick={() => {
+                        onClick={async () => {
                             weekstart.subtract(7, "days");
                             setWeek(convertToWeekFormat(weekstart));
+                            setLessons(fetchLessons(weekstart));
                         }}>
                         <ArrowBackIosNewOutlinedIcon />
                     </button>
@@ -102,21 +126,23 @@ export default function Timetable() {
                         onClick={() => {
                             weekstart.add(7, "days");
                             setWeek(convertToWeekFormat(weekstart));
+                            setLessons(fetchLessons(weekstart));
                         }}>
                         <ArrowForwardIosOutlinedIcon />
                     </button>
                 </div>
             </div>
-            <p>{weekstart.toISOString()}</p>
             <div>
                 <Table removeWrapper aria-label="Stundenplan">
                     <TableHeader>
                         {columns.map((column) => (
                             <TableColumn
                                 align="center"
-                                className="bg-transparent">
+                                className="bg-transparent"
+                                key={column}>
                                 <div className="flex flex-col justify-center items-center text-sm font-normal leading-5 text-black">
-                                    {column}
+                                    <p id={"date" + column}></p>
+                                    <p>{column}</p>
                                 </div>
                             </TableColumn>
                         ))}
@@ -128,7 +154,8 @@ export default function Timetable() {
                                     {columns.map((_, colIndex) => {
                                         const lesson = getLesson(
                                             rowIndex + 1,
-                                            colIndex
+                                            colIndex,
+                                            lessons
                                         );
                                         return (
                                             <TableCell
