@@ -3,8 +3,10 @@
 import { Button } from "@nextui-org/react";
 import ArrowBackIosNewOutlinedIcon from "@mui/icons-material/ArrowBackIosNewOutlined";
 import ArrowForwardIosOutlinedIcon from "@mui/icons-material/ArrowForwardIosOutlined";
-import AccessTimeOutlinedIcon from "@mui/icons-material/AccessTimeOutlined";
-import React from "react";
+import mockdata from "./lessons.json";
+import  moment from "moment";
+
+import React, { useEffect, useState } from "react";
 import {
     Table,
     TableHeader,
@@ -15,6 +17,7 @@ import {
 } from "@nextui-org/react";
 
 import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/react";
+import { Hidden } from "@mui/material";
 const columns = [
     "Stunde",
     "Montag",
@@ -23,8 +26,8 @@ const columns = [
     "Donnerstag",
     "Freitag",
 ];
-
-const timeslots = [1, 2, 3, 4, 5, 6];
+const timeslots = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+const lessons = mockdata.lessons;
 
 function getColorForLesson(label: string): string {
     let color = "black";
@@ -60,18 +63,6 @@ function getColorForLesson(label: string): string {
     }
     return color;
 }
-const lessons = [
-    { timeslot: 1, day: 1, label: "Deutsch" },
-    { timeslot: 1, day: 2, label: "Mathe" },
-    { timeslot: 1, day: 3, label: "Physik" },
-    { timeslot: 1, day: 4, label: "Chemie" },
-    { timeslot: 1, day: 5, label: "Biologie" },
-    { timeslot: 2, day: 1, label: "Geschichte" },
-    { timeslot: 2, day: 2, label: "Geografie" },
-    { timeslot: 2, day: 3, label: "Englisch" },
-    { timeslot: 2, day: 4, label: "Kunst" },
-    { timeslot: 2, day: 5, label: "Musik" },
-];
 
 function getLesson(
     timeslot: number,
@@ -81,29 +72,44 @@ function getLesson(
         (lesson) => lesson.timeslot === timeslot && lesson.day === day
     );
 }
+function convertToWeekFormat(m: moment.Moment){
+    const weekend = moment(m);
+    weekend.add(4, "days")
+    return m.format("D[.] M[.]") + " - " + weekend.format("D[.] M[.]");
+}
 
 //@ts-nocheck
 export default function Timetable() {
-    let week = "Diese Woche";
+    const [weekstart] = useState(moment().startOf("isoWeek"));
+    const [week, setWeek] = useState(convertToWeekFormat(weekstart));
+    useEffect(() => {});
+
     return (
         <div>
             <div className="flex py-6 justify-center">
                 <div
                     id="center"
                     className="flex justify-center items-center text-black">
-                    <button>
+                    <button
+                        onClick={() => {
+                            weekstart.subtract(7, "days");
+                            setWeek(convertToWeekFormat(weekstart));
+                        }}>
                         <ArrowBackIosNewOutlinedIcon />
                     </button>
                     <div className="px-5">{week}</div>
-                    <button>
+                    <button
+                        onClick={() => {
+                            weekstart.add(7, "days");
+                            setWeek(convertToWeekFormat(weekstart));
+                        }}>
                         <ArrowForwardIosOutlinedIcon />
                     </button>
                 </div>
             </div>
+            <p>{weekstart.toISOString()}</p>
             <div>
-                <Table
-                    removeWrapper
-                    aria-label="Example table with dynamic content">
+                <Table removeWrapper aria-label="Stundenplan">
                     <TableHeader>
                         {columns.map((column) => (
                             <TableColumn
@@ -142,6 +148,11 @@ export default function Timetable() {
                                                         </div>
                                                     ) : (
                                                         <Card
+                                                            className={
+                                                                lesson == null
+                                                                    ? "invisible"
+                                                                    : ""
+                                                            }
                                                             fullWidth
                                                             style={{
                                                                 backgroundColor:
