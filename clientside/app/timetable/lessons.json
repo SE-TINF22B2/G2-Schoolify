@@ -44,8 +44,79 @@
       "timeslot": 2,
       "day": 5,
       "label": "Musik"
+    },
+    {
+      "timeslot": 3,
+      "day": 1,
+      "label": "Biologie"
+    },
+    {
+      "timeslot": 3,
+      "day": 3,
+      "label": "Sport"
+    },
+    {
+      "timeslot": 3,
+      "day": 4,
+      "label": "Informatik"
+    },
+    {
+      "timeslot": 3,
+      "day": 5,
+      "label": "Religion"
+    },
+    {
+      "timeslot": 4,
+      "day": 1,
+      "label": "Englisch"
+    },
+    {
+      "timeslot": 4,
+      "day": 2,
+      "label": "Geschichte"
+    },
+    {
+      "timeslot": 4,
+      "day": 3,
+      "label": "Musik"
+    },
+    {
+      "timeslot": 4,
+      "day": 4,
+      "label": "Sport"
+    },
+    {
+      "timeslot": 4,
+      "day": 5,
+      "label": "Biologie"
+    },
+    {
+      "timeslot": 5,
+      "day": 1,
+      "label": "Mathe"
+    },
+    {
+      "timeslot": 5,
+      "day": 2,
+      "label": "Deutsch"
+    },
+    {
+      "timeslot": 5,
+      "day": 3,
+      "label": "Kunst"
+    },
+    {
+      "timeslot": 5,
+      "day": 4,
+      "label": "Geografie"
+    },
+    {
+      "timeslot": 5,
+      "day": 5,
+      "label": "Physik"
     }
-  ],
+  ]
+  ,
   "lessons1": [
     {
       "timeslot": 1,
