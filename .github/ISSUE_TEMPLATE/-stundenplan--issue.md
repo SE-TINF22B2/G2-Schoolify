@@ -2,30 +2,30 @@
 name: "[Stundenplan] Issue"
 about: 'Part of Stundenplan '
 title: "[Stundenplan] <Title> "
-labels: ''
-assignees: Kronprinz03
+labels: 'user-story'
+assignees: 
 
 ---
 
-### Feature-Anfrage
+## Beschreibung 
+(Genaue Beschreibung um was es geht und was in dem Issue umgesetzt werden soll. 
+-> Möglichst implementierungsnah / technisch, **Dopplungen mit User Story vermeiden!**)
+## Aufgaben 
+(Beschreibung der Aufgaben als Task Liste, dabei genau auf Implementierungschritte eingehen)
+## Zusätzliche Informationen 
+### Abhängigkeiten
+(Ggf. Abhängigkeiten zu anderen Issues verlinken)
+### Mockup
+(Bei Frontend: entsprechendes Figma Mockup einfügen)
+### Architektur
+(Bei Backend: entsprechende Architektur einfügen)
 
-(Kurze Beschreibung des gewünschten Features) <User-Story>
+## User Story
+Zugehörige User Story verlinken
 
-### Eigenschaften
-(Erläutern gewünschter Eigenschaft)
-
-### Anwendungsszenarien
-
-(Beschreiben Sie die Umstände, unter denen die gewünschte Funktion nützlich sein wird)
-
-### Beispiele
-
-(Geben Sie Beispiele, falls vorhanden)
-
-### Mögliche Implementierungen
-
-(Gebe mögliche Wege vor)
-
-### Zusätzliche Informationen
-
-(Geben Sie weitere Details oder zusätzlichen Kontext für die Funktion an.)
+## Sonstige ToDos 
+**(Punkt löschen vor Erstellen des Issues)**
+- Issue in entsprechender User Story hinzufügen  
+- Label für Front oder Backend setzen 
+- Label für Phase setzen
+- zu Projekten hinzufügen
