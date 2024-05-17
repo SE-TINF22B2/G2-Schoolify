@@ -4,7 +4,6 @@ about: Part of Abwesenheitsverwaltung
 title: "[Abwesenheitsverwaltung] <Title>"
 labels: 'user-story'
 assignees: ''
-projects: ['SE-TINF22B2/Projects/SchoolifyProject', 'SE-TINF22B2/Projects/Roadmap']
 
 ---
 
