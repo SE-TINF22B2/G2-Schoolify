@@ -4,6 +4,7 @@ about: Part of Abwesenheitsverwaltung
 title: "[Abwesenheitsverwaltung] <Title>"
 labels: 'user-story'
 assignees: ''
+projects: ['SE-TINF22B2/Projects/SchoolifyProject', 'SE-TINF22B2/Projects/Roadmap']
 
 ---
 
@@ -24,7 +25,7 @@ assignees: ''
 Zugehörige User Story verlinken
 
 ## Sonstige ToDos 
-(Punkt löschen vor Erstellen des Issues)
+**(Punkt löschen vor Erstellen des Issues)**
 - Issue in entsprechender User Story hinzufügen  
 - Label für Front oder Backend setzen 
 - Label für Phase setzen
