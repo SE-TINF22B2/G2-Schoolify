@@ -6,6 +6,13 @@ Unser Backend wird, wie in unserer Wiki im Teil der Technologien erklärt, mit N
 ### Source Code
 Die Ordnerstruktur ist relativ simple. Unter dem Ordner _src_ wird der Source Code eingefügt. Dort gibt es für jede Komponente im Backend ein NestJS Module. Wie genau Modules mit zugehörigem Controller und Service in NestJS aufgebaut sind, kann [hier](https://docs.nestjs.com/first-steps) nachgelesen werden. In jedem Issue ist die Architektur beschrieben, aus der die Komponente für den Code herausgelesen werden kann.
 
+Das Prisma Objekt ist zuständig für alle Anfragen an unsere Datenbank. In jedem Module muss daher ein neues Prismaobjekt als Provider erstellt werden. In zugehörigem Controller kann durch ein Inject auf dieses Objekt automatisch zugegriffen werden. Inject ist ebenfalls ein Tool von NestJS, das wir verwenden.
+```typescript
+@Inject('PRISMA') private prisma: PrismaClient<Prisma.PrismaClientOptions>
+```
+Der Controller stellt die Schnittstellen dem Benutzer zur Verfügung und ist lediglich für die Validierung der Rolle zuständig. Ist diese validiert, ruft der Controller die zugehörige Methode im Service zur Verfügung und übergibt dabei auch das Prisma Objekt.
+Die Convention sieht vor, dass in jeder API Anfrage die Rolle des Benutzers (z.B. Lehrer, Schüler, etc.) im Header durch das Attribut _role_ mitgegeben wird.
+
 ### Tests
 Der Ordner _tests_ ist eine Kopie des _src_ Ordners. Hier werden alle Unit Tests für alle Komponenten geschrieben. Wie genau unser Testkonzept aussieht, kann auch [hier](https://github.com/SE-TINF22B2/G2-Schoolify/wiki/Projekthandbuch#tests) in unserem Projekthandbuch nachgelesen werden. Es müssen für alle Funktionen im Backend Unit Test geschrieben werden, die funktionieren! Bei offenen Fragen kann der Entwickler immer bei bereits vorhandenen Tests sich die Struktur anschauen und nachbauen. 
 
