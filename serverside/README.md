@@ -1,30 +1,31 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+## Backend Development
+Unser Backend wird, wie in unserer Wiki im Teil der Technologien erklärt, mit NestJS entwickelt. Dabei verwenden wir einige Funktionen und Methodiken, die hier genauer erklärt werden. Die Schritte unter dem Teil [Installation](#installation) sind vor Starten des Backends auszuführen.
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+### Ordnerstruktur
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+### Source Code
+Die Ordnerstruktur ist relativ simple. Unter dem Ordner _src_ wird der Source Code eingefügt. Dort gibt es für jede Komponente im Backend ein NestJS Module. Wie genau Modules mit zugehörigem Controller und Service in NestJS aufgebaut sind, kann [hier](https://docs.nestjs.com/first-steps) nachgelesen werden. In jedem Issue ist die Architektur beschrieben, aus der die Komponente für den Code herausgelesen werden kann.
 
-## Description
+### Tests
+Der Ordner _tests_ ist eine Kopie des _src_ Ordners. Hier werden alle Unit Tests für alle Komponenten geschrieben. Wie genau unser Testkonzept aussieht, kann auch [hier](https://github.com/SE-TINF22B2/G2-Schoolify/wiki/Projekthandbuch#tests) in unserem Projekthandbuch nachgelesen werden. Es müssen für alle Funktionen im Backend Unit Test geschrieben werden, die funktionieren! Bei offenen Fragen kann der Entwickler immer bei bereits vorhandenen Tests sich die Struktur anschauen und nachbauen. 
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+### Dto
+Für unsere API Schnittstellen verwenden wir sogenannte _Dtos_, mit dem genau beschrieben werden kann, was für Objekte unsere Schnittstelle übergeben bekommen muss. Dadurch kann eine Validation bereits in der Anfrage geschehen und muss nicht manuell vom Entwickler gecodet werden.
+Beispiel für ein _Dto_ Objekt, das die Eingaben bereits validiert:
+```typescript
+export class User_Login_DataDto {
+  @IsNotEmpty()
+  @IsEmail()
+  readonly email: string;
+
+  @IsNotEmpty()
+  @IsString()
+  readonly password: string;
+}
+```
+Hier wird vorausgesetzt, dass die Anfrage ein Objekt mit den Attributen _email_ und _password_ erhält. Durch die Annotationen werden beide Validiert, dass sie nicht leer sind und jeweils eine richtige email Adresse oder ein String sind. Dieses Konzept wird bei allen Schnittstellen von uns verwendet. Auch hier kann sich bei bereits erstellten _Dtos_ orientiert werden.
+
+Alle anderen Ordner sind für die Entwicklung im Backend erstmal irrelevant und sollten nicht angefasst werden.
 
 ## Installation
 
@@ -57,16 +58,6 @@ $ npm run test:e2e
 # test coverage
 $ npm run test:cov
 ```
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
 
 ## License
 
