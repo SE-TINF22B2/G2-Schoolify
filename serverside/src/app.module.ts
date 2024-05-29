@@ -56,7 +56,6 @@ import { AuthService } from './auth/auth.service';
     FoodServiceMock,
     ClassbookEntryServiceMock,
     AbsentServiceMock,
-    AuthService,
     {
       provide: 'PRISMA',
       useValue: new PrismaClient(),

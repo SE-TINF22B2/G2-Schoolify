@@ -1,13 +1,15 @@
 import { ApiTags } from '@nestjs/swagger';
-import { Controller, Inject } from '@nestjs/common';
+import { Body, Controller, HttpException, Inject, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { Prisma, PrismaClient } from '@prisma/client';
+import { AuthPayloadDto } from './dto/auth.dto';
 
 @ApiTags('Auth')
 @Controller('auth')
 export class AuthController {
-  constructor(
-    private readonly authService: AuthService,
-    @Inject('PRISMA') private prisma: PrismaClient<Prisma.PrismaClientOptions>,
-  ) {}
+  constructor(private authService: AuthService) {}
+
+  @Post('login')
+  async login(@Body() authPayload: AuthPayloadDto): Promise<any> {
+    return await this.authService.validateUser(authPayload);
+  }
 }
