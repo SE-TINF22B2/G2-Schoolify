@@ -1,16 +1,28 @@
-import { Controller, Headers } from '@nestjs/common';
+import { Controller, Inject, ParseIntPipe } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Get, Param } from '@nestjs/common';
+import { LessonService } from './lesson.service';
+import { Prisma, PrismaClient } from '@prisma/client';
 
 @ApiTags('Lesson')
 @Controller('lesson')
 export class LessonController {
-  @Get(':classId/week/:weekNumber')
-  getAllLessonsForClassInWeek(
-    @Headers('role') role,
-    @Param('classID') classId: number,
-    @Param('weekStart') weekNumber: number,
+  constructor(
+    private readonly lessonService: LessonService,
+    @Inject('PRISMA') private prisma: PrismaClient<Prisma.PrismaClientOptions>,
+  ) {}
+
+  @Get('getLessonsForWeek/:weekStart/:classId')
+  async getLessonsForWeek(
+    //@Headers('role') role,
+    @Param('weekStart') weekStart: Date,
+    @Param('classID', new ParseIntPipe()) classID: number,
   ) {
-    // Your code to fetch all lessons for a certain class in a week goes here
+    //keine Rolle abfragen, da jeder den Stundenplan betrachten kann
+    return await this.lessonService.getLessonsForWeek(
+      weekStart,
+      classID,
+      this.prisma,
+    );
   }
 }

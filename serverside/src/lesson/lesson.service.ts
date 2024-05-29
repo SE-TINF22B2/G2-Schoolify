@@ -1,20 +1,38 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaClient, Lesson } from '@prisma/client';
-import moment from 'moment';
 
 @Injectable()
 export class LessonService {
-  async getLessonsForWeek(classID: number, weekStart: string, prisma: PrismaClient) : Promise<Lesson[]> {
+  async getLessonsForWeek(
+    weekStart: Date,
+    classID: number,
+    prisma: PrismaClient,
+  ): Promise<Lesson[][]> {
+    const endOfWeek = new Date(weekStart);
+    endOfWeek.setDate(weekStart.getDate() + 5); // Nur Montag bis Freitag, da am Wochenende keine Schule
+
     const lessons: Lesson[] = await prisma.lesson.findMany({
       where: {
         classClassID: classID,
-        startTime : {
-          gte: new Date(weekStart),
-          lt: moment(weekStart).add(5, 'days').toDate(),
-        }
-      }
+        startTime: {
+          gte: weekStart,
+          lte: endOfWeek,
+        },
+      },
     });
-    return lessons
+
+    const lessonsByDay: Lesson[][] = [[], [], [], [], []];
+
+    for (const lesson of lessons) {
+      const dayIndex = this.getDayIndex(lesson.startTime);
+      lessonsByDay[dayIndex].push(lesson);
+    }
+
+    return lessonsByDay;
   }
 
+  private getDayIndex(date: Date): number {
+    // 0 = Montag, 1 = Dienstag, ..., 4 = Freitag
+    return (date.getDay() + 6) % 7;
+  }
 }
