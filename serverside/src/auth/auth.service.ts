@@ -1,6 +1,7 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { AuthPayloadDto } from './dto/auth.dto';
 import { JwtService } from '@nestjs/jwt';
+import * as bcrypt from 'bcrypt';
 
 const fakeUser = [
   {
@@ -30,14 +31,19 @@ export class AuthService {
   }: AuthPayloadDto): Promise<{ access_token: string }> {
     const findUser = fakeUser.find((user) => user.email === email);
 
-    if (!findUser || findUser.password != password) {
+    // hash mash
+    const saltOrRounds = 10;
+    const hash = await bcrypt.hash(password, saltOrRounds);
+
+    // user existiert nicht oder passwort falsch
+    if (!findUser || !(await bcrypt.compare(findUser.password, hash))) {
       throw new UnauthorizedException();
     }
 
+    //payload für jwt
     const payload = {
       sub: findUser.id,
       email: findUser.email,
-      password: findUser.password,
     };
     return {
       access_token: await this.jwtService.signAsync(payload),
