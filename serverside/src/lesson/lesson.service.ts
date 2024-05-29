@@ -9,7 +9,8 @@ export class LessonService {
     prisma: PrismaClient,
   ): Promise<Lesson[][]> {
     const endOfWeek = new Date(weekStart);
-    endOfWeek.setDate(weekStart.getDate() + 5); // Nur Montag bis Freitag, da am Wochenende keine Schule
+    // Nur Montag bis Freitag, da am Wochenende keine Schule
+    endOfWeek.setDate(weekStart.getDate() + 5);
 
     const lessons: Lesson[] = await prisma.lesson.findMany({
       where: {
@@ -21,18 +22,25 @@ export class LessonService {
       },
     });
 
-    const lessonsByDay: Lesson[][] = [[], [], [], [], []];
-
-    for (const lesson of lessons) {
-      const dayIndex = this.getDayIndex(lesson.startTime);
-      lessonsByDay[dayIndex].push(lesson);
-    }
-
+    const lessonsByDay = sortLessonsToDates(lessons);
     return lessonsByDay;
   }
+}
 
-  private getDayIndex(date: Date): number {
-    // 0 = Montag, 1 = Dienstag, ..., 4 = Freitag
-    return (date.getDay() + 6) % 7;
+//Funktion um die Stunden den Tagen zuzuordnen
+function sortLessonsToDates(lessons) {
+  const lessonsByDay: Lesson[][] = [[], [], [], [], []];
+
+  for (const lesson of lessons) {
+    const dayIndex = getDayIndex(lesson.startTime);
+    lessonsByDay[dayIndex].push(lesson);
   }
+
+  return lessonsByDay;
+}
+
+//Funktion um den Tag herauszufinden, für welche die Stunden sind
+function getDayIndex(date: Date): number {
+  // 0 = Montag, 1 = Dienstag, ..., 4 = Freitag
+  return (date.getDay() + 6) % 7;
 }
