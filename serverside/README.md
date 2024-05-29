@@ -1,8 +1,9 @@
+## Backend Development
+Unser Backend wird, wie in unserer Wiki im Teil der Technologien erklärt, mit NestJS entwickelt. Dabei verwenden wir einige Funktionen und Methodiken, die hier genauer erklärt werden. Die Schritte unter dem Teil [Installation](#installation) sind vor Starten des Backends auszuführen.
+
 ## Ordnerstruktur
 Die Ordnerstruktur ist relativ simple. 
 
-### Backend Development
-Unser Backend wird, wie in unserer Wiki im Teil der Technologien erklärt, mit NestJS entwickelt. Dabei verwenden wir einige Funktionen und Methodiken, die hier genauer erklärt werden. Die Schritte unter dem Teil [Installation](#installation) sind vor Starten des Backends auszuführen.
 
 #### Installation
 
