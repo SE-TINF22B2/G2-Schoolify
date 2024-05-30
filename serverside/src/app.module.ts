@@ -25,7 +25,6 @@ import { GradesServiceMock } from 'prisma/data/testdata/mockGrades.service';
 import { FoodServiceMock } from 'prisma/data/testdata/mockFood.service';
 import { ClassbookEntryServiceMock } from 'prisma/data/testdata/mockClassEntries.service';
 import { AbsentServiceMock } from 'prisma/data/testdata/mockAbsent.service';
-import { AuthService } from './auth/auth.service';
 
 @Module({
   imports: [

@@ -2,7 +2,8 @@ import { Module } from '@nestjs/common';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { PrismaClient } from '@prisma/client';
-import { JwtModule, JwtService } from '@nestjs/jwt';
+import { JwtModule } from '@nestjs/jwt';
+import { AuthGuard } from './tokens/auth.guard';
 
 @Module({
   imports: [
@@ -12,7 +13,14 @@ import { JwtModule, JwtService } from '@nestjs/jwt';
       signOptions: { expiresIn: '1d' },
     }),
   ],
-  providers: [AuthService],
+  providers: [
+    AuthService,
+    AuthGuard,
+    {
+      provide: 'PRISMA',
+      useValue: new PrismaClient(),
+    },
+  ],
   controllers: [AuthController],
 })
 export class AuthModule {}
