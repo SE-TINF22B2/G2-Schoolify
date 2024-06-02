@@ -68,12 +68,22 @@ export class MealService {
   async getMealsOfWeek(startDay: Date, prisma: PrismaClient) {
     const weekID: number = await this.getFoodWeekID(startDay, prisma);
 
-    const food = await prisma.food.findMany({
+    let responseArray: [Food[], Food[], Food[], Food[], Food[]];
+
+    const allFoodsForWeek: Food[] = await prisma.food.findMany({
       where: {
+        // to replace with const weekID
         foodWeekFoodWeekID: 1,
       },
     });
-    return food;
+
+    allFoodsForWeek.forEach((food) => {
+      const day: number = (food.day.getDay() + 6) % 7;
+
+      responseArray[day].push(food);
+    });
+
+    return responseArray;
   }
 
   //to get foodweekID
