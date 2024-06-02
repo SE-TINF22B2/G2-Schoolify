@@ -13,6 +13,7 @@ export class MealService {
         HttpStatus.NOT_FOUND,
       );
     }
+    const today = new Date();
     const createdMeal: Food = await prisma.food.create({
       data: {
         name: newMeal.name,
@@ -20,6 +21,7 @@ export class MealService {
         ingredients: newMeal.ingredients,
         calories: newMeal.calories,
         allergies: newMeal.allergies,
+        day: today,
         extra: newMeal.extra ? newMeal.extra : 'None',
         foodWeekFoodWeekID: newMeal.foodWeekId,
       },

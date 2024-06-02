@@ -153,6 +153,7 @@ model Food {
   description        String
   ingredients        String
   calories           String
+  day                DateTime
   allergies          String
   extra              String
   FoodWeek           FoodWeek? @relation(fields: [foodWeekFoodWeekID], references: [foodWeekID])
