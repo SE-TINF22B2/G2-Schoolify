@@ -7,6 +7,7 @@ import {
   HttpStatus,
   Inject,
   Post,
+  Get,
 } from '@nestjs/common';
 import { MealService } from './meal.service';
 import { PrismaClient, Prisma, Food } from '@prisma/client';
@@ -32,5 +33,15 @@ export class MealController {
       );
     }
     return await this.mealService.createMeal(newMeal, this.prisma);
+  }
+
+  @Get('canteenplan/thisweek')
+  async getPlanThisWeek() {
+    return await this.mealService.getMealsOfThisWeek(this.prisma);
+  }
+
+  @Get('canteenplan/nextweek')
+  async getPlanNextWeek() {
+    return await this.mealService.getMealsOfNextWeek(this.prisma);
   }
 }

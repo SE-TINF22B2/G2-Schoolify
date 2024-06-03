@@ -1,5 +1,5 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { Food, PrismaClient } from '@prisma/client';
+import { Food, FoodWeek, PrismaClient } from '@prisma/client';
 import { CreateMealDto } from 'dto/createMealDto';
 
 @Injectable()
@@ -40,5 +40,70 @@ export class MealService {
       },
     });
     return foodWeekCount === 1;
+  }
+
+  // method to get the meals for this week
+  async getMealsOfThisWeek(prisma: PrismaClient) {
+    const currentDate = new Date();
+    const weekDayNumber = (currentDate.getDay() + 6) % 7;
+    const firstDay = new Date(currentDate);
+    firstDay.setDate(currentDate.getDate() - weekDayNumber);
+    firstDay.setHours(2, 0, 0, 0);
+
+    return await this.getMealsOfWeek(firstDay, prisma);
+  }
+
+  // method to get the meals for next week
+  async getMealsOfNextWeek(prisma: PrismaClient) {
+    const currentDate = new Date();
+    const weekDayNumber = (currentDate.getDay() + 6) % 7;
+    const firstDay = new Date(currentDate);
+    firstDay.setDate(currentDate.getDate() - weekDayNumber + 7);
+    firstDay.setHours(2, 0, 0, 0);
+
+    return await this.getMealsOfWeek(firstDay, prisma);
+  }
+
+  // method to get meals for a week
+  // array of foodArrays for each day
+  async getMealsOfWeek(startDay: Date, prisma: PrismaClient) {
+    const weekID: number = await this.getFoodWeekID(startDay, prisma);
+
+    const responseArray: [Food[], Food[], Food[], Food[], Food[]] = [
+      [],
+      [],
+      [],
+      [],
+      [],
+    ];
+
+    const allFoodsForWeek: Food[] = await prisma.food.findMany({
+      where: {
+        foodWeekFoodWeekID: weekID,
+      },
+    });
+
+    allFoodsForWeek.forEach((food) => {
+      const day: number = (food.day.getDay() + 6) % 7;
+
+      if (day < responseArray.length) {
+        responseArray[day].push(food);
+      }
+    });
+
+    return responseArray;
+  }
+
+  //to get foodweekID
+  async getFoodWeekID(day: Date, prisma: PrismaClient) {
+    const foodWeek: FoodWeek = await prisma.foodWeek.findFirst({
+      where: {
+        start: day,
+      },
+    });
+    if (foodWeek != null) {
+      return foodWeek.foodWeekID;
+    }
+    throw new HttpException('no foodweek has been found', HttpStatus.NOT_FOUND);
   }
 }
