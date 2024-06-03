@@ -31,7 +31,7 @@ describe('LessonController', () => {
 
   describe('getLessonsForWeek', () => {
     it('should call getLessonsForWeek in LessonService and return the result', async () => {
-      const mockWeekStart = new Date();
+      const mockWeekStart = '2024-06-03T00:00:00.000Z';
       const mockClassID = 1;
 
       const lessonServiceSpy = jest
