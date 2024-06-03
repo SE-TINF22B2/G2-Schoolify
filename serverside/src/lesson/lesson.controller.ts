@@ -16,7 +16,7 @@ export class LessonController {
   async getLessonsForWeek(
     //@Headers('role') role,
     @Param('weekStart') weekStart: Date,
-    @Param('classID', new ParseIntPipe()) classID: number,
+    @Param('classId', new ParseIntPipe()) classID: number,
   ) {
     //keine Rolle abfragen, da jeder den Stundenplan betrachten kann
     return await this.lessonService.getLessonsForWeek(
