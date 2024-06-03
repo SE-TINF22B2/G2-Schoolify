@@ -1,7 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { Food, FoodWeek, PrismaClient } from '@prisma/client';
 import { CreateMealDto } from 'dto/createMealDto';
-import { Timestamp } from 'rxjs';
 
 @Injectable()
 export class MealService {
@@ -70,19 +69,26 @@ export class MealService {
   async getMealsOfWeek(startDay: Date, prisma: PrismaClient) {
     const weekID: number = await this.getFoodWeekID(startDay, prisma);
 
-    let responseArray: [Food[], Food[], Food[], Food[], Food[]];
+    const responseArray: [Food[], Food[], Food[], Food[], Food[]] = [
+      [],
+      [],
+      [],
+      [],
+      [],
+    ];
 
     const allFoodsForWeek: Food[] = await prisma.food.findMany({
       where: {
-        // to replace with const weekID
-        foodWeekFoodWeekID: 1,
+        foodWeekFoodWeekID: weekID,
       },
     });
 
     allFoodsForWeek.forEach((food) => {
       const day: number = (food.day.getDay() + 6) % 7;
 
-      responseArray[day].push(food);
+      if (day < responseArray.length) {
+        responseArray[day].push(food);
+      }
     });
 
     return responseArray;
