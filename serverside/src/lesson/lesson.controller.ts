@@ -15,12 +15,14 @@ export class LessonController {
   @Get('getLessonsForWeek/:weekStart/:classId')
   async getLessonsForWeek(
     //@Headers('role') role,
-    @Param('weekStart') weekStart: Date,
+    @Param('weekStart') weekStart: string,
     @Param('classId', new ParseIntPipe()) classID: number,
   ) {
+    const weekStartDate = new Date(weekStart);
+    console.log(typeof weekStart);
     //keine Rolle abfragen, da jeder den Stundenplan betrachten kann
     return await this.lessonService.getLessonsForWeek(
-      weekStart,
+      weekStartDate,
       classID,
       this.prisma,
     );
