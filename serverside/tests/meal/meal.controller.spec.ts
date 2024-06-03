@@ -54,4 +54,29 @@ describe('MealController', () => {
       expect(createMealSpy).toHaveBeenCalled();
     });
   });
+
+  describe('tests for get meals this week', () => {
+    it('should call the service correct', async () => {
+      const getPlanThisWeekSpy = jest
+        .spyOn(controller['mealService'], 'getMealsOfThisWeek')
+        .mockResolvedValue(undefined);
+
+      const result = await controller.getPlanThisWeek();
+      expect(result).toBeUndefined();
+
+      expect(getPlanThisWeekSpy).toHaveBeenCalled();
+    });
+  });
+  describe('tests for get meals next week', () => {
+    it('should call the service correct', async () => {
+      const getPlanNextWeekSpy = jest
+        .spyOn(controller['mealService'], 'getMealsOfNextWeek')
+        .mockResolvedValue(undefined);
+
+      const result = await controller.getPlanNextWeek();
+      expect(result).toBeUndefined();
+
+      expect(getPlanNextWeekSpy).toHaveBeenCalled();
+    });
+  });
 });
