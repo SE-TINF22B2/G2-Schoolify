@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty, IsNumber } from '@nestjs/class-validator';
+import { IsString, IsNotEmpty } from '@nestjs/class-validator';
 
 export class CreateMealDto {
   @IsNotEmpty()
@@ -17,7 +17,8 @@ export class CreateMealDto {
   @IsString()
   readonly allergies: string;
 
-  
+  @IsNotEmpty()
+  @IsString()
   readonly extra: string;
 
   @IsNotEmpty()
@@ -25,6 +26,6 @@ export class CreateMealDto {
   readonly ingredients: string;
 
   @IsNotEmpty()
-  @IsNumber()
-  readonly foodWeekId: number;
+  @IsString()
+  readonly day: string;
 }
