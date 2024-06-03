@@ -39,6 +39,7 @@ export class FoodServiceMock {
           description: mealsDesc[i],
           ingredients: 'Check the meal description',
           calories: '500',
+          day: today,
           allergies: 'None',
           extra: 'Extra Cheese',
           FoodWeek: {
@@ -52,6 +53,7 @@ export class FoodServiceMock {
           description: mealsDesc[i],
           ingredients: 'Check the meal description',
           calories: '500',
+          day: today,
           allergies: 'None',
           extra: 'Extra Cheese',
           FoodWeek: {

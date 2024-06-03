@@ -3,10 +3,8 @@ import { UsersController } from '../../../src/auth/users/users.controller';
 import { HttpException, HttpStatus, INestApplication } from '@nestjs/common';
 import { UsersService } from '../../../src/auth/users/users.service';
 import { PrismaClient, Student } from '@prisma/client';
-import {
-  CreateStudentDto,
-  User_Login_DataDto,
-} from '../../../dto/createStudentDto';
+import { CreateStudentDto } from '../../../dto/createStudentDto';
+import { User_Login_DataDto } from 'dto/loginDTO';
 
 describe('UsersController', () => {
   let controller: UsersController;

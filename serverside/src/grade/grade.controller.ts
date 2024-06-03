@@ -1,3 +1,4 @@
+import { ApiTags } from '@nestjs/swagger';
 import {
   Body,
   Controller,
@@ -7,12 +8,14 @@ import {
   Inject,
   Post,
   Get,
+  ParseIntPipe,
+  Param,
 } from '@nestjs/common';
 import { GradeService } from './grade.service';
 import { Prisma, PrismaClient } from '@prisma/client';
 import { SaveGradeDto } from '../../dto/saveGradeDto';
-// .../grade/
 
+@ApiTags('Grade')
 @Controller('grade')
 export class GradeController {
   constructor(
@@ -33,7 +36,7 @@ export class GradeController {
     return await this.gradeService.saveGrade(grade, this.prisma);
   }
 
-  @Get(':studentId')
+  @Get('getByStudentId/:studentId')
   async getGradesByStudentID(
     @Headers('id') userId: number,
     @Body('studentId') studentId: number,
@@ -47,7 +50,7 @@ export class GradeController {
     return await this.gradeService.getGradesByStudentID(studentId, this.prisma);
   }
 
-  @Get(':testId')
+  @Get('getByTestId/:testId')
   async getGradesByTestID(
     @Headers('role') role,
     @Body('id') testId: number,
@@ -59,5 +62,32 @@ export class GradeController {
       );
     }
     return await this.gradeService.getGradesByTestID(testId, this.prisma);
+  }
+
+  @Get('allCorrectedTests')
+  async CorrectedTests(
+    @Headers('role') role,
+    @Param('id', new ParseIntPipe()) id: number,
+  ): Promise<any> {
+    checkRole(role);
+    return await this.gradeService.getCorrectedTests(id, this.prisma);
+  }
+
+  @Get('notCorrectedTests')
+  async notCorrectedTests(
+    @Headers('role') role,
+    @Param('id', new ParseIntPipe()) id: number,
+  ): Promise<any> {
+    checkRole(role);
+    return await this.gradeService.getNotCorrectedTests(id, this.prisma);
+  }
+}
+
+function checkRole(role) {
+  if (role !== 'Teacher' && role !== 'Admin') {
+    throw new HttpException(
+      role + ' is not allowed to see the tests!',
+      HttpStatus.FORBIDDEN,
+    );
   }
 }
