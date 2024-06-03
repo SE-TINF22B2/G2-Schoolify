@@ -1,8 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { MealService } from '../../src/meal/meal.service';
 import { Food, FoodWeek, PrismaClient } from '@prisma/client';
-import { CreateMealDto } from 'dto/createMealDto';
-import { HttpException, HttpStatus } from '@nestjs/common';
 
 describe('MealService', () => {
   let service: MealService;
@@ -22,6 +20,7 @@ describe('MealService', () => {
             foodWeek: {
               count: jest.fn(),
               findFirst: jest.fn(),
+              create: jest.fn(),
             },
           }),
         },
@@ -39,61 +38,41 @@ describe('MealService', () => {
   it('should be defined', () => {
     expect(service).toBeDefined();
   });
-  // describe.skip('tests for createMeal function', () => {
-  //   it('should throw an error because foodweek has not been found', async () => {
-  //     const checkFoodWeekSpy = jest
-  //       .spyOn(service, 'checkFoodWeek')
-  //       .mockResolvedValue(false);
+  describe('tests for createmeal function', () => {
+    it('should create the food correct and call the function correct', async () => {
+      const checkFoodWeekSpy = jest
+        .spyOn(service, 'checkFoodWeek')
+        .mockResolvedValue(1);
 
-  //     const createMealSpy = jest.spyOn(prisma.food, 'create');
-  //     await expect(
-  //       service.createMeal({ foodWeekId: 1 } as CreateMealDto, prisma),
-  //     ).rejects.toThrowError(
-  //       new HttpException(
-  //         'foodWeek with ID 1 was not found',
-  //         HttpStatus.NOT_FOUND,
-  //       ),
-  //     );
-  //     expect(checkFoodWeekSpy).toHaveBeenCalled();
-  //     expect(createMealSpy).not.toHaveBeenCalled();
-  //   });
-  //   it('should call function correctly', async () => {
-  //     const checkFoodWeekSpy = jest
-  //       .spyOn(service, 'checkFoodWeek')
-  //       .mockResolvedValue(true);
+      const createMealSpy = jest
+        .spyOn(prisma.food, 'create')
+        .mockResolvedValue({} as Food);
 
-  //     const mockCreatedMeal: Food = {
-  //       foodID: 0,
-  //       name: '',
-  //       description: '',
-  //       ingredients: '',
-  //       calories: '',
-  //       allergies: '',
-  //       extra: '',
-  //       foodWeekFoodWeekID: 1,
-  //     };
-
-  //     const createMealSpy = jest
-  //       .spyOn(prisma.food, 'create')
-  //       .mockResolvedValue(mockCreatedMeal);
-
-  //     const createdMeal = await service.createMeal(
-  //       { foodWeekId: 1 } as CreateMealDto,
-  //       prisma,
-  //     );
-  //     expect(createdMeal).toEqual(mockCreatedMeal);
-  //     expect(checkFoodWeekSpy).toHaveBeenCalled();
-  //     expect(createMealSpy).toHaveBeenCalled();
-  //   });
-  // });
+      const result = await service.createMeal(
+        {
+          day: '2024-06-05T11:18:01.227Z',
+          name: '',
+          description: '',
+          calories: '',
+          allergies: '',
+          extra: '',
+          ingredients: '',
+        },
+        prisma,
+      );
+      expect(result).toEqual({});
+      expect(checkFoodWeekSpy).toHaveBeenCalled();
+      expect(createMealSpy).toHaveBeenCalled();
+    });
+  });
   describe('tests for checkFoodWeek function', () => {
     it('should call and return everything correctly', async () => {
       const countFoodWeekSpy = jest
-        .spyOn(prisma.foodWeek, 'count')
-        .mockResolvedValue(1);
+        .spyOn(prisma.foodWeek, 'findFirst')
+        .mockResolvedValue({ foodWeekID: 1 } as FoodWeek);
 
-      const result = await service.checkFoodWeek(1, prisma);
-      expect(result).toBe(true);
+      const result = await service.checkFoodWeek(new Date(), prisma);
+      expect(result).toEqual(1);
       expect(countFoodWeekSpy).toHaveBeenCalled();
     });
   });
