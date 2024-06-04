@@ -154,6 +154,7 @@ model Food {
   description        String
   day                DateTime
   allergies          String?
+  price              Float
   kategorie          kategorieEnum
   FoodWeek           FoodWeek? @relation(fields: [foodWeekFoodWeekID], references: [foodWeekID])
   foodWeekFoodWeekID Int?
