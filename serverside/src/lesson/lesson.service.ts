@@ -11,9 +11,7 @@ export class LessonService {
     const endOfWeek = new Date(weekStart);
     // Nur Montag bis Freitag, da am Wochenende keine Schule
     endOfWeek.setDate(weekStart.getDate() + 5);
-
-    const subjectNames = await getSubjectNames(prisma);
-    const tests = await prisma.test.findMany();
+    console.log(weekStart, endOfWeek);
 
     const lessons: Lesson[] = await prisma.lesson.findMany({
       where: {
@@ -23,30 +21,22 @@ export class LessonService {
           lte: endOfWeek,
         },
       },
+      include: {
+        Subject: true,
+        Test: true,
+      },
     });
 
-    const lessonsWithSubjectName = mapLessonsUp(lessons, subjectNames, tests);
-    const lessonsByDay = sortLessonsToDates(lessonsWithSubjectName);
+    const lessonsByDay = sortLessonsToDates(lessons);
     return lessonsByDay;
   }
-}
-
-function mapLessonsUp(lessons, subjectNames, tests) {
-  return lessons.map((lesson) => {
-    const subjectName =
-      subjectNames[lesson.subjectSubjectID] || 'No name given';
-    const testName =
-      tests.find((test) => test.testID === lesson.testTestID)?.topic ||
-      'No Test';
-    return { ...lesson, subjectName, testName };
-  });
 }
 //Funktion um die Stunden den Tagen zuzuordnen
 function sortLessonsToDates(lessons) {
   const lessonsByDay: Lesson[][] = [[], [], [], [], []];
 
   for (const lesson of lessons) {
-    const dayIndex = getDayIndex(lesson.startTime);
+    const dayIndex = getDayIndex(lesson.day);
     lessonsByDay[dayIndex].push(lesson);
   }
 
@@ -57,18 +47,4 @@ function sortLessonsToDates(lessons) {
 function getDayIndex(date: Date): number {
   // 0 = Montag, 1 = Dienstag, ..., 4 = Freitag
   return (date.getDay() + 6) % 7;
-}
-
-async function getSubjectNames(prisma) {
-  const subjects = await prisma.subject.findMany({
-    select: { subjectID: true, name: true },
-    orderBy: { subjectID: 'asc' },
-  });
-
-  //neues Array, wo SubjectID: 1 an Stelle [1] des Arrays ist.
-  const subjectsArray = new Array(subjects.length + 1);
-  subjects.forEach((subject) => {
-    subjectsArray[subject.subjectID] = subject.name;
-  });
-  return subjectsArray;
 }
