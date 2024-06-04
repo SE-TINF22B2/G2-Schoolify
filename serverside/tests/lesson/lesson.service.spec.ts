@@ -16,6 +16,9 @@ describe('LessonService', () => {
             lesson: {
               findMany: jest.fn(),
             },
+            subject: {
+              findMany: jest.fn(),
+            },
           }),
         },
       ],
@@ -33,13 +36,28 @@ describe('LessonService', () => {
       const mockWeekStart = new Date('2024-05-20');
       const mockClassID = 123;
 
+      const mockSubjects = [
+        {
+          subjectID: 1,
+          name: 'Mathe',
+        },
+        {
+          subjectID: 2,
+          name: 'Englisch',
+        },
+        {
+          subjectID: 3,
+          name: 'Deutsch',
+        },
+      ];
+
       const mockLessons = [
         {
           lessonID: 1,
           classClassID: 123,
           timeslot: 1,
           startTime: new Date('2024-05-20T08:00:00'),
-          subjectSubjectID: 456,
+          subjectSubjectID: 1,
           testTestID: null,
           duration: 45,
         },
@@ -48,7 +66,7 @@ describe('LessonService', () => {
           classClassID: 123,
           timeslot: 2,
           startTime: new Date('2024-05-21T08:00:00'),
-          subjectSubjectID: 789,
+          subjectSubjectID: 1,
           testTestID: null,
           duration: 45,
         },
@@ -57,7 +75,7 @@ describe('LessonService', () => {
           classClassID: 123,
           timeslot: 3,
           startTime: new Date('2024-05-22T08:00:00'),
-          subjectSubjectID: 101,
+          subjectSubjectID: 2,
           testTestID: null,
           duration: 45,
         },
@@ -66,7 +84,7 @@ describe('LessonService', () => {
           classClassID: 123,
           timeslot: 4,
           startTime: new Date('2024-05-23T08:00:00'),
-          subjectSubjectID: 202,
+          subjectSubjectID: 3,
           testTestID: null,
           duration: 45,
         },
@@ -75,15 +93,31 @@ describe('LessonService', () => {
           classClassID: 123,
           timeslot: 5,
           startTime: new Date('2024-05-24T08:00:00'),
-          subjectSubjectID: 303,
+          subjectSubjectID: 1,
           testTestID: null,
           duration: 45,
+        },
+      ];
+      const mockVisibleLessons = [
+        {
+          lessonID: 1,
+          classClassID: 123,
+          timeslot: 1,
+          startTime: new Date('2024-05-20T08:00:00'),
+          subjectSubjectID: 1,
+          testTestID: null,
+          duration: 45,
+          subjectName: 'Mathe',
         },
       ];
 
       const prismaFindManySpy = jest
         .spyOn(prisma.lesson, 'findMany')
         .mockResolvedValue(mockLessons);
+
+      const prismaSubjectFindManySpy = jest
+        .spyOn(prisma.subject, 'findMany')
+        .mockResolvedValue(mockSubjects);
 
       const result = await service.getLessonsForWeek(
         mockWeekStart,
@@ -100,6 +134,7 @@ describe('LessonService', () => {
           },
         },
       });
+      expect(prismaSubjectFindManySpy).toHaveBeenCalled();
       //Für jeden Tag eine Stunde, Montag bis Freitag
       expect(result).toHaveLength(5);
       expect(result[0]).toHaveLength(1);
@@ -107,6 +142,7 @@ describe('LessonService', () => {
       expect(result[2]).toHaveLength(1);
       expect(result[3]).toHaveLength(1);
       expect(result[4]).toHaveLength(1);
+      expect(result[0]).toEqual(mockVisibleLessons);
     });
   });
 });

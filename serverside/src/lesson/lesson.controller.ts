@@ -1,4 +1,10 @@
-import { Controller, Inject, ParseIntPipe } from '@nestjs/common';
+import {
+  Controller,
+  HttpException,
+  HttpStatus,
+  Inject,
+  ParseIntPipe,
+} from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Get, Param } from '@nestjs/common';
 import { LessonService } from './lesson.service';
@@ -18,7 +24,13 @@ export class LessonController {
     @Param('weekStart') weekStart: string,
     @Param('classId', new ParseIntPipe()) classID: number,
   ) {
-    const weekStartDate = new Date(weekStart);
+    const weekStartDate: Date = weekStart ? new Date(weekStart) : new Date();
+    if (!classID) {
+      throw new HttpException(
+        'You cannot ask for a lessonsplan for no class',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
     console.log(typeof weekStart);
     //keine Rolle abfragen, da jeder den Stundenplan betrachten kann
     return await this.lessonService.getLessonsForWeek(
