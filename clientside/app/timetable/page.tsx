@@ -15,6 +15,9 @@ import {
 } from "@nextui-org/react";
 
 import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/react";
+import { Lesson } from "./LessonType";
+import { fetchLessons } from "./fetchLessons";
+import getColorForLesson from "./getColorForLesson";
 const columns = [
     "Stunde",
     "Montag",
@@ -25,49 +28,20 @@ const columns = [
 ];
 const timeslots = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
-function getColorForLesson(label: string): string {
-    let color = "black";
-    if (label === "Deutsch") {
-        color = "#800000"; // dunkelrot
-    }
-    if (label === "Mathe") {
-        color = "#000080"; // dunkelblau
-    }
-    if (label === "Physik") {
-        color = "#808000"; // dunkelgelb
-    }
-    if (label === "Chemie") {
-        color = "#800080"; // dunkellila
-    }
-    if (label === "Biologie") {
-        color = "#FF4500"; // dunkelorange
-    }
-    if (label === "Geschichte") {
-        color = "#FF1493"; // dunkelpink
-    }
-    if (label === "Geografie") {
-        color = "#8B4513"; // dunkelbraun
-    }
-    if (label === "Englisch") {
-        color = "#008080"; // dunkeltürkis
-    }
-    if (label === "Kunst") {
-        color = "#808080"; // dunkelgrau
-    }
-    if (label === "Musik") {
-        color = "#00CED1"; // dunkelblaugrün
-    }
-    return color;
-}
 
 function getLesson(
     timeslot: number,
-    day: number,
-    lessons: { timeslot: number; day: number; label: string }[]
-): { timeslot: number; day: number; label: string } | undefined {
-    return lessons.find(
-        (lesson) => lesson.timeslot === timeslot && lesson.day === day
-    );
+    dayIndex: number,
+    lessons: Lesson[][]
+): Lesson | undefined {
+    const dayLessons = lessons[dayIndex];
+    
+    // Find the lesson for the specific timeslot (row index)
+    if(dayLessons === undefined) return undefined;
+    return dayLessons.find(lesson => lesson.timeslot === timeslot);
+    // return lessons.find(
+    //     (lesson) => lesson.timeslot === timeslot && lesson.day === day
+    // );
 }
 
 function convertToWeekFormat(m: moment.Moment) {
@@ -76,19 +50,12 @@ function convertToWeekFormat(m: moment.Moment) {
     return m.format("D[.] M[.]") + " - " + weekend.format("D[.] M[.]");
 }
 
-function fetchLessons(weekstart: moment.Moment) {
-    if (weekstart.toISOString() === moment().startOf("isoWeek").toISOString()) {
-        return mockdata.lessons;
-    } else {
-        return mockdata.lessons1;
-    }
-}
 
 //@ts-nocheck
 export default function Timetable() {
     const [weekstart] = useState(moment().startOf("isoWeek"));
     const [week, setWeek] = useState(convertToWeekFormat(weekstart));
-    const [lessons, setLessons] = useState(mockdata.lessons);
+    const [lessons, setLessons] = useState({} as Lesson[][]);
 
     useEffect(() => {
         columns.forEach((column, index) => {
@@ -104,8 +71,14 @@ export default function Timetable() {
             }
 
         });
-    }),
-        [week];
+    }),[week];
+
+    useEffect(() => {
+        fetch(`api/lesson/getLessonsForWeek?classId=1`)
+      .then((response:Response) => response.json()).then((data: Lesson[][]) => {setLessons(data); console.log(data)})
+    }),[weekstart];
+
+
 
     return (
         <div>
@@ -117,7 +90,7 @@ export default function Timetable() {
                         onClick={async () => {
                             weekstart.subtract(7, "days");
                             setWeek(convertToWeekFormat(weekstart));
-                            setLessons(fetchLessons(weekstart));
+                            // setLessons(fetchLessons(1));
                         }}>
                         <ArrowBackIosNewOutlinedIcon />
                     </button>
@@ -126,7 +99,7 @@ export default function Timetable() {
                         onClick={() => {
                             weekstart.add(7, "days");
                             setWeek(convertToWeekFormat(weekstart));
-                            setLessons(fetchLessons(weekstart));
+                            // setLessons(fetchLessons(1));
                         }}>
                         <ArrowForwardIosOutlinedIcon />
                     </button>
@@ -184,14 +157,14 @@ export default function Timetable() {
                                                             style={{
                                                                 backgroundColor:
                                                                     getColorForLesson(
-                                                                        lesson?.label ??
+                                                                        lesson?.Subject.name ??
                                                                             ""
                                                                     ),
                                                             }}>
                                                             <CardHeader className="flex gap-3">
                                                                 <div className="flex flex-col">
                                                                     <p className="text-default-500 text-xl text-white">
-                                                                        {lesson?.label ??
+                                                                        {lesson?.Subject.name ??
                                                                             ""}
                                                                     </p>
                                                                 </div>
