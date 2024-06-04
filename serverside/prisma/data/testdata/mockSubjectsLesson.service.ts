@@ -15,8 +15,6 @@ export class SubjectLessonServiceMock {
 
   async create(prisma) {
     const mockSubjects = ['Mathe', 'English', 'Physic'];
-    let startTimeHour = 8;
-    const duration = 1;
     const d = new Date();
     const mockClass = this.classService.classA;
     const mockClass1 = this.classService.classB;
@@ -27,55 +25,38 @@ export class SubjectLessonServiceMock {
         create: { name: mockSubjects[j] },
       });
       for (let i = 0; i < 4; i++) {
-        const dateStartTime = new Date(
-          d.getFullYear(),
-          d.getMonth(),
-          d.getDate(),
-          startTimeHour,
-          0,
-          0,
-        );
-        startTimeHour += duration;
+        const day = new Date(d.getFullYear(), d.getMonth(), d.getDate());
         this.lessonsA[i] = await prisma.lesson.upsert({
           where: { lessonID: i + 1 + j * 4 },
           update: {
             Class: { connect: { classID: mockClass.classID } },
-            startTime: dateStartTime,
-            duration: duration,
+            day: day,
+            timeslot: i + 1,
             Subject: { connect: { subjectID: this.subjects[j].subjectID } },
           },
           create: {
-            startTime: dateStartTime,
-            duration: duration,
+            day: day,
+            timeslot: i + 1,
             Class: { connect: { classID: mockClass.classID } },
             Subject: { connect: { subjectID: this.subjects[j].subjectID } },
           },
         });
       }
     }
-    startTimeHour = 8;
     for (let j = 0; j < mockSubjects.length; j++) {
       for (let i = 0; i < 4; i++) {
-        const dateStartTime = new Date(
-          d.getFullYear(),
-          d.getMonth(),
-          d.getDate(),
-          startTimeHour,
-          0,
-          0,
-        );
-        startTimeHour += duration;
+        const day = new Date(d.getFullYear(), d.getMonth(), d.getDate());
         this.lessonsB[i] = await prisma.lesson.upsert({
           where: { lessonID: i + 13 + j * 4 },
           update: {
-            startTime: dateStartTime,
-            duration: duration,
+            day: day,
+            timeslot: i + 1,
             Class: { connect: { classID: mockClass1.classID } },
             Subject: { connect: { subjectID: this.subjects[j].subjectID } },
           },
           create: {
-            startTime: dateStartTime,
-            duration: duration,
+            day: day,
+            timeslot: i + 1,
             Class: { connect: { classID: mockClass1.classID } },
             Subject: { connect: { subjectID: this.subjects[j].subjectID } },
           },
