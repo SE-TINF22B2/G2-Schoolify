@@ -16,7 +16,6 @@ import {
 
 import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/react";
 import { Lesson } from "./LessonType";
-import { fetchLessons } from "./fetchLessons";
 import getColorForLesson from "./getColorForLesson";
 const columns = [
     "Stunde",
@@ -72,11 +71,15 @@ export default function Timetable() {
 
         });
     }),[week];
+    const fetchLessons = (classId: number) => {
+        return fetch(`api/lesson/getLessonsForWeek?classId=${classId}`)
+            .then((response:Response) => response.json()).then((data: Lesson[][]) => {setLessons(data)})
+    }
 
     useEffect(() => {
-        fetch(`api/lesson/getLessonsForWeek?classId=1`)
-      .then((response:Response) => response.json()).then((data: Lesson[][]) => {setLessons(data); console.log(data)})
-    }),[weekstart];
+        fetchLessons(1);
+        console.log("test");
+    }),[];
 
 
 
@@ -87,7 +90,7 @@ export default function Timetable() {
                     id="center"
                     className="flex justify-center items-center text-black">
                     <button
-                        onClick={async () => {
+                        onClick={() => {
                             weekstart.subtract(7, "days");
                             setWeek(convertToWeekFormat(weekstart));
                             // setLessons(fetchLessons(1));
