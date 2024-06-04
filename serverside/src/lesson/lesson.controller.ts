@@ -4,9 +4,10 @@ import {
   HttpStatus,
   Inject,
   ParseIntPipe,
+  Query,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { Get, Param } from '@nestjs/common';
+import { Get } from '@nestjs/common';
 import { LessonService } from './lesson.service';
 import { Prisma, PrismaClient } from '@prisma/client';
 
@@ -18,11 +19,13 @@ export class LessonController {
     @Inject('PRISMA') private prisma: PrismaClient<Prisma.PrismaClientOptions>,
   ) {}
 
-  @Get('getLessonsForWeek/:weekStart/:classId')
+  @Get('getLessonsForWeek')
+  //http://localhost:3000/lesson/getLessonsForWeek?weekStart=2024-06-03T00:00:00.000Z&classId=1
+  //http://localhost:3000/lesson/getLessonsForWeek?classId=1
   async getLessonsForWeek(
     //@Headers('role') role,
-    @Param('weekStart') weekStart: string,
-    @Param('classId', new ParseIntPipe()) classID: number,
+    @Query('weekStart') weekStart: string,
+    @Query('classId', new ParseIntPipe()) classID: number,
   ) {
     const weekStartDate: Date = weekStart ? new Date(weekStart) : new Date();
     if (!classID) {

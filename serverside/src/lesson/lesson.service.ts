@@ -13,6 +13,7 @@ export class LessonService {
     endOfWeek.setDate(weekStart.getDate() + 5);
 
     const subjectNames = await getSubjectNames(prisma);
+    const tests = await prisma.test.findMany();
 
     const lessons: Lesson[] = await prisma.lesson.findMany({
       where: {
@@ -24,20 +25,21 @@ export class LessonService {
       },
     });
 
-    const lessonsWithSubjectName = mapLessonsWithSubjectName(
-      lessons,
-      subjectNames,
-    );
+    const lessonsWithSubjectName = mapLessonsUp(lessons, subjectNames, tests);
     const lessonsByDay = sortLessonsToDates(lessonsWithSubjectName);
     return lessonsByDay;
   }
 }
 
-function mapLessonsWithSubjectName(lessons, subjectNames) {
-  return lessons.map((lesson) => ({
-    ...lesson,
-    subjectName: subjectNames[lesson.subjectSubjectID] || 'No name given',
-  }));
+function mapLessonsUp(lessons, subjectNames, tests) {
+  return lessons.map((lesson) => {
+    const subjectName =
+      subjectNames[lesson.subjectSubjectID] || 'No name given';
+    const testName =
+      tests.find((test) => test.testID === lesson.testTestID)?.topic ||
+      'No Test';
+    return { ...lesson, subjectName, testName };
+  });
 }
 //Funktion um die Stunden den Tagen zuzuordnen
 function sortLessonsToDates(lessons) {

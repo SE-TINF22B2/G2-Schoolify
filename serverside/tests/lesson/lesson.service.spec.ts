@@ -19,6 +19,9 @@ describe('LessonService', () => {
             subject: {
               findMany: jest.fn(),
             },
+            test: {
+              findMany: jest.fn(),
+            },
           }),
         },
       ],
@@ -50,6 +53,12 @@ describe('LessonService', () => {
           name: 'Deutsch',
         },
       ];
+      const mockTests = [
+        {
+          testID: 1,
+          topic: 'Yannis den Popo versohlen',
+        },
+      ];
 
       const mockLessons = [
         {
@@ -58,7 +67,7 @@ describe('LessonService', () => {
           timeslot: 1,
           startTime: new Date('2024-05-20T08:00:00'),
           subjectSubjectID: 1,
-          testTestID: null,
+          testTestID: 1,
           duration: 45,
         },
         {
@@ -105,7 +114,8 @@ describe('LessonService', () => {
           timeslot: 1,
           startTime: new Date('2024-05-20T08:00:00'),
           subjectSubjectID: 1,
-          testTestID: null,
+          testTestID: 1,
+          testName: 'Yannis den Popo versohlen',
           duration: 45,
           subjectName: 'Mathe',
         },
@@ -118,6 +128,10 @@ describe('LessonService', () => {
       const prismaSubjectFindManySpy = jest
         .spyOn(prisma.subject, 'findMany')
         .mockResolvedValue(mockSubjects);
+
+      const prismaTestFindManySpy = jest
+        .spyOn(prisma.test, 'findMany')
+        .mockResolvedValue(mockTests);
 
       const result = await service.getLessonsForWeek(
         mockWeekStart,
@@ -135,6 +149,7 @@ describe('LessonService', () => {
         },
       });
       expect(prismaSubjectFindManySpy).toHaveBeenCalled();
+      expect(prismaTestFindManySpy).toHaveBeenCalled();
       //Für jeden Tag eine Stunde, Montag bis Freitag
       expect(result).toHaveLength(5);
       expect(result[0]).toHaveLength(1);
