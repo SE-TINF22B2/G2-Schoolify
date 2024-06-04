@@ -81,8 +81,8 @@ model ClassbockEntry {
 
 model Lesson {
   lessonID         Int      @id @default(autoincrement())
-  startTime        DateTime
-  duration         Int
+  day              DateTime
+  timeslot         Int      
   Test             Test?    @relation("Lesson2Test", fields: [testTestID], references: [testID])
   testTestID       Int?     @unique
   Class            Class?   @relation(fields: [classClassID], references: [classID])
@@ -150,12 +150,11 @@ model FoodWeek {
 model Food {
   foodID             Int       @id @default(autoincrement())
   name               String
+  shortName          String?
   description        String
-  ingredients        String
-  calories           String
   day                DateTime
-  allergies          String
-  extra              String
+  allergies          String?
+  kategorie          kategorieEnum
   FoodWeek           FoodWeek? @relation(fields: [foodWeekFoodWeekID], references: [foodWeekID])
   foodWeekFoodWeekID Int?
 }
@@ -164,4 +163,11 @@ enum userRole {
   Admin
   Teacher
   Student
+}
+enum kategorieEnum {
+  Vegan
+  Vegetarisch
+  Rindfleisch
+  Schweinefleisch
+  Fisch
 }
