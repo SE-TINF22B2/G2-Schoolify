@@ -15,7 +15,7 @@ export class LessonService {
     const lessons: Lesson[] = await prisma.lesson.findMany({
       where: {
         classClassID: classID,
-        startTime: {
+        day: {
           gte: weekStart,
           lte: endOfWeek,
         },
