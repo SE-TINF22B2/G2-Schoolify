@@ -20,8 +20,6 @@ export class LessonController {
   ) {}
 
   @Get('getLessonsForWeek')
-  //http://localhost:3000/lesson/getLessonsForWeek?weekStart=2024-06-03T00:00:00.000Z&classId=1
-  //http://localhost:3000/lesson/getLessonsForWeek?classId=1
   async getLessonsForWeek(
     //@Headers('role') role,
     @Query('weekStart') weekStart: string,
