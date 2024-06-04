@@ -14,12 +14,11 @@ export class MealService {
     const createdMeal: Food = await prisma.food.create({
       data: {
         name: newMeal.name,
+        shortName: newMeal.shortName,
         description: newMeal.description,
-        ingredients: newMeal.ingredients,
-        calories: newMeal.calories,
         allergies: newMeal.allergies,
+        kategorie: newMeal.kategorie,
         day: newMeal.day,
-        extra: newMeal.extra,
         foodWeekFoodWeekID: foodWeekID,
       },
     });

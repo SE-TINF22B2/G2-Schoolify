@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { FoodWeek, Food } from '@prisma/client';
+import { FoodWeek, Food, kategorieEnum } from '@prisma/client';
 
 @Injectable()
 export class FoodServiceMock {
@@ -36,12 +36,11 @@ export class FoodServiceMock {
         where: { foodID: i + 1 },
         update: {
           name: meals[i],
+          shortName: 'short name',
           description: mealsDesc[i],
-          ingredients: 'Check the meal description',
-          calories: '500',
           day: today,
           allergies: 'None',
-          extra: 'Extra Cheese',
+          kategorie: kategorieEnum.Schweinefleisch,
           FoodWeek: {
             connect: {
               foodWeekID: this.foodWeekMock.foodWeekID,
@@ -50,12 +49,11 @@ export class FoodServiceMock {
         },
         create: {
           name: meals[i],
+          shortName: 'short name',
           description: mealsDesc[i],
-          ingredients: 'Check the meal description',
-          calories: '500',
           day: today,
           allergies: 'None',
-          extra: 'Extra Cheese',
+          kategorie: kategorieEnum.Schweinefleisch,
           FoodWeek: {
             connect: {
               foodWeekID: this.foodWeekMock.foodWeekID,

@@ -37,47 +37,52 @@ describe('LessonService', () => {
         {
           lessonID: 1,
           classClassID: 123,
+          day: new Date('2024-05-20'),
           timeslot: 1,
-          startTime: new Date('2024-05-20T08:00:00'),
-          subjectSubjectID: 456,
-          testTestID: null,
-          duration: 45,
+          subjectSubjectID: 1,
+          testTestID: 1,
         },
         {
           lessonID: 2,
           classClassID: 123,
+          day: new Date('2024-05-21'),
           timeslot: 2,
-          startTime: new Date('2024-05-21T08:00:00'),
-          subjectSubjectID: 789,
+          subjectSubjectID: 1,
           testTestID: null,
-          duration: 45,
         },
         {
           lessonID: 3,
           classClassID: 123,
+          day: new Date('2024-05-22'),
           timeslot: 3,
-          startTime: new Date('2024-05-22T08:00:00'),
-          subjectSubjectID: 101,
+          subjectSubjectID: 2,
           testTestID: null,
-          duration: 45,
         },
         {
           lessonID: 4,
           classClassID: 123,
+          day: new Date('2024-05-23'),
           timeslot: 4,
-          startTime: new Date('2024-05-23T08:00:00'),
-          subjectSubjectID: 202,
+          subjectSubjectID: 3,
           testTestID: null,
-          duration: 45,
         },
         {
           lessonID: 5,
           classClassID: 123,
+          day: new Date('2024-05-24'),
           timeslot: 5,
-          startTime: new Date('2024-05-24T08:00:00'),
-          subjectSubjectID: 303,
+          subjectSubjectID: 1,
           testTestID: null,
-          duration: 45,
+        },
+      ];
+      const mockVisibleLessons = [
+        {
+          lessonID: 1,
+          classClassID: 123,
+          timeslot: 1,
+          day: new Date('2024-05-20'),
+          subjectSubjectID: 1,
+          testTestID: 1,
         },
       ];
 
@@ -94,10 +99,14 @@ describe('LessonService', () => {
       expect(prismaFindManySpy).toHaveBeenCalledWith({
         where: {
           classClassID: mockClassID,
-          startTime: {
+          day: {
             gte: mockWeekStart,
             lte: new Date(mockWeekStart.getTime() + 5 * 24 * 60 * 60 * 1000), //Montag bis Freitag
           },
+        },
+        include: {
+          Subject: true,
+          Test: true,
         },
       });
       //Für jeden Tag eine Stunde, Montag bis Freitag
@@ -107,6 +116,7 @@ describe('LessonService', () => {
       expect(result[2]).toHaveLength(1);
       expect(result[3]).toHaveLength(1);
       expect(result[4]).toHaveLength(1);
+      expect(result[0]).toEqual(mockVisibleLessons);
     });
   });
 });
