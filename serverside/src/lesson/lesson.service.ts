@@ -23,6 +23,7 @@ export class LessonService {
       include: {
         Subject: true,
         Test: true,
+        Teacher: true,
       },
     });
 
