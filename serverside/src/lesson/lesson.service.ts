@@ -11,7 +11,6 @@ export class LessonService {
     const endOfWeek = new Date(weekStart);
     // Nur Montag bis Freitag, da am Wochenende keine Schule
     endOfWeek.setDate(weekStart.getDate() + 5);
-    console.log(weekStart, endOfWeek);
 
     const lessons: Lesson[] = await prisma.lesson.findMany({
       where: {

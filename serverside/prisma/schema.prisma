@@ -41,6 +41,7 @@ model Teacher {
   classes                          Role[]
   events                           Event[]
   grades                           Grade[]
+  lessons                          Lesson[]
 }
 
 model Admin {
@@ -89,6 +90,9 @@ model Lesson {
   classClassID     Int?
   Subject          Subject? @relation(fields: [subjectSubjectID], references: [subjectID])
   subjectSubjectID Int?
+  Teacher          Teacher? @relation(fields: [teacherTeacherID], references: [teacherID])
+  teacherTeacherID Int?
+  roomNumber       Int?
 }
 
 model Absent {
