@@ -21,6 +21,7 @@ export class MealService {
         day: newMeal.day,
         price: newMeal.price,
         foodWeekFoodWeekID: foodWeekID,
+        url: newMeal.url,
       },
     });
 

@@ -26,4 +26,6 @@ export class CreateMealDto {
   @IsNotEmpty()
   @IsString()
   readonly day: string;
+
+  url: string;
 }
