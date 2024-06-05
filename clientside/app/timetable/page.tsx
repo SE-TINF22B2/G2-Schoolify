@@ -14,9 +14,9 @@ import {
     TableCell,
 } from "@nextui-org/react";
 
-import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/react";
 import { Lesson } from "./LessonType";
-import getColorForLesson from "./getColorForLesson";
+import { fetchLessons, getLesson } from "./LessonHandler";
+import LessonCard from "./LessonCard";
 const columns = [
     "Stunde",
     "Montag",
@@ -28,29 +28,12 @@ const columns = [
 const timeslots = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
 
-function getLesson(
-    timeslot: number,
-    dayIndex: number,
-    lessons: Lesson[][]
-): Lesson | undefined {
-    const dayLessons = lessons[dayIndex];
-    
-    // Find the lesson for the specific timeslot (row index)
-    if(dayLessons === undefined) return undefined;
-    return dayLessons.find(lesson => lesson.timeslot === timeslot);
-    // return lessons.find(
-    //     (lesson) => lesson.timeslot === timeslot && lesson.day === day
-    // );
-}
-
 function convertToWeekFormat(m: moment.Moment) {
     const weekend = moment(m);
     weekend.add(4, "days");
     return m.format("D[.] M[.]") + " - " + weekend.format("D[.] M[.]");
 }
 
-
-//@ts-nocheck
 export default function Timetable() {
     const [weekstart] = useState(moment().startOf("isoWeek"));
     const [week, setWeek] = useState(convertToWeekFormat(weekstart));
@@ -58,7 +41,7 @@ export default function Timetable() {
 
     useEffect(() => {
         columns.forEach((column, index) => {
-            if(column !== "Stunde"){
+            if (column !== "Stunde") {
                 const dayOffset = index - 1; // Offset because first column is for timeslots
                 const columnDate = moment(weekstart)
                     .add(dayOffset, "days")
@@ -68,20 +51,13 @@ export default function Timetable() {
                     element.innerText = columnDate;
                 }
             }
-
         });
-    }),[week];
-    const fetchLessons = (classId: number) => {
-        return fetch(`api/lesson/getLessonsForWeek?classId=${classId}`)
-            .then((response:Response) => response.json()).then((data: Lesson[][]) => {setLessons(data)})
-    }
+    },[week]);
 
     useEffect(() => {
-        fetchLessons(1);
-        console.log("test");
-    }),[];
-
-
+        fetchLessons(1, weekstart.toISOString(), setLessons);
+        console.log("test")
+    },[]);
 
     return (
         <div>
@@ -150,38 +126,9 @@ export default function Timetable() {
                                                             {rowIndex + 1}
                                                         </div>
                                                     ) : (
-                                                        <Card
-                                                            className={
-                                                                lesson == null
-                                                                    ? "invisible"
-                                                                    : ""
-                                                            }
-                                                            fullWidth
-                                                            style={{
-                                                                backgroundColor:
-                                                                    getColorForLesson(
-                                                                        lesson?.Subject.name ??
-                                                                            ""
-                                                                    ),
-                                                            }}>
-                                                            <CardHeader className="flex gap-3">
-                                                                <div className="flex flex-col">
-                                                                    <p className="text-default-500 text-xl text-white">
-                                                                        {lesson?.Subject.name ??
-                                                                            ""}
-                                                                    </p>
-                                                                </div>
-                                                            </CardHeader>
-
-                                                            <CardBody>
-                                                                <p className="text-small text-default-500 text-xs text-white">
-                                                                    Frau Meier
-                                                                </p>
-                                                                <p className="text-small text-default-500 text-xs text-white">
-                                                                    A263
-                                                                </p>
-                                                            </CardBody>
-                                                        </Card>
+                                                        <LessonCard
+                                                            lesson={lesson}
+                                                        />
                                                     )}
                                                 </div>
                                             </TableCell>
