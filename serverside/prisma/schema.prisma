@@ -158,6 +158,7 @@ model Food {
   kategorie          kategorieEnum
   FoodWeek           FoodWeek? @relation(fields: [foodWeekFoodWeekID], references: [foodWeekID])
   foodWeekFoodWeekID Int?
+  url                String?
 }
 
 enum userRole {
