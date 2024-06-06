@@ -24,10 +24,10 @@ export default function LessonCard({lesson}: {lesson: Lesson | undefined}) {
 
       <CardBody>
         <p className="text-small text-default-500 text-xs text-white">
-          Frau Meier
+          {lesson?.Teacher.name} {lesson?.Teacher.lastname}
         </p>
         <p className="text-small text-default-500 text-xs text-white">
-          A263
+          {lesson?.roomNumber}
         </p>
       </CardBody>
     </Card>
