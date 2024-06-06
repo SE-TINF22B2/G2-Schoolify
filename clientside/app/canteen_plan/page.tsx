@@ -8,6 +8,8 @@ import {
   TableCell,
   Button,
   ButtonGroup,
+  Skeleton,
+  Spinner,
 } from "@nextui-org/react";
 import MealCard from "./MealCard";
 import moment from "moment";
@@ -18,353 +20,19 @@ type Meal = {
   name: string;
   shortName?: string;
   description: string;
-  img: string;
+  url: string;
   price: string;
-  allergies: string;
+  allergies?: string;
   kategorie: string;
   foodWeekFoodWeekID: number;
 };
 
-const thisWeek: Array<Meal[]> = [
-  [
-    {
-      foodID: 1,
-      foodWeekFoodWeekID: 1,
-      name: "Griechische Reispfanne",
-      shortName: "Reispfanne",
-      description: "mit Sojastreifen, Gemüse und Kräuterdip",
-      img: "https://www.edeka.de/media/01-rezeptbilder/rezeptbilder-e-h/rez-edeka-griechische-reispfanne-rezept-e-h-1-1.jpg",
-      price: "$5.50",
-      kategorie: "Vegetarian",
-      allergies: "[Ei,ML,Se,Sn,So,We]",
-    },
-    {
-      foodID: 1,
-      foodWeekFoodWeekID: 1,
-      name: "Pommes",
-      description: "wahlweise mit Mayo oder Ketchup",
-      img: "https://media.istockphoto.com/id/966934632/de/foto/schmackhafte-pommes-frites-in-eine-sch%C3%BCssel-geben.jpg?s=612x612&w=0&k=20&c=7q1DvvLQuEQE7wZmGkiWPWsJzoYAPE0MwsNXWdkpnLQ=",
-      price: "$3.00",
-      kategorie: "Vegan",
-      allergies: "[Ei,ML,Se,Sn,So,We]",
-    },
-    {
-      foodID: 1,
-      foodWeekFoodWeekID: 1,
-      name: "Paniertes Schweineschnitzel",
-      shortName: "Schnitzel",
-      description: "Beilage Soße",
-      img: "https://media.istockphoto.com/id/603258520/photo/schnitzel-and-fried-potatoes.jpg?s=612x612&w=0&k=20&c=RXAndwtpKN2XUvV_TCkCQCfdlQ6sjJXTOiNpq7Kphs0=",
-      price: "$10.00",
-      kategorie: "Pork",
-      allergies: "[Ei,ML,Se,Sn,So,We]",
-    },
-  ],
-  [
-    {
-      foodID: 1,
-      foodWeekFoodWeekID: 1,
-      name: "Bunter Salat",
-      description: "Feldsalat mit Obst und Käse",
-      img: "https://images.unsplash.com/photo-1505253716362-afaea1d3d1af?w=420&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxjb2xsZWN0aW9uLXRodW1ibmFpbHx8OTI1MTcyM3x8ZW58MHx8fHx8",
-      price: "$10.00",
-      kategorie: "Vegetarian",
-      allergies: "[G]",
-    },
-    {
-      foodID: 1,
-      foodWeekFoodWeekID: 1,
-      name: "Spaghetti Bolognese",
-      shortName: "Bolognese",
-      description: "mit Rinderhack und Parmesan",
-      img: "https://img.freepik.com/free-photo/healthy-lunch-vegetarian-pasta-with-fresh-tomato-generated-by-ai_24640-81714.jpg",
-      price: "$10.00",
-      kategorie: "Beef",
-      allergies: "[Ei,ML]",
-    },
-    {
-      foodID: 1,
-      foodWeekFoodWeekID: 1,
-      name: "Linsen Bolognese",
-      shortName: "Bolognese",
-      description: "mit roten Linsen und Basilikum",
-      img: "https://www.gaumenfreundin.de/wp-content/uploads/2021/04/Rote-Linsenbolognese-einfach.jpg",
-      price: "$8.00",
-      kategorie: "Vegan",
-      allergies: "[]",
-    },
-  ],
-  [
-    {
-      foodID: 1,
-      foodWeekFoodWeekID: 1,
-      name: "Pizza",
-      description: "mit Mozzarella und Tomate",
-      img: "https://st.depositphotos.com/1144352/3656/i/450/depositphotos_36567413-stock-photo-pizza.jpg",
-      price: "$5.50",
-      kategorie: "Vegetarian",
-      allergies: "[Ei,ML,So,We]",
-    },
-    {
-      foodID: 1,
-      foodWeekFoodWeekID: 1,
-      name: "Pommes",
-      description: "wahlweise mit Mayo oder Ketchup",
-      img: "https://media.istockphoto.com/id/966934632/de/foto/schmackhafte-pommes-frites-in-eine-sch%C3%BCssel-geben.jpg?s=612x612&w=0&k=20&c=7q1DvvLQuEQE7wZmGkiWPWsJzoYAPE0MwsNXWdkpnLQ=",
-      price: "$3.00",
-      kategorie: "Vegan",
-      allergies: "[Ei,ML,Se,Sn,So,We]",
-    },
-    {
-      foodID: 1,
-      foodWeekFoodWeekID: 1,
-      name: "Burger",
-      description:
-        "mit Salat, Käse, Tomate, Zwiebeln und Rinderhack, Beilage Pommes",
-      img: "https://as1.ftcdn.net/v2/jpg/02/44/61/14/1000_F_244611436_4WKrV3YAOBo0LKe9S7hoXv55aDmgwvwr.jpg",
-      price: "$10.00",
-      kategorie: "Beef",
-      allergies: "[Ei,We]",
-    },
-  ],
-  [
-    {
-      foodID: 1,
-      foodWeekFoodWeekID: 1,
-      name: "Griechische Reispfanne",
-      shortName: "Reispfanne",
-      description: "mit Sojastreifen, Gemüse und Kräuterdip",
-      img: "https://www.edeka.de/media/01-rezeptbilder/rezeptbilder-e-h/rez-edeka-griechische-reispfanne-rezept-e-h-1-1.jpg",
-      price: "$5.50",
-      kategorie: "Vegetarian",
-      allergies: "[Ei,ML,Se,Sn,So,We]",
-    },
-    {
-      foodID: 1,
-      foodWeekFoodWeekID: 1,
-      name: "Pommes",
-      description: "wahlweise mit Mayo oder Ketchup",
-      img: "https://media.istockphoto.com/id/966934632/de/foto/schmackhafte-pommes-frites-in-eine-sch%C3%BCssel-geben.jpg?s=612x612&w=0&k=20&c=7q1DvvLQuEQE7wZmGkiWPWsJzoYAPE0MwsNXWdkpnLQ=",
-      price: "$3.00",
-      kategorie: "Vegan",
-      allergies: "[Ei,ML,Se,Sn,So,We]",
-    },
-    {
-      foodID: 1,
-      foodWeekFoodWeekID: 1,
-      name: "Paniertes Schweineschnitzel",
-      shortName: "Schnitzel",
-      description: "Beilage Soße",
-      img: "https://media.istockphoto.com/id/603258520/photo/schnitzel-and-fried-potatoes.jpg?s=612x612&w=0&k=20&c=RXAndwtpKN2XUvV_TCkCQCfdlQ6sjJXTOiNpq7Kphs0=",
-      price: "$10.00",
-      kategorie: "Pork",
-      allergies: "[Ei,ML,Se,Sn,So,We]",
-    },
-  ],
-  [
-    {
-      foodID: 1,
-      foodWeekFoodWeekID: 1,
-      name: "Bunter Salat",
-      description: "Feldsalat mit Obst und Käse",
-      img: "https://images.unsplash.com/photo-1505253716362-afaea1d3d1af?w=420&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxjb2xsZWN0aW9uLXRodW1ibmFpbHx8OTI1MTcyM3x8ZW58MHx8fHx8",
-      price: "$10.00",
-      kategorie: "Vegetarian",
-      allergies: "[G]",
-    },
-    {
-      foodID: 1,
-      foodWeekFoodWeekID: 1,
-      name: "Spaghetti Bolognese",
-      shortName: "Bolognese",
-      description: "mit Rinderhack und Parmesan",
-      img: "https://img.freepik.com/free-photo/healthy-lunch-vegetarian-pasta-with-fresh-tomato-generated-by-ai_24640-81714.jpg",
-      price: "$10.00",
-      kategorie: "Beef",
-      allergies: "[Ei,ML]",
-    },
-    {
-      foodID: 1,
-      foodWeekFoodWeekID: 1,
-      name: "Linsen Bolognese",
-      shortName: "Bolognese",
-      description: "mit roten Linsen und Basilikum",
-      img: "https://www.gaumenfreundin.de/wp-content/uploads/2021/04/Rote-Linsenbolognese-einfach.jpg",
-      price: "$8.00",
-      kategorie: "Vegan",
-      allergies: "[]",
-    },
-  ],
-];
-
-const nextWeek: Array<Meal[]> = [
-  [
-    {
-      foodID: 1,
-      foodWeekFoodWeekID: 1,
-      name: "Pommes",
-      description: "wahlweise mit Mayo oder Ketchup",
-      img: "https://media.istockphoto.com/id/966934632/de/foto/schmackhafte-pommes-frites-in-eine-sch%C3%BCssel-geben.jpg?s=612x612&w=0&k=20&c=7q1DvvLQuEQE7wZmGkiWPWsJzoYAPE0MwsNXWdkpnLQ=",
-      price: "$3.00",
-      kategorie: "Vegan",
-      allergies: "[Ei,ML,Se,Sn,So,We]",
-    },
-    {
-      foodID: 1,
-      foodWeekFoodWeekID: 1,
-      name: "Pommes",
-      description: "wahlweise mit Mayo oder Ketchup",
-      img: "https://media.istockphoto.com/id/966934632/de/foto/schmackhafte-pommes-frites-in-eine-sch%C3%BCssel-geben.jpg?s=612x612&w=0&k=20&c=7q1DvvLQuEQE7wZmGkiWPWsJzoYAPE0MwsNXWdkpnLQ=",
-      price: "$3.00",
-      kategorie: "Vegan",
-      allergies: "[Ei,ML,Se,Sn,So,We]",
-    },
-    {
-      foodID: 1,
-      foodWeekFoodWeekID: 1,
-      name: "Pommes",
-      description: "wahlweise mit Mayo oder Ketchup",
-      img: "https://media.istockphoto.com/id/966934632/de/foto/schmackhafte-pommes-frites-in-eine-sch%C3%BCssel-geben.jpg?s=612x612&w=0&k=20&c=7q1DvvLQuEQE7wZmGkiWPWsJzoYAPE0MwsNXWdkpnLQ=",
-      price: "$3.00",
-      kategorie: "Vegan",
-      allergies: "[Ei,ML,Se,Sn,So,We]",
-    },
-  ],
-  [
-    {
-      foodID: 1,
-      foodWeekFoodWeekID: 1,
-      name: "Pommes",
-      description: "wahlweise mit Mayo oder Ketchup",
-      img: "https://media.istockphoto.com/id/966934632/de/foto/schmackhafte-pommes-frites-in-eine-sch%C3%BCssel-geben.jpg?s=612x612&w=0&k=20&c=7q1DvvLQuEQE7wZmGkiWPWsJzoYAPE0MwsNXWdkpnLQ=",
-      price: "$3.00",
-      kategorie: "Vegan",
-      allergies: "[Ei,ML,Se,Sn,So,We]",
-    },
-    {
-      foodID: 1,
-      foodWeekFoodWeekID: 1,
-      name: "Pommes",
-      description: "wahlweise mit Mayo oder Ketchup",
-      img: "https://media.istockphoto.com/id/966934632/de/foto/schmackhafte-pommes-frites-in-eine-sch%C3%BCssel-geben.jpg?s=612x612&w=0&k=20&c=7q1DvvLQuEQE7wZmGkiWPWsJzoYAPE0MwsNXWdkpnLQ=",
-      price: "$3.00",
-      kategorie: "Vegan",
-      allergies: "[Ei,ML,Se,Sn,So,We]",
-    },
-    {
-      foodID: 1,
-      foodWeekFoodWeekID: 1,
-      name: "Pommes",
-      description: "wahlweise mit Mayo oder Ketchup",
-      img: "https://media.istockphoto.com/id/966934632/de/foto/schmackhafte-pommes-frites-in-eine-sch%C3%BCssel-geben.jpg?s=612x612&w=0&k=20&c=7q1DvvLQuEQE7wZmGkiWPWsJzoYAPE0MwsNXWdkpnLQ=",
-      price: "$3.00",
-      kategorie: "Vegan",
-      allergies: "[Ei,ML,Se,Sn,So,We]",
-    },
-    {
-      foodID: 1,
-      foodWeekFoodWeekID: 1,
-      name: "Pommes",
-      description: "wahlweise mit Mayo oder Ketchup",
-      img: "https://media.istockphoto.com/id/966934632/de/foto/schmackhafte-pommes-frites-in-eine-sch%C3%BCssel-geben.jpg?s=612x612&w=0&k=20&c=7q1DvvLQuEQE7wZmGkiWPWsJzoYAPE0MwsNXWdkpnLQ=",
-      price: "$3.00",
-      kategorie: "Vegan",
-      allergies: "[Ei,ML,Se,Sn,So,We]",
-    },
-  ],
-  [
-    {
-      foodID: 1,
-      foodWeekFoodWeekID: 1,
-      name: "Pommes",
-      description: "wahlweise mit Mayo oder Ketchup",
-      img: "https://media.istockphoto.com/id/966934632/de/foto/schmackhafte-pommes-frites-in-eine-sch%C3%BCssel-geben.jpg?s=612x612&w=0&k=20&c=7q1DvvLQuEQE7wZmGkiWPWsJzoYAPE0MwsNXWdkpnLQ=",
-      price: "$3.00",
-      kategorie: "Vegan",
-      allergies: "[Ei,ML,Se,Sn,So,We]",
-    },
-    {
-      foodID: 1,
-      foodWeekFoodWeekID: 1,
-      name: "Pommes",
-      description: "wahlweise mit Mayo oder Ketchup",
-      img: "https://media.istockphoto.com/id/966934632/de/foto/schmackhafte-pommes-frites-in-eine-sch%C3%BCssel-geben.jpg?s=612x612&w=0&k=20&c=7q1DvvLQuEQE7wZmGkiWPWsJzoYAPE0MwsNXWdkpnLQ=",
-      price: "$3.00",
-      kategorie: "Vegan",
-      allergies: "[Ei,ML,Se,Sn,So,We]",
-    },
-  ],
-  [
-    {
-      foodID: 1,
-      foodWeekFoodWeekID: 1,
-      name: "Pommes",
-      description: "wahlweise mit Mayo oder Ketchup",
-      img: "https://media.istockphoto.com/id/966934632/de/foto/schmackhafte-pommes-frites-in-eine-sch%C3%BCssel-geben.jpg?s=612x612&w=0&k=20&c=7q1DvvLQuEQE7wZmGkiWPWsJzoYAPE0MwsNXWdkpnLQ=",
-      price: "$3.00",
-      kategorie: "Vegan",
-      allergies: "[Ei,ML,Se,Sn,So,We]",
-    },
-    {
-      foodID: 1,
-      foodWeekFoodWeekID: 1,
-      name: "Pommes",
-      description: "wahlweise mit Mayo oder Ketchup",
-      img: "https://media.istockphoto.com/id/966934632/de/foto/schmackhafte-pommes-frites-in-eine-sch%C3%BCssel-geben.jpg?s=612x612&w=0&k=20&c=7q1DvvLQuEQE7wZmGkiWPWsJzoYAPE0MwsNXWdkpnLQ=",
-      price: "$3.00",
-      kategorie: "Vegan",
-      allergies: "[Ei,ML,Se,Sn,So,We]",
-    },
-    {
-      foodID: 1,
-      foodWeekFoodWeekID: 1,
-      name: "Pommes",
-      description: "wahlweise mit Mayo oder Ketchup",
-      img: "https://media.istockphoto.com/id/966934632/de/foto/schmackhafte-pommes-frites-in-eine-sch%C3%BCssel-geben.jpg?s=612x612&w=0&k=20&c=7q1DvvLQuEQE7wZmGkiWPWsJzoYAPE0MwsNXWdkpnLQ=",
-      price: "$3.00",
-      kategorie: "Vegan",
-      allergies: "[Ei,ML,Se,Sn,So,We]",
-    },
-  ],
-  [
-    {
-      foodID: 1,
-      foodWeekFoodWeekID: 1,
-      name: "Pommes",
-      description: "wahlweise mit Mayo oder Ketchup",
-      img: "https://media.istockphoto.com/id/966934632/de/foto/schmackhafte-pommes-frites-in-eine-sch%C3%BCssel-geben.jpg?s=612x612&w=0&k=20&c=7q1DvvLQuEQE7wZmGkiWPWsJzoYAPE0MwsNXWdkpnLQ=",
-      price: "$3.00",
-      kategorie: "Vegan",
-      allergies: "[Ei,ML,Se,Sn,So,We]",
-    },
-    {
-      foodID: 1,
-      foodWeekFoodWeekID: 1,
-      name: "Pommes",
-      description: "wahlweise mit Mayo oder Ketchup",
-      img: "https://media.istockphoto.com/id/966934632/de/foto/schmackhafte-pommes-frites-in-eine-sch%C3%BCssel-geben.jpg?s=612x612&w=0&k=20&c=7q1DvvLQuEQE7wZmGkiWPWsJzoYAPE0MwsNXWdkpnLQ=",
-      price: "$3.00",
-      kategorie: "Vegan",
-      allergies: "[Ei,ML,Se,Sn,So,We]",
-    },
-    {
-      foodID: 1,
-      foodWeekFoodWeekID: 1,
-      name: "Pommes",
-      description: "wahlweise mit Mayo oder Ketchup",
-      img: "https://media.istockphoto.com/id/966934632/de/foto/schmackhafte-pommes-frites-in-eine-sch%C3%BCssel-geben.jpg?s=612x612&w=0&k=20&c=7q1DvvLQuEQE7wZmGkiWPWsJzoYAPE0MwsNXWdkpnLQ=",
-      price: "$3.00",
-      kategorie: "Vegan",
-      allergies: "[Ei,ML,Se,Sn,So,We]",
-    },
-  ],
-];
-
 export default function Canteen() {
-  const weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
+  const weekdays = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag"];
 
   const [meals, setMeals] = useState<Array<Meal[]>>([]);
-  const [statusMessage, setStatusMessage] = useState("Loading...");
+  const [statusMessage, setStatusMessage] = useState("Lade Daten...");
+  const [isLoading, setIsLoading] = useState(true);
   const [activeWeek, setActiveWeek] = useState(1);
   const [resetKey, setResetKey] = useState<number>(0);
   const startDate = moment()
@@ -376,30 +44,44 @@ export default function Canteen() {
     if (foodWeek == 2) {
       week = "nextweek";
     }
+    setIsLoading(true);
     fetch(`api/meal/canteenplan/${week}`)
       .then((res: Response) => res.json())
       .then((data: Meal[][] | { statusCode?: number; message?: string }) => {
         if (Array.isArray(data)) {
           setMeals(data);
+          setIsLoading(false);
         } else {
-          setStatusMessage("No data found");
+          setStatusMessage("Keine Gerichte für diese Woche gefunden :(");
+          setMeals([]);
         }
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
 
   const handlePress = (foodWeek: number) => {
-    // getMeals(foodWeek);
+    getMeals(foodWeek);
     setActiveWeek(foodWeek);
     setResetKey((prevKey) => prevKey + 1);
   };
 
   useEffect(() => {
-    // getMeals(1);
-    setMeals(thisWeek);
+    getMeals(1);
   }, []);
 
-  if (meals.length === 0) {
-    return <div>{statusMessage}</div>;
+  if (isLoading && (!meals.length || meals.length === 0)) {
+    return (
+      <div className="h-screen flex items-center justify-center">
+        <Spinner
+          label="Lade Daten..."
+          color="secondary"
+          labelColor="secondary"
+          size="lg"
+        />
+      </div>
+    );
   }
 
   const maxRows = Math.max(...meals.map((mealDay) => mealDay.length));
@@ -436,43 +118,50 @@ export default function Canteen() {
           Nächste Woche
         </Button>
       </div>
-      <Table removeWrapper className="pt-5" aria-label="Weekly canteen plan">
-        <TableHeader>
-          {weekdays.map((day, index) => (
-            <TableColumn className="bg-transparent" key={index}>
-              <div className="flex flex-col justify-center items-center text-sm font-normal leading-5 text-black">
-                <p>
-                  {startDate.clone().add(index, "days").format("DD[.]MM[.]")}
-                </p>
-                <p>{day}</p>
-              </div>
-            </TableColumn>
-          ))}
-        </TableHeader>
-        <TableBody>
-          {Array.from({ length: maxRows }, (_, rowIndex) => (
-            <TableRow key={rowIndex}>
-              {weekdays.map((_, colIndex) => (
-                <TableCell
-                  key={colIndex}
-                  className={
-                    colIndex === 4
-                      ? ""
-                      : "border-r-solid border-r-2 border-r-black"
-                  }
-                >
-                  {meals[colIndex] && meals[colIndex][rowIndex] ? (
-                    <MealCard
-                      meal={meals[colIndex][rowIndex]}
-                      key={`${colIndex}_${rowIndex}_${resetKey}`}
-                    />
-                  ) : null}
-                </TableCell>
-              ))}
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+      {!isLoading && (!meals.length || meals.length === 0) ? (
+        <div className="h-96 flex items-center justify-center text-lg font-normal leading-5 text-black">
+          {statusMessage}
+        </div>
+      ) : (
+        <Table removeWrapper className="pt-5" aria-label="Weekly canteen plan">
+          <TableHeader>
+            {weekdays.map((day, index) => (
+              <TableColumn className="bg-transparent" key={index}>
+                <div className="flex flex-col justify-center items-center text-sm font-normal leading-5 text-black">
+                  <p>
+                    {startDate.clone().add(index, "days").format("DD[.]MM[.]")}
+                  </p>
+                  <p>{day}</p>
+                </div>
+              </TableColumn>
+            ))}
+          </TableHeader>
+          <TableBody>
+            {Array.from({ length: maxRows || 0 }, (_, rowIndex) => (
+              <TableRow key={rowIndex}>
+                {weekdays.map((_, colIndex) => (
+                  <TableCell
+                    key={colIndex + "key" + rowIndex}
+                    className={
+                      colIndex === 4
+                        ? "w-1/5"
+                        : "w-1/5 border-r-solid border-r-2 border-r-black"
+                    }
+                  >
+                    {meals[colIndex] && meals[colIndex][rowIndex] ? (
+                      <MealCard
+                        meal={meals[colIndex][rowIndex]}
+                        isLoading={isLoading}
+                        key={`${colIndex}_${rowIndex}_${resetKey}`}
+                      />
+                    ) : null}
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      )}
     </div>
   );
 }
