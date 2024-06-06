@@ -19,7 +19,9 @@ export class MealService {
         allergies: newMeal.allergies,
         kategorie: newMeal.kategorie,
         day: newMeal.day,
+        price: newMeal.price,
         foodWeekFoodWeekID: foodWeekID,
+        url: newMeal.url,
       },
     });
 

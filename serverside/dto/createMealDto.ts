@@ -18,9 +18,14 @@ export class CreateMealDto {
   readonly allergies: string;
 
   @IsNotEmpty()
+  readonly price: number;
+
+  @IsNotEmpty()
   readonly kategorie: kategorieEnum;
 
   @IsNotEmpty()
   @IsString()
   readonly day: string;
+
+  url: string;
 }

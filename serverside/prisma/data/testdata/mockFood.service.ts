@@ -40,6 +40,7 @@ export class FoodServiceMock {
           description: mealsDesc[i],
           day: today,
           allergies: 'None',
+          price: 4.5,
           kategorie: kategorieEnum.Schweinefleisch,
           FoodWeek: {
             connect: {
@@ -52,6 +53,7 @@ export class FoodServiceMock {
           shortName: 'short name',
           description: mealsDesc[i],
           day: today,
+          price: 4.5,
           allergies: 'None',
           kategorie: kategorieEnum.Schweinefleisch,
           FoodWeek: {
