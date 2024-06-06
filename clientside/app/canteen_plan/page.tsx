@@ -7,9 +7,8 @@ import {
   TableRow,
   TableCell,
   Button,
-  ButtonGroup,
-  Skeleton,
   Spinner,
+  Image,
 } from "@nextui-org/react";
 import MealCard from "./MealCard";
 import moment from "moment";
@@ -119,8 +118,17 @@ export default function Canteen() {
         </Button>
       </div>
       {!isLoading && (!meals.length || meals.length === 0) ? (
-        <div className="h-96 flex items-center justify-center text-lg font-normal leading-5 text-black">
-          {statusMessage}
+        <div className="h-72 pt-56 w-screen flex items-center justify-center text-lg font-normal leading-5 text-black">
+          <div className="flex flex-col items-center justify-center">
+            <Image
+              radius="md"
+              height="80%"
+              width="100%"
+              alt="Nichts gefunden"
+              src="https://cdni.iconscout.com/illustration/premium/thumb/no-data-found-9887654-8019228.png"
+            />
+            <p>{statusMessage}</p>
+          </div>
         </div>
       ) : (
         <Table removeWrapper className="pt-5" aria-label="Weekly canteen plan">
