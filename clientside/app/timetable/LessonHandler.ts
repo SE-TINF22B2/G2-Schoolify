@@ -1,10 +1,13 @@
 import { Lesson } from "./LessonType";
 
-export const fetchLessons = (classId: number, weekStart: string, setLessons: any) => {
-    return fetch(`api/lesson/getLessonsForWeek?classId=${classId}`)
+export const fetchLessons = (classId: number, weekStart: string, setLessons: any, setLoading: any) => {
+    setLoading(true);
+    return fetch(`api/lesson/getLessonsForWeek?classId=${classId}&weekStart=2024-06-03`)
         .then((response: Response) => response.json())
         .then((data: Lesson[][]) => {
             setLessons(data);
+            setLoading(false);
+            console.log(data)
         })
         .catch((error) => {
             console.error("Error:", error);

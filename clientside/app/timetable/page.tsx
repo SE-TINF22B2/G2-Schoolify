@@ -12,6 +12,7 @@ import {
     TableColumn,
     TableRow,
     TableCell,
+    Spinner,
 } from "@nextui-org/react";
 
 import { Lesson } from "./LessonType";
@@ -27,7 +28,6 @@ const columns = [
 ];
 const timeslots = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
-
 function convertToWeekFormat(m: moment.Moment) {
     const weekend = moment(m);
     weekend.add(4, "days");
@@ -38,6 +38,7 @@ export default function Timetable() {
     const [weekstart] = useState(moment().startOf("isoWeek"));
     const [week, setWeek] = useState(convertToWeekFormat(weekstart));
     const [lessons, setLessons] = useState({} as Lesson[][]);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         columns.forEach((column, index) => {
@@ -52,14 +53,22 @@ export default function Timetable() {
                 }
             }
         });
-    },[week]);
+    }, [week]);
 
     useEffect(() => {
-        fetchLessons(1, weekstart.toISOString(), setLessons);
-        console.log("test")
-    },[]);
+        fetchLessons(1, weekstart.toISOString(), setLessons, setLoading);
+    }, []);
 
-    return (
+    return loading ? (
+        <div className="h-screen flex items-center justify-center">
+            <Spinner
+                label="Loading..."
+                color="secondary"
+                labelColor="secondary"
+                size="lg"
+            />
+        </div>
+    ) : (
         <div>
             <div className="flex py-6 justify-center">
                 <div
@@ -104,9 +113,11 @@ export default function Timetable() {
                             return (
                                 <TableRow key={rowIndex}>
                                     {columns.map((_, colIndex) => {
+                                        console.log("rowIndex", rowIndex + "colIndex", colIndex);
+                                     
                                         const lesson = getLesson(
                                             rowIndex + 1,
-                                            colIndex,
+                                            colIndex -1,
                                             lessons
                                         );
                                         return (
