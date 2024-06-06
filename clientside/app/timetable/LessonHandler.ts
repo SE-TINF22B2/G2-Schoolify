@@ -2,7 +2,7 @@ import { Lesson } from "./LessonType";
 
 export const fetchLessons = (classId: number, weekStart: string, setLessons: any, setLoading: any) => {
     setLoading(true);
-    return fetch(`api/lesson/getLessonsForWeek?classId=${classId}&weekStart=2024-06-03`)
+    return fetch(`api/lesson/getLessonsForWeek?classId=${classId}&weekStart=${weekStart}`)
         .then((response: Response) => response.json())
         .then((data: Lesson[][]) => {
             setLessons(data);

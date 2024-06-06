@@ -57,12 +57,12 @@ export default function Timetable() {
 
     useEffect(() => {
         fetchLessons(1, weekstart.toISOString(), setLessons, setLoading);
-    }, []);
+    }, [week]);
 
     return loading ? (
         <div className="h-screen flex items-center justify-center">
             <Spinner
-                label="Loading..."
+                label="Lade Daten..."
                 color="secondary"
                 labelColor="secondary"
                 size="lg"
@@ -78,7 +78,7 @@ export default function Timetable() {
                         onClick={() => {
                             weekstart.subtract(7, "days");
                             setWeek(convertToWeekFormat(weekstart));
-                            // setLessons(fetchLessons(1));
+                            
                         }}>
                         <ArrowBackIosNewOutlinedIcon />
                     </button>
@@ -87,7 +87,7 @@ export default function Timetable() {
                         onClick={() => {
                             weekstart.add(7, "days");
                             setWeek(convertToWeekFormat(weekstart));
-                            // setLessons(fetchLessons(1));
+                            
                         }}>
                         <ArrowForwardIosOutlinedIcon />
                     </button>
