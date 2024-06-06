@@ -7,7 +7,7 @@ export const fetchLessons = (classId: number, weekStart: string, setLessons: any
         .then((data: Lesson[][]) => {
             setLessons(data);
             setLoading(false);
-            console.log(data)
+           
         })
         .catch((error) => {
             console.error("Error:", error);

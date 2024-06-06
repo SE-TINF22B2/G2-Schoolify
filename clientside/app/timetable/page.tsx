@@ -113,8 +113,6 @@ export default function Timetable() {
                             return (
                                 <TableRow key={rowIndex}>
                                     {columns.map((_, colIndex) => {
-                                        console.log("rowIndex", rowIndex + "colIndex", colIndex);
-                                     
                                         const lesson = getLesson(
                                             rowIndex + 1,
                                             colIndex -1,
