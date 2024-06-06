@@ -18,6 +18,7 @@ import {
 import { Lesson } from "./LessonType";
 import { fetchLessons, getLesson } from "./LessonHandler";
 import LessonCard from "./LessonCard";
+import { stat } from "fs";
 const columns = [
     "Stunde",
     "Montag",
@@ -37,8 +38,9 @@ function convertToWeekFormat(m: moment.Moment) {
 export default function Timetable() {
     const [weekstart] = useState(moment().startOf("isoWeek"));
     const [week, setWeek] = useState(convertToWeekFormat(weekstart));
-    const [lessons, setLessons] = useState({} as Lesson[][]);
+    const [lessons, setLessons] = useState<Array<Lesson[]>>([]);
     const [loading, setLoading] = useState(true);
+    const [errorMessage, setErrorMessage] = useState(null);
 
     useEffect(() => {
         columns.forEach((column, index) => {
@@ -56,7 +58,7 @@ export default function Timetable() {
     }, [week]);
 
     useEffect(() => {
-        fetchLessons(1, weekstart.toISOString(), setLessons, setLoading);
+        fetchLessons(1, weekstart.toISOString(), setLessons, setLoading, setErrorMessage);
     }, [week]);
 
     return loading ? (
@@ -68,8 +70,12 @@ export default function Timetable() {
                 size="lg"
             />
         </div>
-    ) : (
-        <div>
+    ) : 
+    (
+        errorMessage !== null ? (
+            <div className="h-screen flex items-center justify-center text-lg"><p color="primary">{errorMessage}</p></div>
+        ):
+        (<div>
             <div className="flex py-6 justify-center">
                 <div
                     id="center"
@@ -78,7 +84,6 @@ export default function Timetable() {
                         onClick={() => {
                             weekstart.subtract(7, "days");
                             setWeek(convertToWeekFormat(weekstart));
-                            
                         }}>
                         <ArrowBackIosNewOutlinedIcon />
                     </button>
@@ -87,7 +92,6 @@ export default function Timetable() {
                         onClick={() => {
                             weekstart.add(7, "days");
                             setWeek(convertToWeekFormat(weekstart));
-                            
                         }}>
                         <ArrowForwardIosOutlinedIcon />
                     </button>
@@ -115,7 +119,7 @@ export default function Timetable() {
                                     {columns.map((_, colIndex) => {
                                         const lesson = getLesson(
                                             rowIndex + 1,
-                                            colIndex -1,
+                                            colIndex - 1,
                                             lessons
                                         );
                                         return (
@@ -150,5 +154,5 @@ export default function Timetable() {
                 </Table>
             </div>
         </div>
-    );
+    ));
 }
