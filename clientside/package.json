@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "PORT=3001 next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
@@ -19,6 +19,7 @@
     "clsx": "^2.1.0",
     "framer-motion": "^11.0.14",
     "lucide-react": "^0.358.0",
+    "moment": "^2.30.1",
     "next": "13.5.5",
     "react": "^18",
     "react-dom": "^18",
