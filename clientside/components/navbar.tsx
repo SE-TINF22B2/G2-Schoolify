@@ -26,7 +26,8 @@ import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined
 export default function Navbar() {
     const [isMenuOpen, setIsMenuOpen] = React.useState(false);
     return (
-        <NavbarNextUi
+        usePathname() === "/login" ? null : 
+        (<NavbarNextUi
             classNames={{
                 item: [
                     "flex",
@@ -155,5 +156,5 @@ export default function Navbar() {
                 </NavbarMenuItem>
             </NavbarMenu>
         </NavbarNextUi>
-    );
+    ));
 }

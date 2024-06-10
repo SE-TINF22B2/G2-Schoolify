@@ -8,41 +8,11 @@ import {
     Input,
 } from "@nextui-org/react";
 import { MailIcon } from "lucide-react";
-import React from "react";
+import React, { useEffect } from "react";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-function loginRequest(
-    email: string,
-    password: string,
-    setErrorMessage: any,
-    setIsLoggedIn: any
-) {
-    fetch("api/auth/login", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-            email: email,
-            password: password,
-        }),
-    })
-        .then((res) => res.json())
-        .then((data) => {
-            if (data.statusCode === 200) {
-                setIsLoggedIn(true);
-            }else{
-                setErrorMessage(data.message);
-            }
-
-            console.log(data);
-        })
-        .catch((error) => {
-            setErrorMessage(error);
-        });
-
-    console.log(email, password);
-}
+import { loginRequest } from "./handleLogin";
+import { useRouter } from "next/navigation";
 
 export default function Page() {
     const [isVisible, setIsVisible] = React.useState(false);
@@ -50,6 +20,8 @@ export default function Page() {
     const [password, setPassword] = React.useState("");
     const [isLoggedIn, setIsLoggedIn] = React.useState(false);
     const [errorMessage, setErrorMessage] = React.useState(null);
+
+    const router = useRouter();
 
     const toggleVisibility = () => setIsVisible(!isVisible);
     return (
@@ -96,16 +68,18 @@ export default function Page() {
                     </div>
                 </CardBody>
                 <CardFooter className="flex-col justify-center">
-                    <div className="text-rose-700 text-xs mb-4">{errorMessage}</div>
+                    <div className="text-rose-700 text-xs mb-4">
+                        {errorMessage}
+                    </div>
                     <Button
                         color="secondary"
                         className="text-white text-1xl mb-4 w-1/4"
                         onClick={() =>
-                            loginRequest(
+                                                            loginRequest(
                                 email,
                                 password,
                                 setErrorMessage,
-                                setIsLoggedIn
+                                router
                             )
                         }>
                         Anmelden
