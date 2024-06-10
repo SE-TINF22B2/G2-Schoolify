@@ -1,0 +1,11 @@
+foodID,name,description,allergies,foodWeekFoodWeekID,day,kategorie,shortName,price
+1,Pasta,Delicious pasta.,None,1,2024-06-03T02:00:00.000Z,Schweinefleisch,Pasta,4.5
+2,Pizza,Cheesy pizza.,None,1,2024-06-04T02:00:00.000Z,Vegetarisch,Pizza,4.5
+3,Burger,Juicy burger.,None,1,2024-06-05T02:00:00.000Z,Schweinefleisch,Burger,4.5
+4,Salad,Healthy salad.,None,1,2024-06-06T02:00:00.000Z,Vegan,Salad,4.5
+5,Steak,Steak with vegetables.,None,1,2024-06-07T02:00:00.000Z,Schweinefleisch,Steak,4.5
+1,Pasta,Delicious pasta.,None,1,2024-06-10T02:00:00.000Z,Schweinefleisch,Pasta,4.5
+2,Pizza,Cheesy pizza.,None,1,2024-06-11T02:00:00.000Z,Vegetarisch,Pizza,4.5
+3,Burger,Juicy burger.,None,1,2024-06-12T02:00:00.000Z,Schweinefleisch,Burger,4.5
+4,Salad,Healthy salad.,None,1,2024-06-13T02:00:00.000Z,Vegan,Salad,4.5
+5,Steak,Steak with vegetables.,None,1,2024-06-14T02:00:00.000Z,Schweinefleisch,Steak,4.5

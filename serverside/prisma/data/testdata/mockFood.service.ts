@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { FoodWeek, Food, kategorieEnum } from '@prisma/client';
+import { FoodWeek, Food } from '@prisma/client';
 
 @Injectable()
 export class FoodServiceMock {
@@ -21,56 +21,23 @@ export class FoodServiceMock {
         start: startOfWeek,
       },
     });
-
-    const meals = ['Pasta', 'Pizza', 'Burger', 'Salad', 'Steak'];
-    const mealsDesc = [
-      'Delicious pasta.',
-      'Cheesy pizza.',
-      'Juicy burger.',
-      'Healthy salad.',
-      'Steak with vegetables.',
-    ];
-
-    for (let i = 0; i < meals.length; i++) {
-      this.foodMock[i] = await prisma.food.upsert({
-        where: { foodID: i + 1 },
-        update: {
-          name: meals[i],
-          shortName: 'short name',
-          description: mealsDesc[i],
-          day: today,
-          allergies: 'None',
-          price: 4.5,
-          kategorie: kategorieEnum.Schweinefleisch,
-          FoodWeek: {
-            connect: {
-              foodWeekID: this.foodWeekMock.foodWeekID,
-            },
-          },
-        },
-        create: {
-          name: meals[i],
-          shortName: 'short name',
-          description: mealsDesc[i],
-          day: today,
-          price: 4.5,
-          allergies: 'None',
-          kategorie: kategorieEnum.Schweinefleisch,
-          FoodWeek: {
-            connect: {
-              foodWeekID: this.foodWeekMock.foodWeekID,
-            },
-          },
-        },
-      });
-    }
+    startOfWeek.setDate(startOfWeek.getDay() + 9);
+    this.foodWeekMock = await prisma.foodWeek.upsert({
+      where: { foodWeekID: 2 },
+      update: {
+        start: startOfWeek,
+      },
+      create: {
+        start: startOfWeek,
+      },
+    });
   }
 
-  getStartOfWeek(date: Date) {
-    const day = date.getDay();
-    const diff = date.getDate() - day + (day === 0 ? -6 : 1); // adjust when day is sunday
-    const startOfWeek = new Date(date.setDate(diff));
-    startOfWeek.setHours(1, 0, 0, 0);
+  getStartOfWeek(date) {
+    const day = date.getUTCDay();
+    const diff = date.getUTCDate() - day + (day === 0 ? -6 : 1); // Adjust when day is Sunday
+    const startOfWeek = new Date(date.setUTCDate(diff));
+    startOfWeek.setUTCHours(0, 0, 0, 0); // Set time to 00:00:00 UTC
     return startOfWeek;
   }
   getClasses() {
