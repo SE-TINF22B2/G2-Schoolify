@@ -1,0 +1,137 @@
+{
+  "lessons": [
+    {
+      "timeslot": 1,
+      "day": 1,
+      "label": "Deutsch"
+    },
+    {
+      "timeslot": 1,
+      "day": 2,
+      "label": "Mathe"
+    },
+    {
+      "timeslot": 1,
+      "day": 3,
+      "label": "Physik"
+    },
+    {
+      "timeslot": 1,
+      "day": 4,
+      "label": "Chemie"
+    },
+    {
+      "timeslot": 2,
+      "day": 1,
+      "label": "Geschichte"
+    },
+    {
+      "timeslot": 2,
+      "day": 2,
+      "label": "Geografie"
+    },
+    {
+      "timeslot": 2,
+      "day": 3,
+      "label": "Englisch"
+    },
+    {
+      "timeslot": 2,
+      "day": 4,
+      "label": "Kunst"
+    },
+    {
+      "timeslot": 2,
+      "day": 5,
+      "label": "Musik"
+    },
+    {
+      "timeslot": 3,
+      "day": 1,
+      "label": "Biologie"
+    },
+    {
+      "timeslot": 3,
+      "day": 3,
+      "label": "Sport"
+    },
+    {
+      "timeslot": 3,
+      "day": 4,
+      "label": "Informatik"
+    },
+    {
+      "timeslot": 3,
+      "day": 5,
+      "label": "Religion"
+    },
+    {
+      "timeslot": 4,
+      "day": 1,
+      "label": "Englisch"
+    },
+    {
+      "timeslot": 4,
+      "day": 2,
+      "label": "Geschichte"
+    },
+    {
+      "timeslot": 4,
+      "day": 3,
+      "label": "Musik"
+    },
+    {
+      "timeslot": 4,
+      "day": 4,
+      "label": "Sport"
+    },
+    {
+      "timeslot": 4,
+      "day": 5,
+      "label": "Biologie"
+    },
+    {
+      "timeslot": 5,
+      "day": 1,
+      "label": "Mathe"
+    },
+    {
+      "timeslot": 5,
+      "day": 2,
+      "label": "Deutsch"
+    },
+    {
+      "timeslot": 5,
+      "day": 3,
+      "label": "Kunst"
+    },
+    {
+      "timeslot": 5,
+      "day": 4,
+      "label": "Geografie"
+    },
+    {
+      "timeslot": 5,
+      "day": 5,
+      "label": "Physik"
+    }
+  ]
+  ,
+  "lessons1": [
+    {
+      "timeslot": 1,
+      "day": 1,
+      "label": "Deutsch"
+    },
+    {
+      "timeslot": 1,
+      "day": 2,
+      "label": "Mathe"
+    },
+    {
+      "timeslot": 1,
+      "day": 3,
+      "label": "Physik"
+    }
+  ]
+}
