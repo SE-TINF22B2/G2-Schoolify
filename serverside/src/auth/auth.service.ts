@@ -19,7 +19,6 @@ export class AuthService {
       },
     });
 
-    console.log(findUser);
     // hash mash
     const saltOrRounds = 10;
     const hash = await bcrypt.hash(password, saltOrRounds);
