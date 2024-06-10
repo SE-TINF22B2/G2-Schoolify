@@ -18,7 +18,7 @@ export class AuthController {
   async login(@Body() authPayload: AuthPayloadDto, @Res({ passthrough: true }) response: Response ): Promise<any> {
     
     const token = await this.authService.validateUser(authPayload, this.prisma);
-    response.cookie('session', token.access_token);
+    await this.authService.setCookies(response, authPayload.email, token.access_token, this.prisma);
     return token;
   }
 }

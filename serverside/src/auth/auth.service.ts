@@ -43,4 +43,24 @@ export class AuthService {
       secret: 'abc123',
     });
   }
+  async setCookies(response: any, email: string, token: string, prisma: PrismaClient) {
+    if(this.validateToken(token)) {
+      response.cookie('session', token);
+      const user = await prisma.user_Login_Data.findUnique({
+        where: {
+          email: email,
+        },
+      });
+      response.cookie('role', user.role);
+      if(user.role === 'Student') {
+        const student = await prisma.student.findUnique({
+          where: {
+            user_Login_DataUser_Login_DataID: user.user_Login_DataID,
+          },
+        });
+        response.cookie('classID', student.classClassID);
+      }
+    }
+
+  }
 }
