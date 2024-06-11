@@ -47,7 +47,10 @@ export default function Canteen() {
     fetch(`api/meal/canteenplan/${week}`)
       .then((res: Response) => res.json())
       .then((data: Meal[][] | { statusCode?: number; message?: string }) => {
-        if (Array.isArray(data)) {
+        if (
+          Array.isArray(data) &&
+          data.every((mealDay) => mealDay.length !== 0)
+        ) {
           setMeals(data);
           setIsLoading(false);
         } else {
@@ -117,7 +120,10 @@ export default function Canteen() {
           Nächste Woche
         </Button>
       </div>
-      {!isLoading && (!meals.length || meals.length === 0) ? (
+      {!isLoading &&
+      (!meals.length ||
+        meals.length === 0 ||
+        meals.every((mealDay) => mealDay.length === 0)) ? (
         <div className="h-72 pt-56 w-screen flex items-center justify-center text-lg font-normal leading-5 text-black">
           <div className="flex flex-col items-center justify-center">
             <Image
