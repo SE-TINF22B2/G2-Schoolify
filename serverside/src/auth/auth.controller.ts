@@ -1,8 +1,9 @@
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import { Body, Controller, Inject, Post } from '@nestjs/common';
+import { Body, Controller, Inject, Post, Res } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthPayloadDto } from './dto/auth.dto';
 import { Prisma, PrismaClient } from '@prisma/client';
+import { Response } from 'express';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -14,7 +15,10 @@ export class AuthController {
 
   @Post('login')
   @ApiOkResponse({ description: 'Access Token', type: String })
-  async login(@Body() authPayload: AuthPayloadDto): Promise<any> {
-    return await this.authService.validateUser(authPayload, this.prisma);
+  async login(@Body() authPayload: AuthPayloadDto, @Res({ passthrough: true }) response: Response ): Promise<any> {
+    
+    const token = await this.authService.validateUser(authPayload, this.prisma);
+    await this.authService.setCookies(response, authPayload.email, token.access_token, this.prisma);
+    return token;
   }
 }
