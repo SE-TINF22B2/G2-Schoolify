@@ -9,10 +9,10 @@ import {
 } from "@nextui-org/react";
 import { useState } from "react";
 import ReactCardFlip from "react-card-flip";
-import VegetarianIcon from "./icons/VegetarianIcon";
-import VeganIcon from "./icons/VeganIcon";
-import PorkIcon from "./icons/PorkIcon";
-import BeefIcon from "./icons/BeefIcon";
+import VegetarianIcon from "../icons/VegetarianIcon";
+import VeganIcon from "../icons/VeganIcon";
+import PorkIcon from "../icons/PorkIcon";
+import BeefIcon from "../icons/BeefIcon";
 
 interface MealCardProps {
   meal: {
