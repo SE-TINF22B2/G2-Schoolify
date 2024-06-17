@@ -1,6 +1,5 @@
 "use client";
 
-// import { cookies } from "next/headers";
 export function loginRequest(
   email: string,
   password: string,
