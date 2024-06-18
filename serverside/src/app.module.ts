@@ -1,6 +1,6 @@
 import { Logger } from '@nestjs/common';
 import { AuthModule } from './auth/auth.module';
-import { UserModule } from './user/user.module';
+import { UsersModule } from './auth/users/users.module';
 import { MealModule } from './meal/meal.module';
 import { EventController } from './event/event.controller';
 import { EventModule } from './event/event.module';
@@ -29,10 +29,9 @@ import { AbsentServiceMock } from 'prisma/data/testdata/mockAbsent.service';
 @Module({
   imports: [
     AuthModule,
-    UserModule,
     MealModule,
     EventModule,
-    UserModule,
+    UsersModule,
     TestModule,
     TeacherModule,
     StudentModule,
