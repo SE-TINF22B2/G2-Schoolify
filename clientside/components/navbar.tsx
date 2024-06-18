@@ -9,8 +9,14 @@ import {
     NavbarMenuToggle,
     NavbarMenuItem,
     NavbarMenu,
+    Dropdown,
+    Avatar,
+    DropdownMenu,
+    DropdownTrigger,
+    DropdownItem,
 } from "@nextui-org/react";
 import Image from "next/image";
+import Cookies from "js-cookie";
 import { usePathname } from "next/navigation";
 import React from "react";
 
@@ -22,9 +28,12 @@ import RestaurantOutlinedIcon from "@mui/icons-material/RestaurantOutlined";
 import CloudOutlinedIcon from "@mui/icons-material/CloudOutlined";
 import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
+import { handleLogout } from "@/lib/handleLogout";
+import { useRouter } from "next/navigation";
 
 export default function Navbar() {
     const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+    const router = useRouter();
     return (
         usePathname() === "/login" ? null : 
         (<NavbarNextUi
@@ -119,7 +128,17 @@ export default function Navbar() {
                 </NavbarItem>
                 <NavbarItem>
                     <Link className="rounded-full" href="#">
-                        <AccountCircleOutlinedIcon />
+                        
+                        <Dropdown placement="bottom-end">
+                            <DropdownTrigger>
+                            <AccountCircleOutlinedIcon />
+                            </DropdownTrigger>
+                            <DropdownMenu aria-label="Profile Actions" variant="flat">
+                            <DropdownItem key="logout" color="danger" onClick={() => {handleLogout(Cookies);  router.push("/login")}}>
+                                Log Out
+                            </DropdownItem>
+                            </DropdownMenu>
+                        </Dropdown>
                     </Link>
                 </NavbarItem>
             </NavbarContent>
@@ -144,7 +163,6 @@ export default function Navbar() {
                 <NavbarMenuItem
                     isActive={usePathname() == "/canteen_plan" ? true : false}>
                     <Link color="primary" href="canteen_plan">
-  
                             Mensa
                     </Link>
                 </NavbarMenuItem>

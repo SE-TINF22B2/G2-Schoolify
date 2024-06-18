@@ -11,7 +11,7 @@ import { MailIcon } from "lucide-react";
 import React, { useEffect } from "react";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import { loginRequest } from "./handleLogin";
+import { loginRequest } from "../../lib/handleLogin";
 import { useRouter } from "next/navigation";
 
 export default function Page() {
