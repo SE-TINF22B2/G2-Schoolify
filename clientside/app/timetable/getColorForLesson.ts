@@ -31,5 +31,8 @@ export default function getColorForLesson(label: string): string {
   if (label === "Musik") {
       color = "#00CED1"; // dunkelblaugrün
   }
+  if (label === "Software Engineering") {
+    color = "#896022"; // braun
+}
   return color;
 }
