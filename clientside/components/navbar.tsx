@@ -135,7 +135,7 @@ export default function Navbar() {
                             </DropdownTrigger>
                             <DropdownMenu aria-label="Profile Actions" variant="flat">
                             <DropdownItem key="logout" color="danger" onClick={() => {handleLogout(Cookies);  router.push("/login")}}>
-                                Log Out
+                                Ausloggen
                             </DropdownItem>
                             </DropdownMenu>
                         </Dropdown>
